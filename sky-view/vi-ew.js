@@ -137,7 +137,11 @@ customElements.define(
        main.open-login #s-login {
          display: flex;
        }
-       main.open-login #s0 #s1 #s2 #s3 {
+       main.open-login #s-none,
+       main.open-login #s0,
+       main.open-login #s1,
+       main.open-login #s2,
+       main.open-login #s3 {
          display: none;
        }
        main.open-0 #s0,
@@ -283,6 +287,9 @@ customElements.define(
            padding: 0;
            padding-right: 0 !important;
          }
+         main.open-login #s0 {
+           display: none !important;
+         }
          main #s1 {
            display: none !important;
          }
@@ -345,12 +352,17 @@ customElements.define(
           <div class="wf hf b0 br1 fc ac jc f4">no windows open</div>
         </slot>
         <slot name="s-login" id="s-login">
-          <div class="wf hf b0 br1 fc ac jc">
+          <div class="wf hf b0 br1 fc ac jc g2">
             <button
             class="br1 p3 b2 hover fc jc ac hideable"
-            onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-in'))"
-              >
+            onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-in'))">
               <span class="f3 s1">login</span>
+            </button>
+            <button
+            class="br1 p3 b2 hover fr g1 jc ac hideable"
+            onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('bridge-redirect'))">
+              <span class="f3 s1">purchase a planet</span>
+              <img src="icons/02_planet.svg" alt="planet" width="25" height="25">
             </button>
           </div>
         </slot>
@@ -420,27 +432,22 @@ customElements.define(
     connectedCallback() {
       $(this).off()
       $(this).on('sky-open', (e) => {
-        // let authenticated = localStorage.getItem('auth')
-        // if (authenticated) {
+        console.log('SKY OPEN')
         this.toggleAttribute('open')
         this.saveLayout()
-        // }
       })
       $(this).on('fix-slots', () => {
         this.fixSlots()
       })
       $(this).on('new-window', (e) => {
-        let authenticated = localStorage.getItem('auth')
-        if (authenticated) {
-          let wind = document.createElement('wi-nd')
-          let here = `https://urbit.org`
-          let slot = e.detail && e.detail.slot ? e.detail.slot : `s-1`
-          $(wind).attr('here', here)
-          $(wind).attr('slot', slot)
-          this.appendChild(wind)
-          this.growFlock()
-          this.fixSlots()
-        }
+        let wind = document.createElement('wi-nd')
+        let here = `https://urbit.org`
+        let slot = e.detail && e.detail.slot ? e.detail.slot : `s-1`
+        $(wind).attr('here', here)
+        $(wind).attr('slot', slot)
+        this.appendChild(wind)
+        this.growFlock()
+        this.fixSlots()
       })
       $(this).on('close-window', (e) => {
         let wind = $(e.target)
@@ -449,7 +456,13 @@ customElements.define(
         }
         wind.remove()
         this.fixSlots()
-        this.renderTabs()
+        if (!!localStorage.getItem('show-bridge')) {
+          localStorage.removeItem('show-bridge')
+          localStorage.removeItem('sky-layout')
+          this.restoreLayout()
+        } else {
+          this.renderTabs()
+        }
       })
       $(this).on('minimize-window', (e) => {
         let wind = $(e.target)
@@ -480,11 +493,17 @@ customElements.define(
       })
       $(this.gid('s0')).off()
       $(this.gid('s0')).on('slotchange', (e) => {
-        this.renderTabs()
+        let authenticated = localStorage.getItem('auth')
+        if (authenticated) {
+          this.renderTabs()
+        }
       })
       $(this.gid('s1')).off()
       $(this.gid('s1')).on('slotchange', () => {
-        this.renderTabs()
+        let authenticated = localStorage.getItem('auth')
+        if (authenticated) {
+          this.renderTabs()
+        }
       })
       $(this.gid('s2')).off()
       $(this.gid('s2')).on('slotchange', () => {
@@ -520,11 +539,24 @@ customElements.define(
         this.toggleAttribute('open')
         this.restoreLayout()
       })
-      console.log(this.windowsOpen)
+      $(this).on('bridge-redirect', () => {
+        localStorage.setItem('show-bridge', true)
+        let layout = {
+          open: false,
+          windowsOpen: 1,
+          windows: [
+            {
+              here: `https://bridge.urbit.org/`,
+              slot: 's0'
+            }
+          ]
+        }
+        localStorage.setItem('sky-layout', JSON.stringify(layout))
+        this.restoreLayout()
+      })
       this.qs('main').className = !this.windowsOpen
         ? 'open-0'
         : `open-${this.windowsOpen}`
-      console.log('called')
       this.restoreLayout()
     }
     attributeChangedCallback(name, oldValue, newValue) {
@@ -643,7 +675,12 @@ customElements.define(
       })
     }
     growFlock() {
-      $(this).attr('windows-open', Math.min(3, this.windowsOpen + 1))
+      let currentWindowsOpen = this.windowsOpen
+      if (isNaN(currentWindowsOpen)) {
+        currentWindowsOpen = 0
+      }
+      $(this).attr('windows-open', Math.min(3, currentWindowsOpen + 1))
+      console.log(currentWindowsOpen)
     }
     shrinkFlock() {
       $(this).attr('windows-open', Math.max(0, this.windowsOpen - 1))
@@ -667,18 +704,34 @@ customElements.define(
     restoreLayout() {
       let layoutString = localStorage.getItem('sky-layout')
       let authenticated = localStorage.getItem('auth')
+      let showBridge = localStorage.getItem('show-bridge')
       if (!authenticated) {
+        if (showBridge) {
+          let layout = JSON.parse(layoutString)
+          $(this).attr('open', layout.open ? '' : null)
+          $(this).attr('windows-open', `${layout.windowsOpen}`)
+          $(this).children('wi-nd').remove()
+          layout.windows.forEach((w) => {
+            let wind = document.createElement('wi-nd')
+            $(wind).attr('here', w.here)
+            $(wind).attr('slot', !!w.slot ? w.slot : null)
+            $(this).append(wind)
+          })
+        } else {
+          //  opening login setup
+          this.qs('main').className = `open-login`
+          //
+          //  easy solution for now
+          //
+          //  $(this).children('wi-nd').remove()
+          if (layoutString) {
+            $(this).children('wi-nd').remove()
+            localStorage.removeItem('sky-layout')
+          }
+        }
         // disabling side-menu
         $(this.gid('sky-open')).removeClass('hover')
         $(this.gid('sky-open')).prop('disabled', true)
-        console.log('not authenticated')
-        //  opening login setup
-        this.qs('main').className = `open-login`
-        //  hiding before log-out windows
-        //
-        //  easy solution for now
-        //
-        $(this).children('wi-nd').remove()
         //
         //  better solution below
         //
@@ -698,7 +751,7 @@ customElements.define(
         let layout = JSON.parse(layoutString)
         $(this).attr('open', layout.open ? '' : null)
         $(this).attr('windows-open', `${layout.windowsOpen}`)
-        $(this).children('wi-nd').remove()
+        //$(this).children('wi-nd').remove()
         layout.windows.forEach((w) => {
           let wind = document.createElement('wi-nd')
           $(wind).attr('here', w.here)
@@ -706,6 +759,7 @@ customElements.define(
           $(this).append(wind)
         })
       } else {
+        console.log('new layout')
         // create initial layout
         let layout = {
           open: false,
