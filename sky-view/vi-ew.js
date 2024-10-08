@@ -131,6 +131,15 @@ customElements.define(
        main.open-0 #s-none {
          display: flex;
        }
+       main #s-login {
+         display: none;
+       }
+       main.open-login #s-login {
+         display: flex;
+       }
+       main.open-login #s0 #s1 #s2 #s3 {
+         display: none;
+       }
        main.open-0 #s0,
        main.open-0 #s1,
        main.open-0 #s2,
@@ -287,83 +296,63 @@ customElements.define(
       </style>
       <div id="tray" class="fc g2 js af">
         <button
+          id="sky-open"
           class="br1 p1 b2 hover fc js ac grow"
           onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('sky-open', {bubbles:true, composed: true}))"
           >
           <span class="p1 s-1 bold">~</span>
         </button>
-        <button
-          class="p2 br1 bd1 b3 hover f3"
-          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('toggle-notifications'))"
-          >
-          <span class="mso">notifications</span>
-        </button>
-        <button
-          class="p2 br1 bd1 b3 hover f3 hidden"
-          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('toggle-settings'))"
-          >
-          <span class="material-symbols-outlined">settings</span>
-        </button>
       </div>
       <nav id="nav" class="fc" style="padding-bottom: 15px;">
         <div id="tab-controller" class="fc g3 grow">
           <button
+            id="sky-open"
             class="br1 p1 b2 hover fc jc ac hideable"
             onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('sky-open', {bubbles:true, composed: true}))"
             >
             <span class="p1 s-1 bold">~</span>
           </button>
           <div class="fc g3 grow scroll-y">
-            <button
-              onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('new-window'))"
-              class="wfc p2 br1 bd1 b2 hover fr g3 ac"
-              >
-              <span class="material-symbols-outlined">add</span>
-              <span class="f3">new window</span>
-            </button>
+            <div class="fr g1 jb">
+              <button
+                onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('new-window'))"
+                class="wfc p2 br1 bd1 b2 hover fr g3 ac"
+                >
+                <span class="material-symbols-outlined">add</span>
+                <span class="f3">new window</span>
+              </button>
+              <span class="wfc p2 tc grow f2">Welcome ~zod</span>
+            </div>
             <div id="tabs" class="fc g2"></div>
             <div class="grow"></div>
           </div>
           <footer class="fc g2">
             <div class="fr g2">
-              <button
-                onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('toggle-settings'))"
-                class="p2 br1 bd1 b3 hover fr g3 ac f3 hideable grow"
-                >
-                <span class="mso">settings</span>
-                settings
-              </button>
-              <button
-                onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('toggle-help'))"
-                class="p2 br1 bd1 b3 hover fr g3 ac f3 hideable"
-                >
-                <span class="mso">question_mark</span>
-              </button>
+            <button
+            onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-out'))"
+            class="b2 hover br1 bd0 p2 grow fr g2 ac"
+            >
+            <span
+            class="f3 wf tc"
+            >logout</span>
+            </button>
             </div>
           </footer>
-        </div>
-        <div id="notifications" class="p2 fc g3 grow scroll-y hidden">
-          <button
-            onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('toggle-notifications'))"
-            class="p2 br1 bd1 b3 hover fr g3 ac f3"
-            >
-            <span class="mso">close</span>
-            close
-          </button>
-          <h1>Notifications</h1>
-          <slot name="notifications">
-            <div class="f3 wf hf fc jc ac">Nothing to see right now</div>
-          </slot>
-        </div>
-        <div id="settings" class="p2 fc g3 grow scroll-y hidden">
-          <slot name="theme"></slot>
-        </div>
-        <div id="help" class="p2 fc g3 grow scroll-y hidden">
         </div>
       </nav>
       <main>
         <slot name="s-none" id="s-none">
           <div class="wf hf b0 br1 fc ac jc f4">no windows open</div>
+        </slot>
+        <slot name="s-login" id="s-login">
+          <div class="wf hf b0 br1 fc ac jc">
+            <button
+            class="br1 p3 b2 hover fc jc ac hideable"
+            onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-in'))"
+              >
+              <span class="f3 s1">login</span>
+            </button>
+          </div>
         </slot>
         <slot name="s0" id="s0"></slot>
         <slot name="s1" id="s1"></slot>
@@ -429,25 +418,29 @@ customElements.define(
       return this.shadowRoot.getElementById(id)
     }
     connectedCallback() {
-      console.log('root', this.shadowRoot)
-      console.log('root', this.shadowRoot.getElementById('s0'))
       $(this).off()
       $(this).on('sky-open', (e) => {
+        // let authenticated = localStorage.getItem('auth')
+        // if (authenticated) {
         this.toggleAttribute('open')
-        // $(this).poke('save-layout')
+        this.saveLayout()
+        // }
       })
       $(this).on('fix-slots', () => {
         this.fixSlots()
       })
       $(this).on('new-window', (e) => {
-        let wind = document.createElement('wi-nd')
-        let here = `https://urbit.org`
-        let slot = e.detail && e.detail.slot ? e.detail.slot : `s-1`
-        $(wind).attr('here', here)
-        $(wind).attr('slot', slot)
-        this.appendChild(wind)
-        this.growFlock()
-        this.fixSlots()
+        let authenticated = localStorage.getItem('auth')
+        if (authenticated) {
+          let wind = document.createElement('wi-nd')
+          let here = `https://urbit.org`
+          let slot = e.detail && e.detail.slot ? e.detail.slot : `s-1`
+          $(wind).attr('here', here)
+          $(wind).attr('slot', slot)
+          this.appendChild(wind)
+          this.growFlock()
+          this.fixSlots()
+        }
       })
       $(this).on('close-window', (e) => {
         let wind = $(e.target)
@@ -514,61 +507,69 @@ customElements.define(
         e.preventDefault()
         let wid = e.originalEvent.dataTransfer.getData('text/plain')
         let wind = $(`[wid='${wid}']`)
-        wind.poke('minimize')
       })
       //
-      $(this).on('toggle-notifications', () => {
-        if (this.getAttribute('open') === 'notifications') {
-          this.setAttribute('open', '')
-        } else {
-          this.setAttribute('open', 'notifications')
-        }
+      $(this).on('log-in', () => {
+        //  sending post request here to login
+        this.sendRequest()
+        localStorage.setItem('auth', true)
+        this.restoreLayout()
       })
-      $(this).on('toggle-settings', () => {
-        if (this.getAttribute('open') === 'settings') {
-          this.setAttribute('open', '')
-        } else {
-          this.setAttribute('open', 'settings')
-        }
+      $(this).on('log-out', () => {
+        localStorage.removeItem('auth')
+        this.toggleAttribute('open')
+        this.restoreLayout()
       })
-      $(this).on('toggle-help', () => {
-        if (this.getAttribute('open') === 'help') {
-          this.setAttribute('open', '')
-        } else {
-          this.setAttribute('open', 'help')
-        }
-      })
-      $(this).on('save-layout', () => {
-        this.saveLayout()
-      })
-      this.qs('main').className = `open-${this.windowsOpen}`
+      console.log(this.windowsOpen)
+      this.qs('main').className = !this.windowsOpen
+        ? 'open-0'
+        : `open-${this.windowsOpen}`
+      console.log('called')
       this.restoreLayout()
     }
     attributeChangedCallback(name, oldValue, newValue) {
       //
       if (name === 'open') {
-        $(this.gid('notifications')).addClass('hidden')
-        $(this.gid('settings')).addClass('hidden')
-        $(this.gid('help')).addClass('hidden')
         $(this.gid('tab-controller')).addClass('hidden')
         if (newValue === null) {
           $(this).removeClass('open')
-        } else if (newValue === 'notifications') {
-          $(this).addClass('open')
-          $(this.gid('notifications')).removeClass('hidden')
-        } else if (newValue === 'settings') {
-          $(this).addClass('open')
-          $(this.gid('settings')).removeClass('hidden')
-        } else if (newValue === 'help') {
-          $(this).addClass('open')
-          $(this.gid('help')).removeClass('hidden')
         } else {
           $(this).addClass('open')
           $(this.gid('tab-controller')).removeClass('hidden')
         }
       } else if (name === 'windows-open') {
-        this.qs('main').className = `open-${this.windowsOpen}`
+        console.log(this.windowsOpen)
+        this.qs('main').className = !this.windowsOpen
+          ? 'open-0'
+          : `open-${this.windowsOpen}`
       }
+    }
+    sendRequest() {
+      const url = 'https://get-key.com'
+      const data = { key: 'val' }
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then((response) => {
+          if (!response.ok) {
+            // err handling
+            throw new Error('Network response ' + response.statusText)
+          }
+          return response.json()
+        })
+        .then((data) => {
+          //  store keys in localStorage
+          //localStorage.setItem('auth', true)
+          console.log('Success:', data)
+        })
+        .catch((error) => {
+          // err handling
+          console.error('Error:', error)
+        })
     }
     renderIcon(name) {
       let s = document.createElement('span')
@@ -588,7 +589,6 @@ customElements.define(
         if (i < windowsOpen) {
           $(tab).addClass('toggled')
         }
-
         let mux = document.createElement('button')
         mux.className = 'b2 hover br1 bd0 p2 grow tl fr g2 ac js'
         mux.style =
@@ -625,7 +625,6 @@ customElements.define(
         $(close).append(that.renderIcon('close'))
         $(close).addClass('b2 hover br1 bd0 p1 f3')
         $(close).on('click', () => {
-          console.log('wind', wind)
           $(wind).trigger('close-window')
         })
 
@@ -634,7 +633,7 @@ customElements.define(
         $(tab).append(close)
         tabs.append(tab)
       })
-      // $(this).poke('save-layout')
+      this.saveLayout()
     }
     fixSlots() {
       let slotted = $(this.windows).filter('[slot]').get().slice(0, 3)
@@ -660,8 +659,6 @@ customElements.define(
             return {
               here: w.getAttribute('here'),
               slot: w.getAttribute('slot')
-              // strategies: w.getAttribute('strategies'),
-              // renderer: w.getAttribute('renderer')
             }
           })
       }
@@ -669,7 +666,35 @@ customElements.define(
     }
     restoreLayout() {
       let layoutString = localStorage.getItem('sky-layout')
-      if (!!layoutString) {
+      let authenticated = localStorage.getItem('auth')
+      if (!authenticated) {
+        // disabling side-menu
+        $(this.gid('sky-open')).removeClass('hover')
+        $(this.gid('sky-open')).prop('disabled', true)
+        console.log('not authenticated')
+        //  opening login setup
+        this.qs('main').className = `open-login`
+        //  hiding before log-out windows
+        //
+        //  easy solution for now
+        //
+        $(this).children('wi-nd').remove()
+        //
+        //  better solution below
+        //
+        // let windows = this.getElementsByTagName('wi-nd')
+        // Array.from(windows).forEach((w) => {
+        //   let slot = $(w).getAttr('slot')
+        //   $(w).removeAttr('slot')
+        //   //add onAuth slot to layout obj
+        //   //$(w).attr('onAuth', slot)
+        // })
+        //}
+      } else if (!!layoutString && authenticated) {
+        //  enabling sidebar menu
+        $(this.gid('sky-open')).addClass('hover')
+        $(this.gid('sky-open')).prop('disabled', false)
+        //  seting up windows layout
         let layout = JSON.parse(layoutString)
         $(this).attr('open', layout.open ? '' : null)
         $(this).attr('windows-open', `${layout.windowsOpen}`)
@@ -684,13 +709,15 @@ customElements.define(
         // create initial layout
         let layout = {
           open: false,
-          windowsOpen: 1,
+          windowsOpen: 2,
           windows: [
             {
-              here: `https://urbit.org`,
-              // renderer: `/self`,
-              // strategies: ``,
+              here: `https://bridge.urbit.org/`,
               slot: 's0'
+            },
+            {
+              here: `https://urbit.org`,
+              slot: 's1'
             }
           ]
         }

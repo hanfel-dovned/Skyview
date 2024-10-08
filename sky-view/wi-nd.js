@@ -24,31 +24,32 @@ customElements.define(
       })
       this.shadowRoot.innerHTML = `
       <style>
-      .mso,
-      .material-symbols-outlined {
-        font-family: 'Material Symbols Outlined';
-        font-weight: normal;
-        font-style: normal;
-        font-size: 1em;
-        line-height: 1;
-        letter-spacing: normal;
-        text-transform: none;
-        display: inline-block;
-        white-space: nowrap;
-        word-wrap: normal;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        direction: ltr;
-        -webkit-font-feature-settings: 'liga';
-        -webkit-font-smoothing: antialiased;
-        font-variation-settings:
-          'FILL' 0,
-          'wght' 400,
-          'GRAD' 0,
-          'opsz' 24;
-      }
+       @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+       .mso,
+       .material-symbols-outlined {
+         font-family: 'Material Symbols Outlined';
+         font-weight: normal;
+         font-style: normal;
+         font-size: 1em;
+         line-height: 1;
+         letter-spacing: normal;
+         text-transform: none;
+         display: inline-block;
+         white-space: nowrap;
+         word-wrap: normal;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         direction: ltr;
+         -webkit-font-feature-settings: 'liga';
+         -webkit-font-smoothing: antialiased;
+         font-variation-settings:
+           'FILL' 0,
+           'wght' 400,
+           'GRAD' 0,
+           'opsz' 24;
+       }
        :host {
          position: relative;
          display: flex;
@@ -114,7 +115,7 @@ customElements.define(
             draggable="true"
             id="dragger"
             >
-            <span class="material-symbols-outlined">drag_indicator</span>
+            <span class="mso">drag_indicator</span>
           </div>
         </div>
       </header>
@@ -132,10 +133,12 @@ customElements.define(
     }
 
     connectedCallback() {
+      this.rebuildIframe()
       $(this.gid('searchbar')).off()
       $(this.gid('searchbar')).on('submit', (e) => {
         e.preventDefault()
-        this.setAttribute('here', $(this.gid('input-here')).val())
+        let here = $(this.gid('input-here')).val()
+        this.setAttribute('here', here)
         this.rebuildIframe()
       })
       $(this.gid('input-here')).off()
@@ -250,7 +253,7 @@ customElements.define(
         $(this).trigger('here-moved')
       })
       $(this).on('iframe-moved', (e) => {
-        console.log('iframe-moved')
+        console.log('iframe moved', e.detail.here)
         $(this).attr('here', e.detail.here)
       })
       $(this).on('set-feather-values', (e) => {
@@ -283,9 +286,11 @@ customElements.define(
       //
       if (name === 'here') {
         if (this.shadowRoot) {
-          this.buildBreadcrumbs()
-          $(this.gid('input-here')).val(newValue)
-          $(this).trigger('here-moved')
+          if (newValue !== '') {
+            this.buildBreadcrumbs()
+            $(this.gid('input-here')).val(newValue)
+            $(this).trigger('here-moved')
+          }
         }
       } else if (name === 'searching') {
         if (newValue === null) {
@@ -321,6 +326,15 @@ customElements.define(
         .split('/')
         .filter((s) => !!s.trim().length)
     }
+
+    // get strategyPoke() {
+    //   let poke = {
+    //     here: this.here,
+    //     strategies: this.strategies.slice(0, -1)
+    //   }
+    //   return JSON.stringify(poke)
+    // }
+
     async checkUrl(url) {
       try {
         let response = await fetch(url, { method: 'GET' })
@@ -334,7 +348,7 @@ customElements.define(
           return false
         }
       } catch (error) {
-        console.error('Fetch error:', error)
+        console.error('Fetch error:', error, url)
         return false
       }
     }
@@ -354,11 +368,10 @@ customElements.define(
       })
       return el
     }
-    async rebuildIframe() {
-      console.log('rebuilding iframe with this url', this.here)
-      let url = this.here
+    rebuildIframe() {
       let here = this.here
-      let isLoading = await this.checkUrl(url)
+      //let isLoading = await this.checkUrl(url)
+      let isLoading = true
       if (isLoading) {
         $(this.gid('tabs')).children().remove()
         let frame = this.createIframe(here, true)
@@ -447,48 +460,43 @@ customElements.define(
       }
       return result
     }
+    urbitPath(path) {
+      console.log(path.slice(1).split('/'))
+      return path.slice(1).split('/')
+    }
     buildBreadcrumbs() {
       let breadcrumbs = $(this.gid('breadcrumbs'))
-      // $(this.gid('breadcrumbs')).addClass('someclass')
 
-      if (!breadcrumbs.length) {
-        console.error('No element found with ID "breadcrumbs", retrying ')
-        //setTimeout(this.buildBreadcrumbs(), 100)
-        return
-      } else {
-        //breadcrumbs.children().remove()
-        breadcrumbs.empty()
+      breadcrumbs.children().remove()
 
-        let path = this.breakUrl(this.here)
+      let path = this.here.startsWith('/~')
+        ? this.urbitPath(this.here)
+        : this.breakUrl(this.here)
+      //
+      path.forEach((p, i) => {
+        let chevron = $(document.createElement('span'))
+        chevron.addClass('s-2 f4 o6 fc ac jc no-select')
+        if (i > 0) {
+          chevron.text('›')
+        }
+        breadcrumbs.append(chevron)
         //
-        path.forEach((p, i) => {
-          let chevron = $(document.createElement('span'))
-          chevron.addClass('s-2 f4 o6 fc ac jc no-select')
-          if (i > 0) {
-            chevron.text('›')
-          }
-          console.log('chevron', chevron)
-          breadcrumbs.append(chevron)
-          //
-          let crumb = $(document.createElement('button'))
-          crumb.addClass((i === 0 ? 'p-1' : 'p1') + ' b2 hover br1 s-1 f2')
-          //crumb.text(i === 0 && path[0].startsWith('~') ? '/' : path[i])
-          crumb.text(path[i])
-          crumb.on('click', () => {
-            $(this).attr('here', '/' + path.slice(0, i + 1).join('/'))
-            this.rebuildIframe()
-          })
-          breadcrumbs.append(crumb)
-          console.log('Crumb appended:', crumb.html())
-          console.log('Breadcrumbs after append:', breadcrumbs[0].innerHTML)
+        let crumb = $(document.createElement('button'))
+        crumb.addClass((i === 0 ? 'p-1' : 'p1') + ' b2 hover br1 s-1 f2')
+        //crumb.text(i === 0 && path[0].startsWith('~') ? '/' : path[i])
+        crumb.text(path[i])
+        crumb.on('click', () => {
+          $(this).attr('here', '/' + path.slice(0, i + 1).join('/'))
+          this.rebuildIframe()
         })
-        let spacer = $(document.createElement('button'))
-        spacer.addClass('grow b2 br1 hover')
-        spacer.on('click', () => {
-          $(this).attr('searching', '')
-        })
-        breadcrumbs.append(spacer)
-      }
+        breadcrumbs.append(crumb)
+      })
+      let spacer = $(document.createElement('button'))
+      spacer.addClass('grow b2 br1 hover')
+      spacer.on('click', () => {
+        $(this).attr('searching', '')
+      })
+      breadcrumbs.append(spacer)
     }
   }
 )
