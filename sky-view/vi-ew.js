@@ -328,7 +328,7 @@ customElements.define(
                 <span class="material-symbols-outlined">add</span>
                 <span class="f3">new window</span>
               </button>
-              <span class="wfc p2 tc grow f2">Welcome ~zod</span>
+              <span class="wfc p2 tc grow f2">Welcome ~bitdeg</span>
             </div>
             <div id="tabs" class="fc g2"></div>
             <div class="grow"></div>
@@ -530,7 +530,7 @@ customElements.define(
       //
       $(this).on('log-in', () => {
         //  sending post request here to login
-        this.sendRequest()
+        this.getShipUrl('bitdeg')
         localStorage.setItem('auth', true)
         this.restoreLayout()
       })
@@ -576,32 +576,27 @@ customElements.define(
           : `open-${this.windowsOpen}`
       }
     }
-    sendRequest() {
-      const url = 'https://get-key.com'
-      const data = { key: 'val' }
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-        .then((response) => {
-          if (!response.ok) {
-            // err handling
-            throw new Error('Network response ' + response.statusText)
-          }
-          return response.json()
-        })
-        .then((data) => {
-          //  store keys in localStorage
-          //localStorage.setItem('auth', true)
-          console.log('Success:', data)
-        })
-        .catch((error) => {
-          // err handling
-          console.error('Error:', error)
-        })
+    getShipUrl(our) {
+      if (!our.startsWith('~')) {
+        our = `~${our}`
+      }
+
+      return 'https://bitdeg.arvo.network'
+
+      // TODO replace this anticipating the HTTP response as JSON, not HTML 
+
+      //const url = `https://bitdeg.arvo.network/apps/ship-url-getter/${our}`
+      //fetch(url)
+      //.then(response => response.text())
+      //.then(htmlString => {
+      //    const parser = new DOMParser()
+      //    const doc = parser.parseFromString(htmlString, 'text/html')
+      //    const bodyText = doc.body.textContent.trim()
+      //    console.log(bodyText)
+      //  })
+      //.catch(err => {
+      //    console.error('Error fetching HTML:', err)
+      //  })
     }
     renderIcon(name) {
       let s = document.createElement('span')
