@@ -600,59 +600,14 @@ customElements.define(
           this.getUrl()
         }
       })
-      $(this).on('login-code', async (e) => {
+      $(this).on('login-code', (e) => {
         e.preventDefault()
         let input = $(this.gid('code-input'))[0]
         if (!input.checkValidity()) {
           $(this.gid('pattern-err')).removeClass('hidden')
         } else {
           $(this.gid('pattern-err')).addClass('hidden')
-          //this.postCode()
-          try {
-            const kg = urbitKeyGeneration
-
-            const wallet = await kg.generateWallet({
-              boot: false, // do not boot
-              // TODO do not hardcode @p / AZP
-              ship: 3670690, // ~binwex-polhex
-              // NOTE: needs to be ~binwex-polhex's actual master ticket
-              ticket: input.value //'~sampel-sampel-sampel-sampel'
-            })
-
-            const networkSeed = kg.deriveNetworkSeed(
-              wallet.management.seed,
-              null,
-              2
-            )
-            //console.log(networkSeed)
-            const networkKeys = kg.deriveNetworkKeys(networkSeed)
-            //console.log(networkKeys)
-            const lusCode = kg.generateCode(networkKeys)
-            //console.log('+code: ' + kg.generateCode(networkKeys));
-
-            // TODO get real ship url
-            const shipUrl = localStorage.getItem('local-url')
-            const url = `${shipUrl}/~/login`
-            const body = `password=${lusCode}`
-
-            fetch(url, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-              },
-              body: body,
-              credentials: 'include'
-            })
-              .then((response) => response.text())
-              .then((data) => console.log('Success:', data))
-              .catch((error) => console.error('Error:', error))
-
-            this.sendRequest()
-            localStorage.setItem('auth', true)
-            this.restoreLayout()
-          } catch (err) {
-            console.log('Error during log-in process: ' + err)
-          }
+          this.postCode()
         }
       })
       $(this).on('log-out', () => {
@@ -727,36 +682,57 @@ customElements.define(
           console.error('Error:', error)
         })
     }
-    postCode() {
-      let url = localStorage.getItem('local-url')
-      //let code = $(this.gid('code-input'))[0].value
-      localStorage.setItem('auth', true)
-      this.initialLayout(url)
-      $(this.gid('code-input'))[0].value = ''
-      $(this.gid('login-start')).removeClass('hidden')
-      $(this.gid('login-code')).addClass('hidden')
-      // const data = new URLSearchParams()
-      // data.append('password', code)
-      // fetch(`${url}/~/login`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/x-www-form-urlencoded'
-      //   },
-      //   body: data.toString()
-      // })
-      //   .then((response) => {
-      //     if (!response.ok) {
-      //       throw new Error('Network response was not ok')
-      //     }
-      //     console.log('Response:', response)
-      //     return response.json()
-      //   })
-      //   .then((data) => {
-      //     console.log('Success:', data)
-      //   })
-      //   .catch((error) => {
-      //     console.error('Error:', error)
-      //   })
+    async postCode() {
+      let shipUrl = localStorage.getItem('local-url')
+      let ticket = $(this.gid('code-input'))[0].value
+
+      try {
+        const kg = urbitKeyGeneration
+
+        const wallet = await kg.generateWallet({
+          boot: false, // do not boot
+          // TODO do not hardcode @p / AZP
+          ship: 3670690, // ~binwex-polhex
+          // NOTE: needs to be ~binwex-polhex's actual master ticket
+          ticket: ticket //'~sampel-sampel-sampel-sampel'
+        })
+
+        const networkSeed = kg.deriveNetworkSeed(
+          wallet.management.seed,
+          null,
+          2
+        )
+        //console.log(networkSeed)
+        const networkKeys = kg.deriveNetworkKeys(networkSeed)
+        //console.log(networkKeys)
+        const lusCode = kg.generateCode(networkKeys)
+        //console.log('+code: ' + kg.generateCode(networkKeys));
+
+        // TODO get real ship url
+        const url = `${shipUrl}/~/login`
+        const body = `password=${lusCode}`
+
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: body,
+          credentials: 'include'
+        })
+          .then((response) => response.text())
+          .then((data) => console.log('Success:', data))
+          .catch((error) => console.error('Error:', error))
+
+        this.sendRequest()
+        localStorage.setItem('auth', true)
+        this.restoreLayout()
+        $(this.gid('code-input'))[0].value = ''
+        $(this.gid('login-start')).removeClass('hidden')
+        $(this.gid('login-code')).addClass('hidden')
+      } catch (err) {
+        console.log('Error during log-in process: ' + err)
+      }
     }
     renderIcon(name) {
       let s = document.createElement('span')
