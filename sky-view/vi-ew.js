@@ -528,12 +528,33 @@ customElements.define(
         let wind = $(`[wid='${wid}']`)
       })
       //
-      $(this).on('log-in', () => {
-        //  sending post request here to login
-        this.sendRequest()
-        localStorage.setItem('auth', true)
-        this.restoreLayout()
-      })
+      $(this).on('log-in', async () => {
+        try {
+          const kg = urbitKeyGeneration;
+
+          const wallet = await kg.generateWallet({
+            boot: false, // do not boot
+            ship: 3670690, // ~binwex-polhex
+            ticket: '~sampel-sampel-sampel-sampel'
+          });
+
+          //console.log('generateWallet result: ' + JSON.stringify(wallet, null, 2));
+          //console.log(wallet.ownership.seed)
+          const networkSeed = kg.deriveNetworkSeed(wallet.management.seed, null, 3)
+          console.log(networkSeed)
+          const networkKeys = kg.deriveNetworkKeys(networkSeed)
+          console.log(networkKeys)
+
+          console.log('+code: ' + kg.generateCode(networkKeys));
+
+          this.sendRequest();
+          localStorage.setItem('auth', true);
+          this.restoreLayout();
+
+        } catch (err) {
+          console.log('Error during log-in process: ' + err);
+        }
+      });
       $(this).on('log-out', () => {
         localStorage.removeItem('auth')
         this.toggleAttribute('open')
@@ -614,7 +635,7 @@ customElements.define(
       tabs.children().remove()
       let windowsOpen = this.windowsOpen
       let that = this
-      $(this.windows).each(function (i) {
+      $(this.windows).each(function(i) {
         let wind = this
         let tab = document.createElement('div')
         $(tab).addClass('b2 br1 fr af js bd1')
@@ -628,8 +649,8 @@ customElements.define(
         let im = wind.getAttribute('favicon')
           ? `
         <img src="${wind.getAttribute(
-          'favicon'
-        )}" style="width: 20px; height: 20px;" />
+            'favicon'
+          )}" style="width: 20px; height: 20px;" />
         `
           : ``
         mux.innerHTML = `
