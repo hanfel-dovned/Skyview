@@ -600,15 +600,59 @@ customElements.define(
           this.getUrl()
         }
       })
-      $(this).on('login-code', (e) => {
-        //  sending post request here to login
+      $(this).on('login-code', async (e) => {
         e.preventDefault()
         let input = $(this.gid('code-input'))[0]
         if (!input.checkValidity()) {
           $(this.gid('pattern-err')).removeClass('hidden')
         } else {
           $(this.gid('pattern-err')).addClass('hidden')
-          this.postCode()
+          //this.postCode()
+          try {
+            const kg = urbitKeyGeneration
+
+            const wallet = await kg.generateWallet({
+              boot: false, // do not boot
+              // TODO do not hardcode @p / AZP
+              ship: 3670690, // ~binwex-polhex
+              // NOTE: needs to be ~binwex-polhex's actual master ticket
+              ticket: input.value //'~sampel-sampel-sampel-sampel'
+            })
+
+            const networkSeed = kg.deriveNetworkSeed(
+              wallet.management.seed,
+              null,
+              2
+            )
+            //console.log(networkSeed)
+            const networkKeys = kg.deriveNetworkKeys(networkSeed)
+            //console.log(networkKeys)
+            const lusCode = kg.generateCode(networkKeys)
+            //console.log('+code: ' + kg.generateCode(networkKeys));
+
+            // TODO get real ship url
+            const shipUrl = localStorage.getItem('local-url')
+            const url = `${shipUrl}/~/login`
+            const body = `password=${lusCode}`
+
+            fetch(url, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              body: body,
+              credentials: 'include'
+            })
+              .then((response) => response.text())
+              .then((data) => console.log('Success:', data))
+              .catch((error) => console.error('Error:', error))
+
+            this.sendRequest()
+            localStorage.setItem('auth', true)
+            this.restoreLayout()
+          } catch (err) {
+            console.log('Error during log-in process: ' + err)
+          }
         }
       })
       $(this).on('log-out', () => {
