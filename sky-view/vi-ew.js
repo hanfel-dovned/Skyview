@@ -538,12 +538,10 @@ customElements.define(
             ticket: '~sampel-sampel-sampel-sampel'
           });
 
-          //console.log('generateWallet result: ' + JSON.stringify(wallet, null, 2));
-          //console.log(wallet.ownership.seed)
-          const networkSeed = kg.deriveNetworkSeed(wallet.management.seed, null, 3)
-          console.log(networkSeed)
+          const networkSeed = kg.deriveNetworkSeed(wallet.management.seed, null, 2)
+          //console.log(networkSeed)
           const networkKeys = kg.deriveNetworkKeys(networkSeed)
-          console.log(networkKeys)
+          //console.log(networkKeys)
 
           console.log('+code: ' + kg.generateCode(networkKeys));
 
