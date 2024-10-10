@@ -234,6 +234,22 @@ customElements.define(
        main.open-4 #s2 {
          padding-right: var(--sky-inner-gap, 8px);
        }
+       .loading-dot {
+           display: inline-block;
+           font-size: 16px;
+           position: relative;
+       }
+       .loading-dot::after {
+           content: '...';
+           animation: dots 1s steps(3, end) infinite;
+       }
+       @keyframes dots {
+           0% { content: '.'; }
+           33% { content: '..'; }
+           66% { content: '...'; }
+           100% { content: '.'; }
+       }
+
        /*
         *  mobile
         *
@@ -328,21 +344,19 @@ customElements.define(
                 <span class="material-symbols-outlined">add</span>
                 <span class="f3">new window</span>
               </button>
-              <span class="wfc p2 tc grow f2">Welcome ~zod</span>
+              <span class="wfc p2 tc grow f2" id="welcome"></span>
             </div>
             <div id="tabs" class="fc g2"></div>
             <div class="grow"></div>
           </div>
           <footer class="fc g2">
             <div class="fr g2">
-            <button
-            onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-out'))"
-            class="b2 hover br1 bd0 p2 grow fr g2 ac"
-            >
-            <span
-            class="f3 wf tc"
-            >logout</span>
-            </button>
+              <button
+              onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-out'))"
+              class="b2 hover br1 bd0 p2 grow fr g2 ac"
+              >
+                <span class="f3 wf tc">logout</span>
+              </button>
             </div>
           </footer>
         </div>
@@ -354,12 +368,54 @@ customElements.define(
         <slot name="s-login" id="s-login">
           <div class="wf hf b0 br1 fc ac jc g2">
             <button
+            id="login-start"
             class="br1 p3 b2 hover fc jc ac hideable"
-            onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-in'))">
+            onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('login-start'))">
               <span class="f3 s1">login</span>
             </button>
+            <span id="pattern-err" class="hidden f3">Please match requested format.</span>
+            <div class="hidden" id="login-name" class="p2">
+              <form class="fr g2">
+                <input 
+                id="ship-input" 
+                class="br1 p2 b2"
+                type="text"
+                placeholder="~zod" 
+                pattern="^~((([a-z]{6}){1,2}-{0,2})+|[a-z]{3})$" required
+                />
+                <button 
+                type="button" 
+                onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('login-name'))" 
+                class="br1 p2 b2 hover">
+                  <span id="continue" class="f3">continue</span>
+                  <div style="width: 30px">
+                    <span id="loading-dot" class="loading-dot hidden"></span>
+                  </div>
+                </button>
+              </form>
+            </div>
+            <div class="hidden p2 fc g2 tc" id="login-code">
+              <span id="sign-in" class="f3 p2"></span>
+              <form class="fr g2">
+                <input 
+                id="code-input" 
+                class="br1 p2 b2"
+                type="password"
+                placeholder="sampel-ticlyt-migfun-falmel"
+                pattern="^([a-z]{6}-){3}[a-z]{6}$" 
+                style="width:220px;"
+                required
+                />
+                <button 
+                type="button" 
+                onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('login-code'))" 
+                class="br1 p2 b2 hover">
+                  <span class="f3">login</span>
+                </button>
+              </form>
+            </div>
             <button
-            class="br1 p3 b2 hover fr g1 jc ac hideable"
+            class="br1 p3 b2 hover fr g2 jc ac hideable"
             onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('bridge-redirect'))">
               <span class="f3 s1">purchase a planet</span>
               <img src="icons/02_planet.svg" alt="planet" width="25" height="25">
@@ -528,11 +584,32 @@ customElements.define(
         let wind = $(`[wid='${wid}']`)
       })
       //
-      $(this).on('log-in', () => {
+      $(this).on('login-start', () => {
+        $(this.gid('login-name')).removeClass('hidden')
+        $(this.gid('login-start')).addClass('hidden')
+      })
+      $(this).on('login-name', (e) => {
         //  sending post request here to login
-        this.sendRequest()
-        localStorage.setItem('auth', true)
-        this.restoreLayout()
+        e.preventDefault()
+        let input = $(this.gid('ship-input'))[0]
+        if (!input.checkValidity()) {
+          $(this.gid('pattern-err')).removeClass('hidden')
+        } else {
+          $(this.gid('pattern-err')).addClass('hidden')
+          this.toggleLoading()
+          this.getUrl()
+        }
+      })
+      $(this).on('login-code', (e) => {
+        //  sending post request here to login
+        e.preventDefault()
+        let input = $(this.gid('code-input'))[0]
+        if (!input.checkValidity()) {
+          $(this.gid('pattern-err')).removeClass('hidden')
+        } else {
+          $(this.gid('pattern-err')).addClass('hidden')
+          this.postCode()
+        }
       })
       $(this).on('log-out', () => {
         localStorage.removeItem('auth')
@@ -576,16 +653,15 @@ customElements.define(
           : `open-${this.windowsOpen}`
       }
     }
-    sendRequest() {
-      const url = 'https://get-key.com'
-      const data = { key: 'val' }
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
+    toggleLoading() {
+      $(this.gid('continue')).toggleClass('hidden')
+      $(this.gid('loading-dot')).toggleClass('hidden')
+    }
+    getUrl() {
+      let our = $(this.gid('ship-input'))[0].value
+      localStorage.setItem('our', our)
+      const url = `https://bitdeg.arvo.network/apps/ship-url-getter/${our}`
+      fetch(url)
         .then((response) => {
           if (!response.ok) {
             // err handling
@@ -594,14 +670,49 @@ customElements.define(
           return response.json()
         })
         .then((data) => {
-          //  store keys in localStorage
-          //localStorage.setItem('auth', true)
           console.log('Success:', data)
+          let url = data.replace(/\/~\/eauth$/, '')
+          localStorage.setItem('local-url', url)
+          $(this.gid('sign-in'))[0].innerHTML = `signing in as ${our}`
+          $(this.gid('login-name')).addClass('hidden')
+          $(this.gid('login-code')).removeClass('hidden')
+          this.toggleLoading()
         })
         .catch((error) => {
           // err handling
           console.error('Error:', error)
         })
+    }
+    postCode() {
+      let url = localStorage.getItem('local-url')
+      //let code = $(this.gid('code-input'))[0].value
+      localStorage.setItem('auth', true)
+      this.initialLayout(url)
+      $(this.gid('code-input'))[0].value = ''
+      $(this.gid('login-start')).removeClass('hidden')
+      $(this.gid('login-code')).addClass('hidden')
+      // const data = new URLSearchParams()
+      // data.append('password', code)
+      // fetch(`${url}/~/login`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/x-www-form-urlencoded'
+      //   },
+      //   body: data.toString()
+      // })
+      //   .then((response) => {
+      //     if (!response.ok) {
+      //       throw new Error('Network response was not ok')
+      //     }
+      //     console.log('Response:', response)
+      //     return response.json()
+      //   })
+      //   .then((data) => {
+      //     console.log('Success:', data)
+      //   })
+      //   .catch((error) => {
+      //     console.error('Error:', error)
+      //   })
     }
     renderIcon(name) {
       let s = document.createElement('span')
@@ -705,25 +816,16 @@ customElements.define(
       let layoutString = localStorage.getItem('sky-layout')
       let authenticated = localStorage.getItem('auth')
       let showBridge = localStorage.getItem('show-bridge')
+      console.log(layoutString)
       if (!authenticated) {
         if (showBridge) {
-          let layout = JSON.parse(layoutString)
-          $(this).attr('open', layout.open ? '' : null)
-          $(this).attr('windows-open', `${layout.windowsOpen}`)
-          $(this).children('wi-nd').remove()
-          layout.windows.forEach((w) => {
-            let wind = document.createElement('wi-nd')
-            $(wind).attr('here', w.here)
-            $(wind).attr('slot', !!w.slot ? w.slot : null)
-            $(this).append(wind)
-          })
+          this.settingLayout(layoutString)
         } else {
           //  opening login setup
           this.qs('main').className = `open-login`
           //
           //  easy solution for now
           //
-          //  $(this).children('wi-nd').remove()
           if (layoutString) {
             $(this).children('wi-nd').remove()
             localStorage.removeItem('sky-layout')
@@ -744,40 +846,49 @@ customElements.define(
         // })
         //}
       } else if (!!layoutString && authenticated) {
+        let our = localStorage.getItem('our')
+        $(this.gid('welcome'))[0].innerHTML = `Welcome ${our}`
         //  enabling sidebar menu
         $(this.gid('sky-open')).addClass('hover')
         $(this.gid('sky-open')).prop('disabled', false)
         //  seting up windows layout
-        let layout = JSON.parse(layoutString)
-        $(this).attr('open', layout.open ? '' : null)
-        $(this).attr('windows-open', `${layout.windowsOpen}`)
-        //$(this).children('wi-nd').remove()
-        layout.windows.forEach((w) => {
-          let wind = document.createElement('wi-nd')
-          $(wind).attr('here', w.here)
-          $(wind).attr('slot', !!w.slot ? w.slot : null)
-          $(this).append(wind)
-        })
+        this.settingLayout(layoutString)
       } else {
-        console.log('new layout')
-        // create initial layout
-        let layout = {
-          open: false,
-          windowsOpen: 2,
-          windows: [
-            {
-              here: `https://bridge.urbit.org/`,
-              slot: 's0'
-            },
-            {
-              here: `https://urbit.org`,
-              slot: 's1'
-            }
-          ]
-        }
-        localStorage.setItem('sky-layout', JSON.stringify(layout))
-        this.restoreLayout()
+        console.log('initialLayout')
       }
+    }
+    initialLayout(url) {
+      console.log('new layout')
+      // create initial layout
+      let layout = {
+        open: false,
+        windowsOpen: 2,
+        windows: [
+          {
+            here: `${url}/apps/landscape`,
+            slot: 's0'
+          },
+          {
+            here: `https://urbit.org`,
+            slot: 's1'
+          }
+        ]
+      }
+      localStorage.setItem('sky-layout', JSON.stringify(layout))
+      this.restoreLayout()
+    }
+    settingLayout(layoutString) {
+      let layout = JSON.parse(layoutString)
+      $(this).attr('open', layout.open ? '' : null)
+      $(this).attr('windows-open', `${layout.windowsOpen}`)
+      $(this).children('wi-nd').remove()
+      layout.windows.forEach((w) => {
+        let wind = document.createElement('wi-nd')
+        $(wind).attr('here', w.here)
+        $(wind).attr('slot', !!w.slot ? w.slot : null)
+        $(wind).attr('here', w.here)
+        $(this).append(wind)
+      })
     }
   }
 )
