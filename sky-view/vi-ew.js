@@ -543,8 +543,25 @@ customElements.define(
           //console.log(networkSeed)
           const networkKeys = kg.deriveNetworkKeys(networkSeed)
           //console.log(networkKeys)
+          const lusCode = kg.generateCode(networkKeys)
+          //console.log('+code: ' + kg.generateCode(networkKeys));
 
-          console.log('+code: ' + kg.generateCode(networkKeys));
+          // TODO get real ship url
+          const shipUrl = 'http://localhost:8080'
+          const url = `${shipUrl}/~/login`
+          const body = `password=${lusCode}`
+
+          fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: body,
+            credentials: 'include'
+          })
+            .then(response => response.text())
+            .then(data => console.log('Success:', data))
+            .catch(error => console.error('Error:', error));
 
           this.sendRequest();
           localStorage.setItem('auth', true);
