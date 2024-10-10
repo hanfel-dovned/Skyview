@@ -603,12 +603,12 @@ customElements.define(
       $(this).on('login-code', (e) => {
         e.preventDefault()
         let input = $(this.gid('code-input'))[0]
-        if (!input.checkValidity()) {
-          $(this.gid('pattern-err')).removeClass('hidden')
-        } else {
-          $(this.gid('pattern-err')).addClass('hidden')
-          this.postCode()
-        }
+        //if (!input.checkValidity()) {
+        //  $(this.gid('pattern-err')).removeClass('hidden')
+        //} else {
+        //  $(this.gid('pattern-err')).addClass('hidden')
+        this.postCode()
+        //}
       })
       $(this).on('log-out', () => {
         localStorage.removeItem('auth')
@@ -692,15 +692,15 @@ customElements.define(
         const wallet = await kg.generateWallet({
           boot: false, // do not boot
           // TODO do not hardcode @p / AZP
-          ship: 3670690, // ~binwex-polhex
-          // NOTE: needs to be ~binwex-polhex's actual master ticket
-          ticket: ticket //'~sampel-sampel-sampel-sampel'
+          ship: 2527646670, // ~simsur-ronbet
+          ticket: ticket 
         })
 
         const networkSeed = kg.deriveNetworkSeed(
           wallet.management.seed,
           null,
-          2
+          // TODO do not hardcode revision number
+          0
         )
         //console.log(networkSeed)
         const networkKeys = kg.deriveNetworkKeys(networkSeed)
@@ -708,10 +708,11 @@ customElements.define(
         const lusCode = kg.generateCode(networkKeys)
         //console.log('+code: ' + kg.generateCode(networkKeys));
 
-        // TODO get real ship url
+        //console.log(`${shipUrl}/~/login`)
         const url = `${shipUrl}/~/login`
         const body = `password=${lusCode}`
 
+        // TODO Not compatible with https:// URLs
         fetch(url, {
           method: 'POST',
           headers: {
@@ -721,15 +722,17 @@ customElements.define(
           credentials: 'include'
         })
           .then((response) => response.text())
-          .then((data) => console.log('Success:', data))
+          .then((data) => {
+            console.log('Success:', data)
+            localStorage.setItem('auth', true)
+            this.restoreLayout()
+            this.initialLayout(url)
+            $(this.gid('code-input'))[0].value = ''
+            $(this.gid('login-start')).removeClass('hidden')
+            $(this.gid('login-code')).addClass('hidden')
+          })
           .catch((error) => console.error('Error:', error))
 
-        this.sendRequest()
-        localStorage.setItem('auth', true)
-        this.restoreLayout()
-        $(this.gid('code-input'))[0].value = ''
-        $(this.gid('login-start')).removeClass('hidden')
-        $(this.gid('login-code')).addClass('hidden')
       } catch (err) {
         console.log('Error during log-in process: ' + err)
       }
@@ -745,7 +748,7 @@ customElements.define(
       tabs.children().remove()
       let windowsOpen = this.windowsOpen
       let that = this
-      $(this.windows).each(function (i) {
+      $(this.windows).each(function(i) {
         let wind = this
         let tab = document.createElement('div')
         $(tab).addClass('b2 br1 fr af js bd1')
@@ -759,8 +762,8 @@ customElements.define(
         let im = wind.getAttribute('favicon')
           ? `
         <img src="${wind.getAttribute(
-          'favicon'
-        )}" style="width: 20px; height: 20px;" />
+            'favicon'
+          )}" style="width: 20px; height: 20px;" />
         `
           : ``
         mux.innerHTML = `
@@ -866,6 +869,7 @@ customElements.define(
         // })
         //}
       } else if (!!layoutString && authenticated) {
+        console.log('Restoring layout + Authenticated!')
         let our = localStorage.getItem('our')
         $(this.gid('welcome'))[0].innerHTML = `Welcome ${our}`
         //  enabling sidebar menu
