@@ -535,6 +535,7 @@ customElements.define(
           const wallet = await kg.generateWallet({
             boot: false, // do not boot
             ship: 3670690, // ~binwex-polhex
+            // NOTE: needs to be ~binwex-polhex's actual master ticket
             ticket: '~sampel-sampel-sampel-sampel'
           });
 
