@@ -692,7 +692,7 @@ customElements.define(
         const wallet = await kg.generateWallet({
           boot: false, // do not boot
           // TODO do not hardcode @p / AZP
-          ship: 2527646670, // ~simsur-ronbet
+          ship: 3670690, // ~binwex-polhex
           ticket: ticket 
         })
 
@@ -700,7 +700,7 @@ customElements.define(
           wallet.management.seed,
           null,
           // TODO do not hardcode revision number
-          0
+          2
         )
         //console.log(networkSeed)
         const networkKeys = kg.deriveNetworkKeys(networkSeed)
@@ -726,7 +726,7 @@ customElements.define(
             console.log('Success:', data)
             localStorage.setItem('auth', true)
             this.restoreLayout()
-            this.initialLayout(url)
+            this.initialLayout(`${shipUrl}`)
             $(this.gid('code-input'))[0].value = ''
             $(this.gid('login-start')).removeClass('hidden')
             $(this.gid('login-code')).addClass('hidden')
