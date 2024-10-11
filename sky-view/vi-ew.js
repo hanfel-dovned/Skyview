@@ -234,21 +234,6 @@ customElements.define(
        main.open-4 #s2 {
          padding-right: var(--sky-inner-gap, 8px);
        }
-       .loading-dot {
-           display: inline-block;
-           font-size: 16px;
-           position: relative;
-       }
-       .loading-dot::after {
-           content: '...';
-           animation: dots 1s steps(3, end) infinite;
-       }
-       @keyframes dots {
-           0% { content: '.'; }
-           33% { content: '..'; }
-           66% { content: '...'; }
-           100% { content: '.'; }
-       }
 
        /*
         *  mobile
@@ -388,9 +373,6 @@ customElements.define(
                 onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('login-name'))" 
                 class="br1 p2 b2 hover">
                   <span id="continue" class="f3">continue</span>
-                  <div style="width: 30px">
-                    <span id="loading-dot" class="loading-dot hidden"></span>
-                  </div>
                 </button>
               </form>
             </div>
@@ -596,7 +578,8 @@ customElements.define(
           $(this.gid('pattern-err')).removeClass('hidden')
         } else {
           $(this.gid('pattern-err')).addClass('hidden')
-          this.toggleLoading()
+          $(this.gid('login-name')).addClass('hidden')
+          $(this.gid('login-code')).removeClass('hidden')
           this.getUrl()
         }
       })
@@ -652,14 +635,13 @@ customElements.define(
           : `open-${this.windowsOpen}`
       }
     }
-    toggleLoading() {
-      $(this.gid('continue')).toggleClass('hidden')
-      $(this.gid('loading-dot')).toggleClass('hidden')
-    }
     getUrl() {
       let our = $(this.gid('ship-input'))[0].value
       localStorage.setItem('our', our)
       const url = `https://bitdeg.arvo.network/apps/ship-url-getter/${our}`
+
+      $(this.gid('sign-in'))[0].innerHTML = `signing in as ${our}`
+
       fetch(url)
         .then((response) => {
           if (!response.ok) {
@@ -672,10 +654,6 @@ customElements.define(
           console.log('Success:', data)
           let url = data.replace(/\/~\/eauth$/, '')
           localStorage.setItem('local-url', url)
-          $(this.gid('sign-in'))[0].innerHTML = `signing in as ${our}`
-          $(this.gid('login-name')).addClass('hidden')
-          $(this.gid('login-code')).removeClass('hidden')
-          this.toggleLoading()
         })
         .catch((error) => {
           // err handling
@@ -692,8 +670,8 @@ customElements.define(
         const wallet = await kg.generateWallet({
           boot: false, // do not boot
           // TODO do not hardcode @p / AZP
-          ship: 3670690, // ~binwex-polhex
-          ticket: ticket 
+          ship: 2527646670, // ~simsur-ronbet
+          ticket: ticket
         })
 
         const networkSeed = kg.deriveNetworkSeed(
@@ -732,7 +710,6 @@ customElements.define(
             $(this.gid('login-code')).addClass('hidden')
           })
           .catch((error) => console.error('Error:', error))
-
       } catch (err) {
         console.log('Error during log-in process: ' + err)
       }
@@ -748,7 +725,7 @@ customElements.define(
       tabs.children().remove()
       let windowsOpen = this.windowsOpen
       let that = this
-      $(this.windows).each(function(i) {
+      $(this.windows).each(function (i) {
         let wind = this
         let tab = document.createElement('div')
         $(tab).addClass('b2 br1 fr af js bd1')
@@ -762,8 +739,8 @@ customElements.define(
         let im = wind.getAttribute('favicon')
           ? `
         <img src="${wind.getAttribute(
-            'favicon'
-          )}" style="width: 20px; height: 20px;" />
+          'favicon'
+        )}" style="width: 20px; height: 20px;" />
         `
           : ``
         mux.innerHTML = `
