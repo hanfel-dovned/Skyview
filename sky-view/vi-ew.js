@@ -352,48 +352,33 @@ customElements.define(
         </slot>
         <slot name="s-login" id="s-login">
           <div class="wf hf b0 br1 fc ac jc g2">
-            <button
-            id="login-start"
-            class="br1 p3 b2 hover fc jc ac hideable"
-            onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('login-start'))">
-              <span class="f3 s1">login</span>
-            </button>
             <span id="pattern-err" class="hidden f3">Please match requested format.</span>
-            <div class="hidden" id="login-name" class="p2">
-              <form class="fr g2">
+            <div id="login-name" class="p2">
+              <form class="fc g2">
                 <input 
                 id="ship-input" 
-                class="br1 p2 b2"
+                class="br1 p2 b2 tc"
                 type="text"
                 placeholder="~zod" 
                 pattern="^~((([a-z]{6}){1,2}-{0,2})+|[a-z]{3})$" required
                 />
-                <button 
-                type="button" 
-                onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('login-name'))" 
-                class="br1 p2 b2 hover">
-                  <span id="continue" class="f3">continue</span>
-                </button>
-              </form>
-            </div>
-            <div class="hidden p2 fc g2 tc" id="login-code">
-              <span id="sign-in" class="f3 p2"></span>
-              <form class="fr g2">
-                <input 
-                id="code-input" 
-                class="br1 p2 b2"
-                type="password"
-                placeholder="sampel-ticlyt-migfun-falmel"
-                pattern="^([a-z]{6}-){3}[a-z]{6}$" 
-                style="width:220px;"
-                required
-                />
-                <button 
-                type="button" 
-                onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('login-code'))" 
-                class="br1 p2 b2 hover">
-                  <span class="f3">login</span>
-                </button>
+                <div id="fr g2">
+                  <input 
+                  id="code-input" 
+                  class="br1 p2 b2"
+                  type="password"
+                  placeholder="sampel-ticlyt-migfun-falmel"
+                  pattern="^~(([a-z]{6}-){3}[a-z]{6})$" 
+                  style="width:220px;"
+                  required
+                  />
+                  <button 
+                  type="button" 
+                  onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-in'))" 
+                  class="br1 p2 b2 hover">
+                    <span class="f3">login</span>
+                  </button>
+                </div>
               </form>
             </div>
             <button
@@ -479,7 +464,7 @@ customElements.define(
       })
       $(this).on('new-window', (e) => {
         let wind = document.createElement('wi-nd')
-        let here = `https://urbit.org`
+        let here = `http://localhost:8000`
         let slot = e.detail && e.detail.slot ? e.detail.slot : `s-1`
         $(wind).attr('here', here)
         $(wind).attr('slot', slot)
@@ -566,11 +551,7 @@ customElements.define(
         let wind = $(`[wid='${wid}']`)
       })
       //
-      $(this).on('login-start', () => {
-        $(this.gid('login-name')).removeClass('hidden')
-        $(this.gid('login-start')).addClass('hidden')
-      })
-      $(this).on('login-name', (e) => {
+      $(this).on('log-in', (e) => {
         //  sending post request here to login
         e.preventDefault()
         let input = $(this.gid('ship-input'))[0]
@@ -578,20 +559,9 @@ customElements.define(
           $(this.gid('pattern-err')).removeClass('hidden')
         } else {
           $(this.gid('pattern-err')).addClass('hidden')
-          $(this.gid('login-name')).addClass('hidden')
-          $(this.gid('login-code')).removeClass('hidden')
           this.getUrl()
+          this.postCode()
         }
-      })
-      $(this).on('login-code', (e) => {
-        e.preventDefault()
-        let input = $(this.gid('code-input'))[0]
-        //if (!input.checkValidity()) {
-        //  $(this.gid('pattern-err')).removeClass('hidden')
-        //} else {
-        //  $(this.gid('pattern-err')).addClass('hidden')
-        this.postCode()
-        //}
       })
       $(this).on('log-out', () => {
         localStorage.removeItem('auth')
@@ -639,8 +609,6 @@ customElements.define(
       let our = $(this.gid('ship-input'))[0].value
       localStorage.setItem('our', our)
       const url = `https://bitdeg.arvo.network/apps/ship-url-getter/${our}`
-
-      $(this.gid('sign-in'))[0].innerHTML = `signing in as ${our}`
 
       fetch(url)
         .then((response) => {
@@ -703,11 +671,9 @@ customElements.define(
           .then((data) => {
             console.log('Success:', data)
             localStorage.setItem('auth', true)
-            this.restoreLayout()
             this.initialLayout(`${shipUrl}`)
+            this.restoreLayout()
             $(this.gid('code-input'))[0].value = ''
-            $(this.gid('login-start')).removeClass('hidden')
-            $(this.gid('login-code')).addClass('hidden')
           })
           .catch((error) => console.error('Error:', error))
       } catch (err) {
@@ -791,7 +757,6 @@ customElements.define(
         currentWindowsOpen = 0
       }
       $(this).attr('windows-open', Math.min(3, currentWindowsOpen + 1))
-      console.log(currentWindowsOpen)
     }
     shrinkFlock() {
       $(this).attr('windows-open', Math.max(0, this.windowsOpen - 1))
@@ -816,7 +781,6 @@ customElements.define(
       let layoutString = localStorage.getItem('sky-layout')
       let authenticated = localStorage.getItem('auth')
       let showBridge = localStorage.getItem('show-bridge')
-      console.log(layoutString)
       if (!authenticated) {
         if (showBridge) {
           this.settingLayout(layoutString)
@@ -834,19 +798,9 @@ customElements.define(
         // disabling side-menu
         $(this.gid('sky-open')).removeClass('hover')
         $(this.gid('sky-open')).prop('disabled', true)
-        //
-        //  better solution below
-        //
-        // let windows = this.getElementsByTagName('wi-nd')
-        // Array.from(windows).forEach((w) => {
-        //   let slot = $(w).getAttr('slot')
-        //   $(w).removeAttr('slot')
-        //   //add onAuth slot to layout obj
-        //   //$(w).attr('onAuth', slot)
-        // })
-        //}
       } else if (!!layoutString && authenticated) {
         console.log('Restoring layout + Authenticated!')
+
         let our = localStorage.getItem('our')
         $(this.gid('welcome'))[0].innerHTML = `Welcome ${our}`
         //  enabling sidebar menu
@@ -854,8 +808,6 @@ customElements.define(
         $(this.gid('sky-open')).prop('disabled', false)
         //  seting up windows layout
         this.settingLayout(layoutString)
-      } else {
-        console.log('initialLayout')
       }
     }
     initialLayout(url) {
@@ -863,7 +815,7 @@ customElements.define(
       // create initial layout
       let layout = {
         open: false,
-        windowsOpen: 2,
+        windowsOpen: 3,
         windows: [
           {
             here: `${url}/apps/landscape`,
@@ -872,6 +824,10 @@ customElements.define(
           {
             here: `https://urbit.org`,
             slot: 's1'
+          },
+          {
+            here: `https://bridge.urbit.org`,
+            slot: 's2'
           }
         ]
       }
@@ -883,6 +839,7 @@ customElements.define(
       $(this).attr('open', layout.open ? '' : null)
       $(this).attr('windows-open', `${layout.windowsOpen}`)
       $(this).children('wi-nd').remove()
+
       layout.windows.forEach((w) => {
         let wind = document.createElement('wi-nd')
         $(wind).attr('here', w.here)
