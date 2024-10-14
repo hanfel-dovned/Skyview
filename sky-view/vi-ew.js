@@ -59,6 +59,7 @@ customElements.define(
          grid-template-areas:
          "tray main"
          "tray main";
+         transition: grid-template-columns 300ms;
        }
        :host(.open) {
          grid-template-columns: 320px auto;
@@ -169,6 +170,7 @@ customElements.define(
          grid-template-rows: 1fr;
          grid-template-areas:
          "s0 s1";
+         transition: grid-template-columns 300ms;
        }
        main.open-2 #s0,
        main.open-2 #s1 {
@@ -178,12 +180,19 @@ customElements.define(
        main.open-2 #s3 {
          display: none;
        }
+       main.open-2:has(#s0.zoom) {
+       grid-template-columns: 1fr 0fr;
+       }
+       main.open-2:has(#s1.zoom) {
+       grid-template-columns: 0fr 1fr;
+       }
        main.open-3 {
          grid-template-columns: 1fr 1fr;
          grid-template-rows: 1fr 1fr;
          grid-template-areas:
          "s0 s1"
          "s0 s2";
+         transition: grid-template-columns 300ms, grid-template-rows 300ms;
        }
        main.open-3 #s0,
        main.open-3 #s1,
@@ -192,6 +201,18 @@ customElements.define(
        }
        main.open-3 #s3 {
          display: none;
+       }
+       main.open-3:has(#s0.zoom) {
+       grid-template-columns: 1fr 0fr;
+       grid-template-rows: 1fr 0fr;
+       }
+       main.open-3:has(#s1.zoom) {
+       grid-template-columns: 0fr 1fr;
+       grid-template-rows: 1fr 0fr;
+       }
+       main.open-3:has(#s2.zoom) {
+       grid-template-columns: 0fr 1fr;
+       grid-template-rows: 0fr 1fr;
        }
        main.open-4 {
          grid-template-columns: 2fr 1fr 1fr;
@@ -205,6 +226,9 @@ customElements.define(
        main.open-4 #s2,
        main.open-4 #s3 {
          display: block;
+       }
+       slot{
+         position: relative;
        }
        /*
         *  gaps
@@ -455,7 +479,6 @@ customElements.define(
     connectedCallback() {
       $(this).off()
       $(this).on('sky-open', (e) => {
-        console.log('SKY OPEN')
         this.toggleAttribute('open')
         this.saveLayout()
       })
@@ -587,6 +610,7 @@ customElements.define(
         ? 'open-0'
         : `open-${this.windowsOpen}`
       this.restoreLayout()
+      this.zoomListener()
     }
     attributeChangedCallback(name, oldValue, newValue) {
       //
@@ -604,6 +628,25 @@ customElements.define(
           ? 'open-0'
           : `open-${this.windowsOpen}`
       }
+    }
+    zoomListener() {
+      let slots = this.qsa('slot')
+      slots.forEach((slot) => {
+        let inner = slot.assignedNodes()
+        if (inner[0]) {
+          let wind = inner[0]
+          wind.addEventListener('dblclick', (e) => {
+            e.stopPropagation()
+            slot.classList.toggle('zoom')
+          })
+          wind.addEventListener('wheel', (e) => {
+            if (e.ctrlKey && e.deltaY > 0) {
+              slot.classList.remove('zoom')
+              e.preventDefault()
+            }
+          })
+        }
+      })
     }
     getUrl() {
       let our = $(this.gid('ship-input'))[0].value
@@ -753,10 +796,12 @@ customElements.define(
     }
     growFlock() {
       let currentWindowsOpen = this.windowsOpen
+      console.log('currentWindowsOpen', currentWindowsOpen)
       if (isNaN(currentWindowsOpen)) {
         currentWindowsOpen = 0
       }
       $(this).attr('windows-open', Math.min(3, currentWindowsOpen + 1))
+      console.log('windows-open', Math.min(3, currentWindowsOpen + 1))
     }
     shrinkFlock() {
       $(this).attr('windows-open', Math.max(0, this.windowsOpen - 1))
@@ -781,6 +826,7 @@ customElements.define(
       let layoutString = localStorage.getItem('sky-layout')
       let authenticated = localStorage.getItem('auth')
       let showBridge = localStorage.getItem('show-bridge')
+      console.log(layoutString)
       if (!authenticated) {
         if (showBridge) {
           this.settingLayout(layoutString)
