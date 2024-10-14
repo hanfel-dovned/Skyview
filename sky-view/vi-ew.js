@@ -9,323 +9,10 @@ customElements.define(
       //
       super()
       const shadow = this.attachShadow({ mode: 'open' })
-      this.loadCSS('feather.css').then((sheet) => {
-        shadow.adoptedStyleSheets = [sheet]
+      this.loadCSSs(['style.css', 'feather.css']).then((sheets) => {
+        shadow.adoptedStyleSheets = [...shadow.adoptedStyleSheets, ...sheets]
       })
       shadow.innerHTML = `
-      <style>
-       .mso,
-       .material-symbols-outlined {
-         font-family: 'Material Symbols Outlined', sans-serif;
-         font-weight: normal;
-         font-style: normal;
-         font-size: 1em;
-         line-height: 1;
-         letter-spacing: normal;
-         text-transform: none;
-         display: inline-block;
-         white-space: nowrap;
-         word-wrap: normal;
-         display: flex;
-         flex-direction: column;
-         align-items: center;
-         justify-content: center;
-         direction: ltr;
-         -webkit-font-feature-settings: 'liga';
-         -webkit-font-smoothing: antialiased;
-         font-variation-settings:
-           'FILL' 0,
-           'wght' 400,
-           'GRAD' 0,
-           'opsz' 24;
-       }
-       * {
-         box-sizing: border-box;
-       }
-       :host {
-         width: 100%;
-         height: 100%;
-         max-height: 100%;
-         overflow: hidden;
-         margin: 0;
-         position: relative;
-         opacity: var(--sky-opacity, 1);
-         padding: var(--sky-outer-gap, 8px);
-         background-color: var(--b1);
-
-         display: grid;
-         grid-template-columns: 50px auto;
-         grid-template-rows: auto 1fr;
-         grid-template-areas:
-         "tray main"
-         "tray main";
-         transition: grid-template-columns 300ms;
-       }
-       :host(.open) {
-         grid-template-columns: 320px auto;
-         grid-template-rows: auto 1fr;
-         grid-template-areas:
-         "tray main"
-         "nav main";
-       }
-       :host(.open) #nav {
-         display: flex;
-       }
-       #nav {
-         grid-area: nav;
-         display: none;
-         flex-direction: column;
-         justify-content: flex-start;
-         align-items: stretch;
-         gap: 12px;
-         overflow: auto;
-       }
-       :host(.open) #tray {
-         display: none;
-       }
-       #tray {
-         grid-area: tray;
-         display: flex;
-         padding-bottom: 15px;
-       }
-       /*
-        *  grid display
-        *
-        */
-       main {
-         display: grid;
-         grid-area: main;
-         overflow: hidden;
-         padding-left: var(--sky-inner-gap, 8px);
-       }
-       #s0, #s1, #s2, #s3 {
-         overflow: auto;
-       }
-       #button {
-         grid-area: btn;
-         height: fit-content;
-       }
-       #s-none {
-         grid-area: void;
-       }
-       #s0 {
-         grid-area: s0;
-       }
-       #s1 {
-         grid-area: s1;
-       }
-       #s2 {
-         grid-area: s2;
-       }
-       #s3 {
-         grid-area: s3;
-       }
-       main.open-0 {
-         grid-template-columns: 1fr;
-         grid-template-rows: 1fr;
-         grid-template-areas:
-         "void";
-       }
-       main #s-none {
-         display: none;
-       }
-       main.open-0 #s-none {
-         display: flex;
-       }
-       main #s-login {
-         display: none;
-       }
-       main.open-login #s-login {
-         display: flex;
-       }
-       main.open-login #s-none,
-       main.open-login #s0,
-       main.open-login #s1,
-       main.open-login #s2,
-       main.open-login #s3 {
-         display: none;
-       }
-       main.open-0 #s0,
-       main.open-0 #s1,
-       main.open-0 #s2,
-       main.open-0 #s3 {
-         display: none;
-       }
-       main.open-1 {
-         grid-template-columns: 1fr;
-         grid-template-rows: 1fr;
-         grid-template-areas:
-         "s0";
-       }
-       main.open-1 #s0 {
-         display: block;
-       }
-       main.open-1 #s1,
-       main.open-1 #s2,
-       main.open-1 #s3 {
-         display: none;
-       }
-       main.open-2 {
-         grid-template-columns: 1fr 1fr;
-         grid-template-rows: 1fr;
-         grid-template-areas:
-         "s0 s1";
-         transition: grid-template-columns 300ms;
-       }
-       main.open-2 #s0,
-       main.open-2 #s1 {
-         display: block;
-       }
-       main.open-2 #s2,
-       main.open-2 #s3 {
-         display: none;
-       }
-       main.open-2:has(#s0.zoom) {
-       grid-template-columns: 1fr 0fr;
-       }
-       main.open-2:has(#s1.zoom) {
-       grid-template-columns: 0fr 1fr;
-       }
-       main.open-3 {
-         grid-template-columns: 1fr 1fr;
-         grid-template-rows: 1fr 1fr;
-         grid-template-areas:
-         "s0 s1"
-         "s0 s2";
-         transition: grid-template-columns 300ms, grid-template-rows 300ms;
-       }
-       main.open-3 #s0,
-       main.open-3 #s1,
-       main.open-3 #s2 {
-         display: block;
-       }
-       main.open-3 #s3 {
-         display: none;
-       }
-       main.open-3:has(#s0.zoom) {
-       grid-template-columns: 1fr 0fr;
-       grid-template-rows: 1fr 0fr;
-       }
-       main.open-3:has(#s1.zoom) {
-       grid-template-columns: 0fr 1fr;
-       grid-template-rows: 1fr 0fr;
-       }
-       main.open-3:has(#s2.zoom) {
-       grid-template-columns: 0fr 1fr;
-       grid-template-rows: 0fr 1fr;
-       }
-       main.open-4 {
-         grid-template-columns: 2fr 1fr 1fr;
-         grid-template-rows: 1fr 1fr;
-         grid-template-areas:
-         "s0 s1 s1"
-         "s0 s2 s3";
-       }
-       main.open-4 #s0,
-       main.open-4 #s1,
-       main.open-4 #s2,
-       main.open-4 #s3 {
-         display: block;
-       }
-       slot{
-         position: relative;
-       }
-       /*
-        *  gaps
-        *
-        */
-       main.open-1 #s0 {
-         padding-right: 0;
-       }
-       main.open-2 #s0,
-       main.open-3 #s0,
-       main.open-4 #s0 {
-         padding-right: var(--sky-inner-gap, 8px);
-       }
-       main.open-1 #s1,
-       main.open-2 #s1 {
-         padding-bottom: 0;
-       }
-       main.open-3 #s1,
-       main.open-4 #s1 {
-         padding-bottom: var(--sky-inner-gap, 8px);
-       }
-       main.open-1 #s2,
-       main.open-2 #s2,
-       main.open-3 #s2 {
-         padding-right: 0;
-       }
-       main.open-4 #s2 {
-         padding-right: var(--sky-inner-gap, 8px);
-       }
-
-       /*
-        *  mobile
-        *
-        */
-       @media (max-width: 900px) {
-         :host {
-           grid-template-columns: auto;
-           grid-template-rows: 1fr auto;
-           grid-template-areas:
-           "main"
-           "tray";
-           padding: 0 !important;
-         }
-         :host(.open) {
-           grid-template-columns: auto;
-           grid-template-rows: 1fr auto;
-           grid-template-areas:
-           "nav"
-           "tray";
-         }
-         :host(.open) main {
-           display: none;
-         }
-         :host(:not(.open)) main {
-           display: grid;
-           grid-template-columns: auto;
-           grid-template-rows: auto;
-           grid-template-areas:
-           "s0";
-         }
-         :host(.open) #tray,
-         :host(:not(.open)) #tray {
-           display: flex;
-           flex-direction: row;
-           padding: 6px 6px 10px 6px;
-         }
-         #tray .hideable {
-           display: none;
-         }
-         #nav {
-           padding: 8px;
-         }
-         #nav .hideable {
-           display: none;
-         }
-         main {
-           padding: 0;
-         }
-         main #s0 {
-           display: block;
-           padding: 0;
-           padding-right: 0 !important;
-         }
-         main.open-login #s0 {
-           display: none !important;
-         }
-         main #s1 {
-           display: none !important;
-         }
-         main #s2 {
-           display: none !important;
-         }
-         main #s3 {
-           display: none !important;
-         }
-       }
-      </style>
       <div id="tray" class="fc g2 js af">
         <button
           id="sky-open"
@@ -437,6 +124,10 @@ customElements.define(
       })`
       shadow.appendChild(script)
     }
+    async loadCSSs(urls) {
+      const sheets = await Promise.all(urls.map((url) => this.loadCSS(url)))
+      return sheets
+    }
     async loadCSS(url) {
       const response = await fetch(url)
       const cssText = await response.text()
@@ -512,12 +203,21 @@ customElements.define(
       })
       $(this).on('minimize-window', (e) => {
         let wind = $(e.target)
-        if (wind.attr('slot') != undefined) {
-          wind.removeAttr('slot')
-          this.shrinkFlock()
+        let slotAttr = wind.attr('slot')
+        if (slotAttr != undefined) {
+          let slot = this.qs(`[name="${slotAttr}"]`)
+          slot.classList.add('min')
+          setTimeout(() => {
+            wind.removeAttr('slot')
+            this.shrinkFlock()
+            slot.classList.remove('min')
+            this.fixSlots()
+            this.renderTabs()
+          }, 300)
+        } else {
+          this.fixSlots()
+          this.renderTabs()
         }
-        this.fixSlots()
-        this.renderTabs()
       })
       $(this).on('maximize-window', (e) => {
         let wind = $(e.target)
