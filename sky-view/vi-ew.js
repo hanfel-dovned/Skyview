@@ -9,314 +9,10 @@ customElements.define(
       //
       super()
       const shadow = this.attachShadow({ mode: 'open' })
-      this.loadCSS('feather.css').then((sheet) => {
-        shadow.adoptedStyleSheets = [sheet]
+      this.loadCSSs(['style.css', 'feather.css']).then((sheets) => {
+        shadow.adoptedStyleSheets = [...shadow.adoptedStyleSheets, ...sheets]
       })
       shadow.innerHTML = `
-      <style>
-       .mso,
-       .material-symbols-outlined {
-         font-family: 'Material Symbols Outlined', sans-serif;
-         font-weight: normal;
-         font-style: normal;
-         font-size: 1em;
-         line-height: 1;
-         letter-spacing: normal;
-         text-transform: none;
-         display: inline-block;
-         white-space: nowrap;
-         word-wrap: normal;
-         display: flex;
-         flex-direction: column;
-         align-items: center;
-         justify-content: center;
-         direction: ltr;
-         -webkit-font-feature-settings: 'liga';
-         -webkit-font-smoothing: antialiased;
-         font-variation-settings:
-           'FILL' 0,
-           'wght' 400,
-           'GRAD' 0,
-           'opsz' 24;
-       }
-       * {
-         box-sizing: border-box;
-       }
-       :host {
-         width: 100%;
-         height: 100%;
-         max-height: 100%;
-         overflow: hidden;
-         margin: 0;
-         position: relative;
-         opacity: var(--sky-opacity, 1);
-         padding: var(--sky-outer-gap, 8px);
-         background-color: var(--b1);
-
-         display: grid;
-         grid-template-columns: 50px auto;
-         grid-template-rows: auto 1fr;
-         grid-template-areas:
-         "tray main"
-         "tray main";
-       }
-       :host(.open) {
-         grid-template-columns: 320px auto;
-         grid-template-rows: auto 1fr;
-         grid-template-areas:
-         "tray main"
-         "nav main";
-       }
-       :host(.open) #nav {
-         display: flex;
-       }
-       #nav {
-         grid-area: nav;
-         display: none;
-         flex-direction: column;
-         justify-content: flex-start;
-         align-items: stretch;
-         gap: 12px;
-         overflow: auto;
-       }
-       :host(.open) #tray {
-         display: none;
-       }
-       #tray {
-         grid-area: tray;
-         display: flex;
-         padding-bottom: 15px;
-       }
-       /*
-        *  grid display
-        *
-        */
-       main {
-         display: grid;
-         grid-area: main;
-         overflow: hidden;
-         padding-left: var(--sky-inner-gap, 8px);
-       }
-       #s0, #s1, #s2, #s3 {
-         overflow: auto;
-       }
-       #button {
-         grid-area: btn;
-         height: fit-content;
-       }
-       #s-none {
-         grid-area: void;
-       }
-       #s0 {
-         grid-area: s0;
-       }
-       #s1 {
-         grid-area: s1;
-       }
-       #s2 {
-         grid-area: s2;
-       }
-       #s3 {
-         grid-area: s3;
-       }
-       main.open-0 {
-         grid-template-columns: 1fr;
-         grid-template-rows: 1fr;
-         grid-template-areas:
-         "void";
-       }
-       main #s-none {
-         display: none;
-       }
-       main.open-0 #s-none {
-         display: flex;
-       }
-       main #s-login {
-         display: none;
-       }
-       main.open-login #s-login {
-         display: flex;
-       }
-       main.open-login #s-none,
-       main.open-login #s0,
-       main.open-login #s1,
-       main.open-login #s2,
-       main.open-login #s3 {
-         display: none;
-       }
-       main.open-0 #s0,
-       main.open-0 #s1,
-       main.open-0 #s2,
-       main.open-0 #s3 {
-         display: none;
-       }
-       main.open-1 {
-         grid-template-columns: 1fr;
-         grid-template-rows: 1fr;
-         grid-template-areas:
-         "s0";
-       }
-       main.open-1 #s0 {
-         display: block;
-       }
-       main.open-1 #s1,
-       main.open-1 #s2,
-       main.open-1 #s3 {
-         display: none;
-       }
-       main.open-2 {
-         grid-template-columns: 1fr 1fr;
-         grid-template-rows: 1fr;
-         grid-template-areas:
-         "s0 s1";
-       }
-       main.open-2 #s0,
-       main.open-2 #s1 {
-         display: block;
-       }
-       main.open-2 #s2,
-       main.open-2 #s3 {
-         display: none;
-       }
-       main.open-3 {
-         grid-template-columns: 1fr 1fr;
-         grid-template-rows: 1fr 1fr;
-         grid-template-areas:
-         "s0 s1"
-         "s0 s2";
-       }
-       main.open-3 #s0,
-       main.open-3 #s1,
-       main.open-3 #s2 {
-         display: block;
-       }
-       main.open-3 #s3 {
-         display: none;
-       }
-       main.open-4 {
-         grid-template-columns: 2fr 1fr 1fr;
-         grid-template-rows: 1fr 1fr;
-         grid-template-areas:
-         "s0 s1 s1"
-         "s0 s2 s3";
-       }
-       main.open-4 #s0,
-       main.open-4 #s1,
-       main.open-4 #s2,
-       main.open-4 #s3 {
-         display: block;
-       }
-       /*
-        *  gaps
-        *
-        */
-       main.open-1 #s0 {
-         padding-right: 0;
-       }
-       main.open-2 #s0,
-       main.open-3 #s0,
-       main.open-4 #s0 {
-         padding-right: var(--sky-inner-gap, 8px);
-       }
-       main.open-1 #s1,
-       main.open-2 #s1 {
-         padding-bottom: 0;
-       }
-       main.open-3 #s1,
-       main.open-4 #s1 {
-         padding-bottom: var(--sky-inner-gap, 8px);
-       }
-       main.open-1 #s2,
-       main.open-2 #s2,
-       main.open-3 #s2 {
-         padding-right: 0;
-       }
-       main.open-4 #s2 {
-         padding-right: var(--sky-inner-gap, 8px);
-       }
-       .loading-dot {
-           display: inline-block;
-           font-size: 16px;
-           position: relative;
-       }
-       .loading-dot::after {
-           content: '...';
-           animation: dots 1s steps(3, end) infinite;
-       }
-       @keyframes dots {
-           0% { content: '.'; }
-           33% { content: '..'; }
-           66% { content: '...'; }
-           100% { content: '.'; }
-       }
-
-       /*
-        *  mobile
-        *
-        */
-       @media (max-width: 900px) {
-         :host {
-           grid-template-columns: auto;
-           grid-template-rows: 1fr auto;
-           grid-template-areas:
-           "main"
-           "tray";
-           padding: 0 !important;
-         }
-         :host(.open) {
-           grid-template-columns: auto;
-           grid-template-rows: 1fr auto;
-           grid-template-areas:
-           "nav"
-           "tray";
-         }
-         :host(.open) main {
-           display: none;
-         }
-         :host(:not(.open)) main {
-           display: grid;
-           grid-template-columns: auto;
-           grid-template-rows: auto;
-           grid-template-areas:
-           "s0";
-         }
-         :host(.open) #tray,
-         :host(:not(.open)) #tray {
-           display: flex;
-           flex-direction: row;
-           padding: 6px 6px 10px 6px;
-         }
-         #tray .hideable {
-           display: none;
-         }
-         #nav {
-           padding: 8px;
-         }
-         #nav .hideable {
-           display: none;
-         }
-         main {
-           padding: 0;
-         }
-         main #s0 {
-           display: block;
-           padding: 0;
-           padding-right: 0 !important;
-         }
-         main.open-login #s0 {
-           display: none !important;
-         }
-         main #s1 {
-           display: none !important;
-         }
-         main #s2 {
-           display: none !important;
-         }
-         main #s3 {
-           display: none !important;
-         }
-       }
-      </style>
       <div id="tray" class="fc g2 js af">
         <button
           id="sky-open"
@@ -368,51 +64,33 @@ customElements.define(
         </slot>
         <slot name="s-login" id="s-login">
           <div class="wf hf b0 br1 fc ac jc g2">
-            <button
-            id="login-start"
-            class="br1 p3 b2 hover fc jc ac hideable"
-            onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('login-start'))">
-              <span class="f3 s1">login</span>
-            </button>
             <span id="pattern-err" class="hidden f3">Please match requested format.</span>
-            <div class="hidden" id="login-name" class="p2">
-              <form class="fr g2">
+            <div id="login-name" class="p2">
+              <form class="fc g2">
                 <input 
                 id="ship-input" 
-                class="br1 p2 b2"
+                class="br1 p2 b2 tc"
                 type="text"
                 placeholder="~zod" 
                 pattern="^~((([a-z]{6}){1,2}-{0,2})+|[a-z]{3})$" required
                 />
-                <button 
-                type="button" 
-                onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('login-name'))" 
-                class="br1 p2 b2 hover">
-                  <span id="continue" class="f3">continue</span>
-                  <div style="width: 30px">
-                    <span id="loading-dot" class="loading-dot hidden"></span>
-                  </div>
-                </button>
-              </form>
-            </div>
-            <div class="hidden p2 fc g2 tc" id="login-code">
-              <span id="sign-in" class="f3 p2"></span>
-              <form class="fr g2">
-                <input 
-                id="code-input" 
-                class="br1 p2 b2"
-                type="password"
-                placeholder="sampel-ticlyt-migfun-falmel"
-                pattern="^([a-z]{6}-){3}[a-z]{6}$" 
-                style="width:220px;"
-                required
-                />
-                <button 
-                type="button" 
-                onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('login-code'))" 
-                class="br1 p2 b2 hover">
-                  <span class="f3">login</span>
-                </button>
+                <div id="fr g2">
+                  <input 
+                  id="code-input" 
+                  class="br1 p2 b2"
+                  type="password"
+                  placeholder="sampel-ticlyt-migfun-falmel"
+                  pattern="^~(([a-z]{6}-){3}[a-z]{6})$" 
+                  style="width:220px;"
+                  required
+                  />
+                  <button 
+                  type="button" 
+                  onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-in'))" 
+                  class="br1 p2 b2 hover">
+                    <span class="f3">login</span>
+                  </button>
+                </div>
               </form>
             </div>
             <button
@@ -446,6 +124,10 @@ customElements.define(
         }
       })`
       shadow.appendChild(script)
+    }
+    async loadCSSs(urls) {
+      const sheets = await Promise.all(urls.map((url) => this.loadCSS(url)))
+      return sheets
     }
     async loadCSS(url) {
       const response = await fetch(url)
@@ -489,7 +171,6 @@ customElements.define(
     connectedCallback() {
       $(this).off()
       $(this).on('sky-open', (e) => {
-        console.log('SKY OPEN')
         this.toggleAttribute('open')
         this.saveLayout()
       })
@@ -498,7 +179,7 @@ customElements.define(
       })
       $(this).on('new-window', (e) => {
         let wind = document.createElement('wi-nd')
-        let here = `https://urbit.org`
+        let here = `http://localhost:8000`
         let slot = e.detail && e.detail.slot ? e.detail.slot : `s-1`
         $(wind).attr('here', here)
         $(wind).attr('slot', slot)
@@ -523,12 +204,21 @@ customElements.define(
       })
       $(this).on('minimize-window', (e) => {
         let wind = $(e.target)
-        if (wind.attr('slot') != undefined) {
-          wind.removeAttr('slot')
-          this.shrinkFlock()
+        let slotAttr = wind.attr('slot')
+        if (slotAttr != undefined) {
+          let slot = this.qs(`[name="${slotAttr}"]`)
+          slot.classList.add('min')
+          setTimeout(() => {
+            wind.removeAttr('slot')
+            this.shrinkFlock()
+            slot.classList.remove('min')
+            this.fixSlots()
+            this.renderTabs()
+          }, 300)
+        } else {
+          this.fixSlots()
+          this.renderTabs()
         }
-        this.fixSlots()
-        this.renderTabs()
       })
       $(this).on('maximize-window', (e) => {
         let wind = $(e.target)
@@ -585,11 +275,7 @@ customElements.define(
         let wind = $(`[wid='${wid}']`)
       })
       //
-      $(this).on('login-start', () => {
-        $(this.gid('login-name')).removeClass('hidden')
-        $(this.gid('login-start')).addClass('hidden')
-      })
-      $(this).on('login-name', (e) => {
+      $(this).on('log-in', (e) => {
         //  sending post request here to login
         e.preventDefault()
         let input = $(this.gid('ship-input'))[0]
@@ -597,19 +283,9 @@ customElements.define(
           $(this.gid('pattern-err')).removeClass('hidden')
         } else {
           $(this.gid('pattern-err')).addClass('hidden')
-          this.toggleLoading()
           this.getUrl()
+          this.postCode()
         }
-      })
-      $(this).on('login-code', (e) => {
-        e.preventDefault()
-        let input = $(this.gid('code-input'))[0]
-        //if (!input.checkValidity()) {
-        //  $(this.gid('pattern-err')).removeClass('hidden')
-        //} else {
-        //  $(this.gid('pattern-err')).addClass('hidden')
-        this.postCode()
-        //}
       })
       $(this).on('log-out', () => {
         localStorage.removeItem('auth')
@@ -635,6 +311,7 @@ customElements.define(
         ? 'open-0'
         : `open-${this.windowsOpen}`
       this.restoreLayout()
+      this.zoomListener()
     }
     attributeChangedCallback(name, oldValue, newValue) {
       //
@@ -653,14 +330,30 @@ customElements.define(
           : `open-${this.windowsOpen}`
       }
     }
-    toggleLoading() {
-      $(this.gid('continue')).toggleClass('hidden')
-      $(this.gid('loading-dot')).toggleClass('hidden')
+    zoomListener() {
+      let slots = this.qsa('slot')
+      slots.forEach((slot) => {
+        let inner = slot.assignedNodes()
+        if (inner[0]) {
+          let wind = inner[0]
+          wind.addEventListener('dblclick', (e) => {
+            e.stopPropagation()
+            slot.classList.toggle('zoom')
+          })
+          wind.addEventListener('wheel', (e) => {
+            if (e.ctrlKey && e.deltaY > 0) {
+              slot.classList.remove('zoom')
+              e.preventDefault()
+            }
+          })
+        }
+      })
     }
     getUrl() {
       let our = $(this.gid('ship-input'))[0].value
       localStorage.setItem('our', our)
       const url = `https://bitdeg.arvo.network/apps/ship-url-getter/${our}`
+
       fetch(url)
         .then((response) => {
           if (!response.ok) {
@@ -673,10 +366,6 @@ customElements.define(
           console.log('Success:', data)
           let url = data.replace(/\/~\/eauth$/, '')
           localStorage.setItem('local-url', url)
-          $(this.gid('sign-in'))[0].innerHTML = `signing in as ${our}`
-          $(this.gid('login-name')).addClass('hidden')
-          $(this.gid('login-code')).removeClass('hidden')
-          this.toggleLoading()
         })
         .catch((error) => {
           // err handling
@@ -693,8 +382,8 @@ customElements.define(
         const wallet = await kg.generateWallet({
           boot: false, // do not boot
           // TODO do not hardcode @p / AZP
-          ship: 3670690, // ~binwex-polhex
-          ticket: ticket 
+          ship: 2527646670, // ~simsur-ronbet
+          ticket: ticket
         })
 
         const networkSeed = kg.deriveNetworkSeed(
@@ -726,14 +415,11 @@ customElements.define(
           .then((data) => {
             console.log('Success:', data)
             localStorage.setItem('auth', true)
-            this.restoreLayout()
             this.initialLayout(`${shipUrl}`)
+            this.restoreLayout()
             $(this.gid('code-input'))[0].value = ''
-            $(this.gid('login-start')).removeClass('hidden')
-            $(this.gid('login-code')).addClass('hidden')
           })
           .catch((error) => console.error('Error:', error))
-
       } catch (err) {
         console.log('Error during log-in process: ' + err)
       }
@@ -749,7 +435,7 @@ customElements.define(
       tabs.children().remove()
       let windowsOpen = this.windowsOpen
       let that = this
-      $(this.windows).each(function(i) {
+      $(this.windows).each(function (i) {
         let wind = this
         let tab = document.createElement('div')
         $(tab).addClass('b2 br1 fr af js bd1')
@@ -763,8 +449,8 @@ customElements.define(
         let im = wind.getAttribute('favicon')
           ? `
         <img src="${wind.getAttribute(
-            'favicon'
-          )}" style="width: 20px; height: 20px;" />
+          'favicon'
+        )}" style="width: 20px; height: 20px;" />
         `
           : ``
         mux.innerHTML = `
@@ -811,11 +497,12 @@ customElements.define(
     }
     growFlock() {
       let currentWindowsOpen = this.windowsOpen
+      console.log('currentWindowsOpen', currentWindowsOpen)
       if (isNaN(currentWindowsOpen)) {
         currentWindowsOpen = 0
       }
       $(this).attr('windows-open', Math.min(3, currentWindowsOpen + 1))
-      console.log(currentWindowsOpen)
+      console.log('windows-open', Math.min(3, currentWindowsOpen + 1))
     }
     shrinkFlock() {
       $(this).attr('windows-open', Math.max(0, this.windowsOpen - 1))
@@ -858,19 +545,9 @@ customElements.define(
         // disabling side-menu
         $(this.gid('sky-open')).removeClass('hover')
         $(this.gid('sky-open')).prop('disabled', true)
-        //
-        //  better solution below
-        //
-        // let windows = this.getElementsByTagName('wi-nd')
-        // Array.from(windows).forEach((w) => {
-        //   let slot = $(w).getAttr('slot')
-        //   $(w).removeAttr('slot')
-        //   //add onAuth slot to layout obj
-        //   //$(w).attr('onAuth', slot)
-        // })
-        //}
       } else if (!!layoutString && authenticated) {
         console.log('Restoring layout + Authenticated!')
+
         let our = localStorage.getItem('our')
         $(this.gid('welcome'))[0].innerHTML = `Welcome ${our}`
         //  enabling sidebar menu
@@ -878,8 +555,6 @@ customElements.define(
         $(this.gid('sky-open')).prop('disabled', false)
         //  seting up windows layout
         this.settingLayout(layoutString)
-      } else {
-        console.log('initialLayout')
       }
     }
     initialLayout(url) {
@@ -887,7 +562,7 @@ customElements.define(
       // create initial layout
       let layout = {
         open: false,
-        windowsOpen: 2,
+        windowsOpen: 3,
         windows: [
           {
             here: `${url}/apps/landscape`,
@@ -896,6 +571,10 @@ customElements.define(
           {
             here: `https://urbit.org`,
             slot: 's1'
+          },
+          {
+            here: `https://bridge.urbit.org`,
+            slot: 's2'
           }
         ]
       }
@@ -907,6 +586,7 @@ customElements.define(
       $(this).attr('open', layout.open ? '' : null)
       $(this).attr('windows-open', `${layout.windowsOpen}`)
       $(this).children('wi-nd').remove()
+
       layout.windows.forEach((w) => {
         let wind = document.createElement('wi-nd')
         $(wind).attr('here', w.here)

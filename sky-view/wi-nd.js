@@ -73,6 +73,18 @@ customElements.define(
        :host(.dragging) #drag-overlay {
          opacity: 14%;
        }
+       #tabs{
+         position:relative;
+       }
+       #tabs::after {
+         content: '';
+         position: absolute;
+         z-index: 1;
+         width: 100%;
+         height: 100%;
+         left: 0;
+         top: 0;
+       }
        @media (max-width: 900px) {
          #axns {
            display: none;
@@ -469,9 +481,10 @@ customElements.define(
 
       breadcrumbs.children().remove()
 
-      let path = this.here.startsWith('/~')
-        ? this.urbitPath(this.here)
-        : this.breakUrl(this.here)
+      let path = [this.here]
+      // let path = this.here.startsWith('/~')
+      //   ? this.urbitPath(this.here)
+      //   : this.breakUrl(this.here)
       //
       path.forEach((p, i) => {
         let chevron = $(document.createElement('span'))
