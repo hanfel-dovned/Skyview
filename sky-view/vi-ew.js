@@ -17,6 +17,7 @@ customElements.define(
         <button
           id="sky-open"
           class="br1 p1 b2 hover fc js ac grow"
+          style="margin-bottom: 20px;"
           onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('sky-open', {bubbles:true, composed: true}))"
           >
           <span class="p1 s-1 bold">~</span>
