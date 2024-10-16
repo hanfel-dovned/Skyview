@@ -46,7 +46,11 @@ customElements.define(
               </button>
               <button onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-bridge'))"
               class="b2 p3 bd0 br1 hover">
-                <img src="icons/02_planet.svg" alt="bridge" height="50">
+                <img src="icons/semi-bold_02_planet.svg" alt="bridge" height="50">
+              </button>
+              <button onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-watch'))" 
+              class="b2 p3 bd0 br1 hover">
+                <span class="material-symbols-outlined" id="icon">schedule</span>
               </button>
             </div>
             <div id="tabs" class="fc g2"></div>
@@ -324,6 +328,9 @@ customElements.define(
       $(this).on('open-bridge', (e) => {
         this.openWindow(e, 'https://bridge.urbit.org/')
       })
+      $(this).on('open-watch', (e) => {
+        this.openWindow(e, `${window.location.origin}/watch`)
+      })
       this.qs('main').className = !this.windowsOpen
         ? 'open-0'
         : `open-${this.windowsOpen}`
@@ -514,7 +521,7 @@ customElements.define(
       this.saveLayout()
     }
     fixSlots() {
-      let slotted = $(this.windows).filter('[slot]').get().slice(0, 3)
+      let slotted = $(this.windows).filter('[slot]').get().slice(0, 4)
       $(this.windows).removeAttr('slot')
       slotted.forEach((s, i) => {
         s.setAttribute('slot', `s${i}`)
@@ -535,8 +542,8 @@ customElements.define(
       if (isNaN(currentWindowsOpen)) {
         currentWindowsOpen = 0
       }
-      $(this).attr('windows-open', Math.min(3, currentWindowsOpen + 1))
-      console.log('windows-open', Math.min(3, currentWindowsOpen + 1))
+      $(this).attr('windows-open', Math.min(4, currentWindowsOpen + 1))
+      console.log('windows-open', Math.min(4, currentWindowsOpen + 1))
     }
     shrinkFlock() {
       $(this).attr('windows-open', Math.max(0, this.windowsOpen - 1))
