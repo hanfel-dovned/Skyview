@@ -23,6 +23,9 @@
     'GRAD' 0,
     'opsz' 24;
 }
+#icon {
+  font-size: 3em;
+}
 * {
   box-sizing: border-box;
 }

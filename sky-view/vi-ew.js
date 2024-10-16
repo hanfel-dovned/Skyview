@@ -33,19 +33,26 @@ customElements.define(
           </button>
           <div class="fc g3 grow scroll-y">
             <div class="fr g1 jb">
-              <button
-                onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('new-window'))"
-                class="wfc p2 br1 bd1 b2 hover fr g3 ac"
-                >
-                <span class="material-symbols-outlined">add</span>
-                <span class="f3">new window</span>
-              </button>
               <span class="wfc p2 tc grow f2" id="welcome"></span>
+            </div>
+            <div class="fr jc g2">
+              <button onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-forum'))" 
+              class="b2 p3 bd0 br1 hover">
+                <span class="material-symbols-outlined" id="icon">forum</span>
+              </button>
+              <button onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-landscape'))"
+              class="b2 p3 bd0 br1 hover">
+                <img src="icons/landscape.svg" alt="landscape" height="50">
+              </button>
+              <button onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-bridge'))"
+              class="b2 p3 bd0 br1 hover">
+                <img src="icons/02_planet.svg" alt="bridge" height="50">
+              </button>
             </div>
             <div id="tabs" class="fc g2"></div>
             <div class="grow"></div>
           </div>
-          <footer class="fc g2">
+          <footer class="fc g2 p2">
             <div class="fr g2">
               <button
               onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-out'))"
@@ -177,6 +184,7 @@ customElements.define(
         this.fixSlots()
       })
       $(this).on('new-window', (e) => {
+        console.log('new-window event', e)
         let wind = document.createElement('wi-nd')
         let here = `http://localhost:8000`
         let slot = e.detail && e.detail.slot ? e.detail.slot : `s-1`
@@ -306,6 +314,16 @@ customElements.define(
         localStorage.setItem('sky-layout', JSON.stringify(layout))
         this.restoreLayout()
       })
+      $(this).on('open-landscape', (e) => {
+        let shipUrl = localStorage.getItem('local-url')
+        this.openWindow(e, `${shipUrl}/apps/landscape`)
+      })
+      $(this).on('open-forum', (e) => {
+        this.openWindow(e, `${window.location.origin}/forum`)
+      })
+      $(this).on('open-bridge', (e) => {
+        this.openWindow(e, 'https://bridge.urbit.org/')
+      })
       this.qs('main').className = !this.windowsOpen
         ? 'open-0'
         : `open-${this.windowsOpen}`
@@ -335,9 +353,12 @@ customElements.define(
         let inner = slot.assignedNodes()
         if (inner[0]) {
           let wind = inner[0]
+          console.log(wind, wind)
           wind.addEventListener('dblclick', (e) => {
-            e.stopPropagation()
-            slot.classList.toggle('zoom')
+            if (e.target === wind || wind.contains(e.target)) {
+              e.stopPropagation()
+              slot.classList.toggle('zoom')
+            }
           })
           wind.addEventListener('wheel', (e) => {
             if (e.ctrlKey && e.deltaY > 0) {
@@ -375,53 +396,58 @@ customElements.define(
       let shipUrl = localStorage.getItem('local-url')
       let ticket = $(this.gid('code-input'))[0].value
 
-      try {
-        const kg = urbitKeyGeneration
+      localStorage.setItem('auth', true)
+      this.initialLayout(`${shipUrl}`)
+      this.restoreLayout()
+      $(this.gid('code-input'))[0].value = ''
 
-        const wallet = await kg.generateWallet({
-          boot: false, // do not boot
-          // TODO do not hardcode @p / AZP
-          ship: 2527646670, // ~simsur-ronbet
-          ticket: ticket
-        })
+      // try {
+      //   const kg = urbitKeyGeneration
 
-        const networkSeed = kg.deriveNetworkSeed(
-          wallet.management.seed,
-          null,
-          // TODO do not hardcode revision number
-          2
-        )
-        //console.log(networkSeed)
-        const networkKeys = kg.deriveNetworkKeys(networkSeed)
-        //console.log(networkKeys)
-        const lusCode = kg.generateCode(networkKeys)
-        //console.log('+code: ' + kg.generateCode(networkKeys));
+      //   const wallet = await kg.generateWallet({
+      //     boot: false, // do not boot
+      //     // TODO do not hardcode @p / AZP
+      //     ship: 2527646670, // ~simsur-ronbet
+      //     ticket: ticket
+      //   })
 
-        //console.log(`${shipUrl}/~/login`)
-        const url = `${shipUrl}/~/login`
-        const body = `password=${lusCode}`
+      //   const networkSeed = kg.deriveNetworkSeed(
+      //     wallet.management.seed,
+      //     null,
+      //     // TODO do not hardcode revision number
+      //     2
+      //   )
+      //   //console.log(networkSeed)
+      //   const networkKeys = kg.deriveNetworkKeys(networkSeed)
+      //   //console.log(networkKeys)
+      //   const lusCode = kg.generateCode(networkKeys)
+      //   //console.log('+code: ' + kg.generateCode(networkKeys));
 
-        // TODO Not compatible with https:// URLs
-        fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          body: body,
-          credentials: 'include'
-        })
-          .then((response) => response.text())
-          .then((data) => {
-            console.log('Success:', data)
-            localStorage.setItem('auth', true)
-            this.initialLayout(`${shipUrl}`)
-            this.restoreLayout()
-            $(this.gid('code-input'))[0].value = ''
-          })
-          .catch((error) => console.error('Error:', error))
-      } catch (err) {
-        console.log('Error during log-in process: ' + err)
-      }
+      //   //console.log(`${shipUrl}/~/login`)
+      //   const url = `${shipUrl}/~/login`
+      //   const body = `password=${lusCode}`
+
+      //   // TODO Not compatible with https:// URLs
+      //   fetch(url, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/x-www-form-urlencoded'
+      //     },
+      //     body: body,
+      //     credentials: 'include'
+      //   })
+      //     .then((response) => response.text())
+      //     .then((data) => {
+      //       console.log('Success:', data)
+      //       localStorage.setItem('auth', true)
+      //       this.initialLayout(`${shipUrl}`)
+      //       this.restoreLayout()
+      //       $(this.gid('code-input'))[0].value = ''
+      //     })
+      //     .catch((error) => console.error('Error:', error))
+      // } catch (err) {
+      //   console.log('Error during log-in process: ' + err)
+      // }
     }
     renderIcon(name) {
       let s = document.createElement('span')
@@ -493,6 +519,15 @@ customElements.define(
       slotted.forEach((s, i) => {
         s.setAttribute('slot', `s${i}`)
       })
+    }
+    openWindow(e, here) {
+      let wind = document.createElement('wi-nd')
+      let slot = e.detail && e.detail.slot ? e.detail.slot : `s-1`
+      $(wind).attr('here', here)
+      $(wind).attr('slot', slot)
+      this.appendChild(wind)
+      this.growFlock()
+      this.fixSlots()
     }
     growFlock() {
       let currentWindowsOpen = this.windowsOpen

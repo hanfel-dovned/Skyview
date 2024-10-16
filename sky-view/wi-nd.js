@@ -75,6 +75,8 @@ customElements.define(
        }
        #tabs{
          position:relative;
+         width: 100%;
+         height: 100%;
        }
        #tabs::after {
          content: '';
@@ -84,6 +86,7 @@ customElements.define(
          height: 100%;
          left: 0;
          top: 0;
+         pointer-events: none;
        }
        @media (max-width: 900px) {
          #axns {

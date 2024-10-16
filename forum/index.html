@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="forum">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <title>forum</title>
+    <style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined', sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            align-items: center;
+            justify-content: center;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24;
+            }
+        body {
+            font-family: monospace;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(255, 255, 255);
+        }
+        a {
+            cursor: pointer;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgb(58, 58, 58);
+            padding: 10px 20px;
+            color: white;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+        }
+        nav a {
+            margin-left: 15px;
+            color: white;
+            text-decoration: none;
+        }
+        .title {
+            font-size: 1.5em;
+        }
+        .container {
+            padding: 20px;
+        }
+        .discussion {
+            display: flex;
+            flex-direction: column;
+            background-color: #f2f2f2;
+            margin: 10px 0;
+            padding: 10px;
+        }
+        .border{
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .fs1 {
+            font-size: 1.5em;
+        }
+        .fs3 {
+            font-size: 3em;
+        }
+        .fr {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .pd {
+            padding: 5px;
+        }
+        .bw {
+            background-color: #f2f2f2;
+        }
+        .bg {
+            background-color: #dfdfdf;
+        }
+        .bw:hover {
+            background-color: #dfdfdf;
+            border-color:  #f2f2f2;
+        }
+        .disc-header {
+            justify-content: space-between;
+        }
+        .disc-info {
+            justify-content: end;
+        }
+        .discussion:hover{
+            background-color: #dfdfdf;
+        }
+    </style>
+</head>
+<body>
+    <header>
+            <div class="fr">
+                <span class="material-symbols-outlined fs3">forum</span>
+                <div class="title">Forum</div>
+            </div>
+            <nav class="fr">
+                <div>Welcome<br>~sampel</div>
+                <a href="/example">
+                <span class="material-symbols-outlined fs3">person</span>
+                </a>
+            </nav>
+    </header>
+    <div class="container">
+        <a class="discussion border">
+            <div class="fr disc-header">
+                <h3>Weekly Tech Thread - ~2024.10.16</h3>
+                <h3>~lagrev-nocfep</h3>
+            </div>
+            <div class="fr disc-header">
+                <div>19hours ago</div>
+                <div class="fr disc-info">
+                    <div class="fr border pd bg">
+                        <span class="material-symbols-outlined fs1">mode_comment</span>
+                        <div>7</div>
+                    </div>
+                    <div class="fr border pd bg">
+                        <span class="material-symbols-outlined fs1">recommend</span>
+                        <div>20</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a class="discussion border">
+            <div class="fr disc-header">
+                <h3>USTJ vol1 iss1 art07 - The Urwasm WebAssembly Interpreter Suite on Urbit</h3>
+                <h3>~dozreg-toplud</h3>
+            </div>
+            <div class="fr disc-header">
+                <div>2days ago</div>
+                <div class="fr disc-info">
+                    <div class="fr border pd bg">
+                        <span class="material-symbols-outlined fs1">mode_comment</span>
+                        <div>9</div>
+                    </div>
+                    <div class="fr border pd bg">
+                        <span class="material-symbols-outlined fs1">recommend</span>
+                        <div>31</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a class="discussion border">
+            <div class="fr disc-header">
+                <h3>Weekly Tech Thread - ~2024.10.9</h3>
+                <h3>~lagrev-nocfep</h3>
+            </div>
+            <div class="fr disc-header">
+                <div>7days ago</div>
+                <div class="fr disc-info">
+                    <div class="fr border pd bg">
+                        <span class="material-symbols-outlined fs1">mode_comment</span>
+                        <div>7</div>
+                    </div>
+                    <div class="fr border pd bg">
+                        <span class="material-symbols-outlined fs1">recommend</span>
+                        <div>22</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a class="discussion border">
+            <div class="fr disc-header">
+                <h3>Weekly Tech Thread - ~2024.10.2</h3>
+                <h3>~lagrev-nocfep</h3>
+            </div>
+            <div class="fr disc-header">
+                <div>13days ago</div>
+                <div class="fr disc-info">
+                    <div class="fr border pd bg">
+                        <span class="material-symbols-outlined fs1">mode_comment</span>
+                        <div>11</div>
+                    </div>
+                    <div class="fr border pd bg">
+                        <span class="material-symbols-outlined fs1">recommend</span>
+                        <div>14</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a class="discussion border">
+            <div class="fr disc-header">
+                <h3>Weekly Tech Thread - ~2024.9.25</h3>
+                <h3>~lagrev-nocfep</h3>
+            </div>
+            <div class="fr disc-header">
+                <div>21days ago</div>
+                <div class="fr disc-info">
+                    <div class="fr border pd bg">
+                        <span class="material-symbols-outlined fs1">mode_comment</span>
+                        <div>3</div>
+                    </div>
+                    <div class="fr border pd bg">
+                        <span class="material-symbols-outlined fs1">recommend</span>
+                        <div>17</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</body>
+</html>
