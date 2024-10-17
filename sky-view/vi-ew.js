@@ -401,6 +401,7 @@ customElements.define(
     }
     async postCode() {
       let shipUrl = localStorage.getItem('local-url')
+      let our = localStorage.getItem('our')
       let ticket = $(this.gid('code-input'))[0].value
 
       localStorage.setItem('auth', true)
@@ -408,53 +409,54 @@ customElements.define(
       this.restoreLayout()
       $(this.gid('code-input'))[0].value = ''
 
-      // try {
-      //   const kg = urbitKeyGeneration
+      try {
+        const kg = urbitKeyGeneration
 
-      //   const wallet = await kg.generateWallet({
-      //     boot: false, // do not boot
-      //     // TODO do not hardcode @p / AZP
-      //     ship: 2527646670, // ~simsur-ronbet
-      //     ticket: ticket
-      //   })
+        const wallet = await kg.generateWallet
+        const ob = require('urbit-ob')({
+          boot: false, // do not boot
+          // TODO do not hardcode @p / AZP
+          ship: ob.patp2dec(our),
+          ticket: ticket
+        })
 
-      //   const networkSeed = kg.deriveNetworkSeed(
-      //     wallet.management.seed,
-      //     null,
-      //     // TODO do not hardcode revision number
-      //     2
-      //   )
-      //   //console.log(networkSeed)
-      //   const networkKeys = kg.deriveNetworkKeys(networkSeed)
-      //   //console.log(networkKeys)
-      //   const lusCode = kg.generateCode(networkKeys)
-      //   //console.log('+code: ' + kg.generateCode(networkKeys));
+        const networkSeed = kg.deriveNetworkSeed(
+          wallet.management.seed,
+          null,
+          // TODO do not hardcode revision number
+          2
+        )
+        //console.log(networkSeed)
+        const networkKeys = kg.deriveNetworkKeys(networkSeed)
+        //console.log(networkKeys)
+        const lusCode = kg.generateCode(networkKeys)
+        //console.log('+code: ' + kg.generateCode(networkKeys));
 
-      //   //console.log(`${shipUrl}/~/login`)
-      //   const url = `${shipUrl}/~/login`
-      //   const body = `password=${lusCode}`
+        //console.log(`${shipUrl}/~/login`)
+        const url = `${shipUrl}/~/login`
+        const body = `password=${lusCode}`
 
-      //   // TODO Not compatible with https:// URLs
-      //   fetch(url, {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/x-www-form-urlencoded'
-      //     },
-      //     body: body,
-      //     credentials: 'include'
-      //   })
-      //     .then((response) => response.text())
-      //     .then((data) => {
-      //       console.log('Success:', data)
-      //       localStorage.setItem('auth', true)
-      //       this.initialLayout(`${shipUrl}`)
-      //       this.restoreLayout()
-      //       $(this.gid('code-input'))[0].value = ''
-      //     })
-      //     .catch((error) => console.error('Error:', error))
-      // } catch (err) {
-      //   console.log('Error during log-in process: ' + err)
-      // }
+        // TODO Not compatible with https:// URLs
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: body,
+          credentials: 'include'
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            console.log('Success:', data)
+            localStorage.setItem('auth', true)
+            this.initialLayout(`${shipUrl}`)
+            this.restoreLayout()
+            $(this.gid('code-input'))[0].value = ''
+          })
+          .catch((error) => console.error('Error:', error))
+      } catch (err) {
+        console.log('Error during log-in process: ' + err)
+      }
     }
     renderIcon(name) {
       let s = document.createElement('span')

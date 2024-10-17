@@ -1,0 +1,31 @@
+{
+  "name": "skyview",
+  "version": "1.0.0",
+  "description": "Skyview is a fork of the urbit/shrub frontend based on URLs rather than namespace paths, with the goal of creating a UI for interacting with Eyre-bound Urbit apps and Azimuth-login websites.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hanfel-dovned/Skyview.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hanfel-dovned/Skyview/issues"
+  },
+  "homepage": "https://github.com/hanfel-dovned/Skyview#readme",
+  "dependencies": {
+    "urbit-ob": "^5.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.8",
+    "@babel/preset-env": "^7.25.8",
+    "babel-loader": "^9.2.1",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4"
+  }
+}
