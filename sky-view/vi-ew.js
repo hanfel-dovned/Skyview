@@ -42,11 +42,11 @@ customElements.define(
               </button>
               <button onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-landscape'))"
               class="b2 p3 bd0 br1 hover">
-                <img src="icons/landscape.svg" alt="landscape" height="50">
+                <img src="icons/landscape.svg" alt="landscape" height="30">
               </button>
               <button onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-bridge'))"
               class="b2 p3 bd0 br1 hover">
-                <img src="icons/semi-bold_02_planet.svg" alt="bridge" height="50">
+                <img src="icons/semi-bold_02_planet.svg" alt="bridge" height="30">
               </button>
               <button onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-watch'))" 
               class="b2 p3 bd0 br1 hover">

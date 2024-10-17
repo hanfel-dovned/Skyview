@@ -24,7 +24,7 @@
     'opsz' 24;
 }
 #icon {
-  font-size: 3em;
+  font-size: 2em;
 }
 * {
   box-sizing: border-box;
@@ -144,16 +144,13 @@ main.open-1 {
   grid-template-rows: 1fr;
   grid-template-areas: "s0";
 }
-main.open-1 #s0 {
+main.open-1 #s0{
   display: block;
 }
 main.open-1 #s1,
 main.open-1 #s2,
 main.open-1 #s3 {
   display: none;
-}
-main.open-1:has(#s0.add){
-    grid-template-columns: 1fr 0fr;
 }
 main.open-2 {
   grid-template-columns: 1fr 1fr;
@@ -215,14 +212,14 @@ main.open-3:has(#s1.min) {
     grid-template-rows: 1fr 0fr;
     grid-template-areas:
     "s0 s2 s1"
-    "s0 s2 s1";
+    ". . .";
 }
 main.open-3:has(#s2.min) {
     grid-template-columns: 1fr 1fr 0fr;
     grid-template-rows: 1fr 0fr;
     grid-template-areas:
     "s0 s1 s2"
-    "s0 s1 s2";
+    ". s1 .";
 }
 main.open-4 {
   grid-template-columns: 2fr 1fr 1fr;
@@ -236,6 +233,52 @@ main.open-4 #s1,
 main.open-4 #s2,
 main.open-4 #s3 {
   display: block;
+}
+main.open-4:has(#s0.zoom) {
+  grid-template-columns: 1fr 0fr 0fr;
+  grid-template-rows: 1fr 0fr;
+}
+main.open-4:has(#s1.zoom) {
+  grid-template-columns: 0fr 1fr 1fr;
+  grid-template-rows: 1fr 0fr;
+}
+main.open-4:has(#s2.zoom) {
+  grid-template-columns: 0fr 1fr 0fr;
+  grid-template-rows: 0fr 1fr;
+}
+main.open-4:has(#s3.zoom) {
+  grid-template-columns: 0fr 0fr 1fr;
+  grid-template-rows: 0fr 1fr;
+}
+main.open-4:has(#s0.min) {
+  grid-template-columns: 0fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+  "s0 s1 s2"
+  "s0 s1 s3";
+}
+/*  */
+main.open-4:has(#s1.min) {
+  grid-template-columns: 1fr 1fr 0fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+  "s0 s2 s1"
+  "s0 s3 .";
+}
+main.open-4:has(#s2.min) {
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 0fr;
+  grid-template-areas:
+  "s0 s1 s1"
+  "s0 s3 s3"
+  ". s2 .";
+}
+main.open-4:has(#s3.min) {
+  grid-template-columns: 1fr 1fr 0fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+  "s0 s1 ."
+  "s0 s2 s3"
 }
 slot{
   position: relative;
