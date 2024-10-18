@@ -296,11 +296,11 @@ customElements.define(
         } else {
           $(this.gid('pattern-err')).addClass('hidden')
           this.getUrl()
-          this.postCode()
         }
       })
       $(this).on('log-out', () => {
         localStorage.removeItem('auth')
+        localStorage.removeItem('local-url')
         this.toggleAttribute('open')
         this.restoreLayout()
       })
@@ -392,8 +392,13 @@ customElements.define(
         })
         .then((data) => {
           console.log('Success:', data)
-          let url = data.replace(/\/~\/eauth$/, '')
+          console.log('URL: ' + data.url)
+          let rawUrl = data.url
+          let url = rawUrl.replace(/\/~\/eauth$/, '')
+          let rift = parseInt(data.rift, 10)
           localStorage.setItem('local-url', url)
+          localStorage.setItem('rift', rift)
+          this.postCode()
         })
         .catch((error) => {
           // err handling
@@ -402,6 +407,7 @@ customElements.define(
     }
     async postCode() {
       let shipUrl = localStorage.getItem('local-url')
+      let rift = localStorage.getItem('rift')
       let our = localStorage.getItem('our')
       let ticket = $(this.gid('code-input'))[0].value
 
@@ -424,8 +430,7 @@ customElements.define(
         const networkSeed = kg.deriveNetworkSeed(
           wallet.management.seed,
           null,
-          // TODO do not hardcode revision number
-          2
+          rift
         )
         //console.log(networkSeed)
         const networkKeys = kg.deriveNetworkKeys(networkSeed)
