@@ -84,6 +84,7 @@ customElements.define(
                 type="text"
                 placeholder="~sampel-palnet" 
                 pattern="^~((([a-z]{6}){1,2}-{0,2})+|[a-z]{3})$" 
+                autocomplete="off"
                 required
                 />
                 <input 
