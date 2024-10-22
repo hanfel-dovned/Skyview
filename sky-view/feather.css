@@ -711,6 +711,9 @@ body {
 .bd3 {
   border: 2px solid var(--f1);
 }
+.bd4 {
+  border: 2px solid var(--b3);
+}
 .br0 {
   border-radius: var(--br0);
 }

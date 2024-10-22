@@ -75,6 +75,9 @@
   display: flex;
   padding-bottom: 15px;
 }
+#login-form input:focus{
+  background-color: var(--b3) !important;
+}
 /*
  *  grid display
  *

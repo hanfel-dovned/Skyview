@@ -76,40 +76,40 @@ customElements.define(
         <slot name="s-login" id="s-login">
           <div class="wf hf b0 br1 fc ac jc g2">
             <span id="pattern-err" class="hidden f3">Please match requested format.</span>
-            <div id="login-name" class="p2">
-              <form class="fc g2">
+            <div class="p2 fc g5" style="width:260px;">
+              <form id="login-form" class="fc g2"> 
                 <input 
                 id="ship-input" 
-                class="br1 p2 b2 tc"
+                class="br1 bd4 p2 b0 tc"
                 type="text"
-                placeholder="~zod" 
-                pattern="^~((([a-z]{6}){1,2}-{0,2})+|[a-z]{3})$" required
+                placeholder="~sampel-palnet" 
+                pattern="^~((([a-z]{6}){1,2}-{0,2})+|[a-z]{3})$" 
+                required
                 />
-                <div id="fr g2">
-                  <input 
-                  id="code-input" 
-                  class="br1 p2 b2"
-                  type="password"
-                  placeholder="sampel-ticlyt-migfun-falmel"
-                  pattern="^~(([a-z]{6}-){3}[a-z]{6})$" 
-                  style="width:220px;"
-                  required
-                  />
-                  <button 
-                  type="button" 
-                  onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-in'))" 
-                  class="br1 p2 b2 hover">
-                    <span class="f3">login</span>
-                  </button>
-                </div>
+                <input 
+                id="code-input" 
+                class="br1 bd4 p2 b0 tc"
+                type="password"
+                placeholder="~sampel-ticlyt-migfun-falmel"
+                pattern="^~(([a-z]{6}-){3}[a-z]{6})$" 
+                required
+                />
+                <button 
+                type="button" 
+                onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-in'))" 
+                class="br1 p2 b2 hover">
+                  <span class="f3">Log-in</span>
+                </button>
               </form>
+              <div>
+                <hr style="border: none; height: 1px; background-color: var(--b3);">
+              </div>
+              <button
+              class="br1 p2 b2 hover fr g2 jc ac hideable"
+              onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('bridge-redirect'))">
+                <span class="f3">Buy Urbit ID</span>
+              </button>
             </div>
-            <button
-            class="br1 p3 b2 hover fr g2 jc ac hideable"
-            onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('bridge-redirect'))">
-              <span class="f3 s1">purchase a planet</span>
-              <img src="icons/02_planet.svg" alt="planet" width="25" height="25">
-            </button>
           </div>
         </slot>
         <slot name="s0" id="s0"></slot>

@@ -7,9 +7,6 @@ customElements.define(
         'wid',
         'here',
         'searching', // boolean. true is user is using the search bar in the header
-        //'strategies', // space-separated list of iframe prefixes
-        //'renderer', // current iframe strategy
-        // 'menu',
         'dragging',
         'tab-title',
         'favicon'
@@ -96,7 +93,7 @@ customElements.define(
       </style>
       <div id="drag-overlay" class="hidden"></div>
       <header class="b2 fr af js g1">
-        <div id="breadcrumbs" class="grow fr g1 af js"></div>
+        <div id="breadcrumbs" class="hover grow fr af js"></div>
         <form id="searchbar" class="grow fr hidden">
           <input
             id="input-here"
@@ -481,36 +478,22 @@ customElements.define(
     }
     buildBreadcrumbs() {
       let breadcrumbs = $(this.gid('breadcrumbs'))
+      breadcrumbs.on('click', () => {
+        $(this).attr('searching', '')
+      })
 
       breadcrumbs.children().remove()
-
-      let path = [this.here]
-      // let path = this.here.startsWith('/~')
-      //   ? this.urbitPath(this.here)
-      //   : this.breakUrl(this.here)
-      //
-      path.forEach((p, i) => {
-        let chevron = $(document.createElement('span'))
-        chevron.addClass('s-2 f4 o6 fc ac jc no-select')
-        if (i > 0) {
-          chevron.text('›')
-        }
-        breadcrumbs.append(chevron)
-        //
-        let crumb = $(document.createElement('button'))
-        crumb.addClass((i === 0 ? 'p-1' : 'p1') + ' b2 hover br1 s-1 f2')
-        //crumb.text(i === 0 && path[0].startsWith('~') ? '/' : path[i])
-        crumb.text(path[i])
-        crumb.on('click', () => {
-          $(this).attr('here', '/' + path.slice(0, i + 1).join('/'))
-          this.rebuildIframe()
-        })
-        breadcrumbs.append(crumb)
-      })
+      let crumb = $(document.createElement('span'))
+      crumb.addClass('p-1 hidden b2 br1 s-1 f2')
+      crumb.text(this.here)
+      breadcrumbs.append(crumb)
       let spacer = $(document.createElement('button'))
-      spacer.addClass('grow b2 br1 hover')
-      spacer.on('click', () => {
-        $(this).attr('searching', '')
+      spacer.addClass('grow b2 br1')
+      spacer.on('mouseover', () => {
+        crumb.removeClass('hidden')
+      })
+      spacer.on('mouseout', () => {
+        crumb.addClass('hidden')
       })
       breadcrumbs.append(spacer)
     }
