@@ -7,9 +7,6 @@ customElements.define(
         'wid',
         'here',
         'searching', // boolean. true is user is using the search bar in the header
-        //'strategies', // space-separated list of iframe prefixes
-        //'renderer', // current iframe strategy
-        // 'menu',
         'dragging',
         'tab-title',
         'favicon'
@@ -139,6 +136,7 @@ customElements.define(
     `
       this.intervalId = null
     }
+    //  applying CSS files to custom element wi-nd
     async loadCSS(url) {
       const response = await fetch(url)
       const cssText = await response.text()
@@ -146,16 +144,21 @@ customElements.define(
       await sheet.replace(cssText)
       return sheet
     }
-
+    //
+    //  part of custome elment lifesycle called when element is added to the document
+    //
     connectedCallback() {
       this.rebuildIframe()
       $(this.gid('searchbar')).off()
+      //  event on submiting searchbar form
       $(this.gid('searchbar')).on('submit', (e) => {
         e.preventDefault()
+        //  changing attribute 'here' to value from serachbar
         let here = $(this.gid('input-here')).val()
         this.setAttribute('here', here)
         this.rebuildIframe()
       })
+      //  removing 'searching' attribute if input-here is not in focus
       $(this.gid('input-here')).off()
       $(this.gid('input-here')).on('focusout', (e) => {
         $(this).removeAttr('searching')
@@ -163,7 +166,7 @@ customElements.define(
       $(this.gid('input-here')).on('blur', (e) => {
         $(this).removeAttr('searching')
       })
-
+      //  swap windows logic
       $(this.gid('dragger')).off()
       $(this.gid('dragger')).on('dragstart', (e) => {
         e.originalEvent.dataTransfer.setData(
@@ -192,6 +195,7 @@ customElements.define(
       })
 
       $(this).off()
+      //  menu events triggering custom events in vi-ew
       $(this).on('close', () => {
         $(this).trigger('close-window')
       })
@@ -206,6 +210,7 @@ customElements.define(
           console.error('Failed to copy text: ', err)
         }
       })
+      //  swap windows logic
       $(this).on('dragenter', (e) => {
         $(this).addClass('dragging')
       })
@@ -250,7 +255,7 @@ customElements.define(
             }
           })
       }, 350)
-
+      //  events for attributes change, mainly affect sidebar menu
       $(this).on('title-changed', (e) => {
         if (!!e.detail) {
           $(this).attr('tab-title', e.detail)
@@ -291,14 +296,22 @@ customElements.define(
           })
       })
     }
+    //
+    //  part of custome elment lifesycle called when element is removed from the document
+    //
     disconnectedCallback() {
       if (this.intervalId !== null) {
+        //  cancels sky-poll event for tabs
         clearInterval(this.intervalId)
         this.intervalId = null
       }
     }
+    //
+    //  part of custome elment lifesycle,
+    //  called when attributes are changed, added, removed, or replaced
+    //
     attributeChangedCallback(name, oldValue, newValue) {
-      //
+      //  if 'here' attribute been changed rebuild breadcrumb(url-bar)
       if (name === 'here') {
         if (this.shadowRoot) {
           if (newValue !== '') {
@@ -307,6 +320,7 @@ customElements.define(
             $(this).trigger('here-moved')
           }
         }
+        //  if 'serching' attribute been changed, triggeres logic for searchbar
       } else if (name === 'searching') {
         if (newValue === null) {
           $(this.gid('breadcrumbs')).removeClass('hidden')
@@ -350,6 +364,7 @@ customElements.define(
     //   return JSON.stringify(poke)
     // }
 
+    //  logic to verify the existence of a URL endpoint
     async checkUrl(url) {
       try {
         let response = await fetch(url, { method: 'GET' })
@@ -367,6 +382,7 @@ customElements.define(
         return false
       }
     }
+    //  creating iframe element
     createIframe(here, open) {
       let el = document.createElement('iframe')
       el.setAttribute('lazy', '')
@@ -383,8 +399,11 @@ customElements.define(
       })
       return el
     }
+    //  rebuilding iframe by removing iframe element from wi-nd
+    //  and appending new iframe element
     rebuildIframe() {
       let here = this.here
+      // this logic removed(been used in shrubberish pith cases)
       //let isLoading = await this.checkUrl(url)
       let isLoading = true
       if (isLoading) {
@@ -464,6 +483,7 @@ customElements.define(
     `
       iframeDoc.body.appendChild(inlineScript)
     }
+    //  logic for converting url to array for breadcrumb trail
     breakUrl(url) {
       const urlObj = new URL(url)
       const base = `${urlObj.protocol}//${urlObj.host}`
@@ -475,6 +495,7 @@ customElements.define(
       }
       return result
     }
+    //  logic for converting pith to array for breadcrumb trail
     urbitPath(path) {
       console.log(path.slice(1).split('/'))
       return path.slice(1).split('/')

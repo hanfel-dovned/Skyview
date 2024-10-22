@@ -119,23 +119,8 @@ customElements.define(
       </main>
       <slot id="default" style="display: none;"></slot>
     `
-      const script = document.createElement('script')
-      script.textContent = `
-      window.addEventListener('message', (event) => {
-        if (event.origin === window.location.origin){
-          if(event.data.messagetype === 'new-wind'){
-            const customEvent = new CustomEvent('new-window', {detail: {href: event.data.href, slot: 's-2'}});
-            const element = document.querySelector('vi-ew');
-            if (element) {
-              element.dispatchEvent(customEvent);
-            }
-          }
-        }else{
-        return;
-        }
-      })`
-      shadow.appendChild(script)
     }
+    //  mapping through CSS file urls to apply it to vi-ew custom element
     async loadCSSs(urls) {
       const sheets = await Promise.all(urls.map((url) => this.loadCSS(url)))
       return sheets
@@ -147,15 +132,17 @@ customElements.define(
       await sheet.replace(cssText)
       return sheet
     }
+    //  method retrieves the number of open windows as an integer
     get windowsOpen() {
       return parseInt(this.getAttribute('windows-open') || '0')
     }
+    //  method that retrieves our ship
     get our() {
       return this.getAttribute('our')
     }
-    get currentFeatherRules() {
-      return this.qs('feather-settings')?.currentFeatherRules || []
-    }
+    //  method that retrieves all wi-nd elements
+    //  converts it to an array sort them by slot number
+    //  returns array of sorted wi-nd elements and elements without slot attribute
     get windows() {
       let slots = $(this)
         .children('wi-nd[slot]')
@@ -179,15 +166,19 @@ customElements.define(
     gid(id) {
       return this.shadowRoot.getElementById(id)
     }
+    //
+    //  part of custome elment lifesycle called when element is added to the document
+    //
     connectedCallback() {
       $(this).off()
+      //  Custom Events
+      //  'sky-open' event indicates that the sidebar menu of sky is open.
       $(this).on('sky-open', (e) => {
         this.toggleAttribute('open')
         this.saveLayout()
       })
-      $(this).on('fix-slots', () => {
-        this.fixSlots()
-      })
+      //  'new-window' event creates a new wi-nd element
+      //   and opes it in first slot
       $(this).on('new-window', (e) => {
         console.log('new-window event', e)
         let wind = document.createElement('wi-nd')
@@ -199,6 +190,8 @@ customElements.define(
         this.growFlock()
         this.fixSlots()
       })
+      //  'close-window' event removes wi-nd element from vi-ew
+      //  if vi-ew in 'show-bridge' setting it will open login page
       $(this).on('close-window', (e) => {
         let wind = $(e.target)
         if (wind.attr('slot') != undefined) {
@@ -214,6 +207,8 @@ customElements.define(
           this.renderTabs()
         }
       })
+      //  'minimize-window' event removes slot attribute from minimized wi-nd elem
+      //  'min' class is assigned solely for CSS animation purposes
       $(this).on('minimize-window', (e) => {
         let wind = $(e.target)
         let slotAttr = wind.attr('slot')
@@ -232,6 +227,7 @@ customElements.define(
           this.renderTabs()
         }
       })
+      //  'maximize-window' event opens wi-nd elem in first slot
       $(this).on('maximize-window', (e) => {
         let wind = $(e.target)
         if (!wind.attr('slot')) {
@@ -241,12 +237,14 @@ customElements.define(
         this.fixSlots()
         this.renderTabs()
       })
+      //  handles action of dragging a window.
       $(this).on('drag-start', (e) => {
         $(this.windows).attr('dragging', '')
       })
       $(this).on('drag-end', (e) => {
         $(this.windows).removeAttr('dragging')
       })
+      //  triggered on iframe attribute change(title, icon, url)
       $(this).on('here-moved', () => {
         this.renderTabs()
       })
@@ -287,6 +285,7 @@ customElements.define(
         let wind = $(`[wid='${wid}']`)
       })
       //
+      //  'log-in' event handles logic for login flow
       $(this).on('log-in', (e) => {
         //  sending post request here to login
         e.preventDefault()
@@ -298,12 +297,17 @@ customElements.define(
           this.getUrl()
         }
       })
+      //  'log-out' event handles logic for logout
       $(this).on('log-out', () => {
         localStorage.removeItem('auth')
         localStorage.removeItem('local-url')
+        //  closes sidebar menu
         this.toggleAttribute('open')
         this.restoreLayout()
       })
+      // 'bridge-redirect' event is triggered from the unauthenticated menu,
+      //  where the layout has not yet been established.
+      //  This event creates a new layout with the window opened to the bridge.
       $(this).on('bridge-redirect', () => {
         localStorage.setItem('show-bridge', true)
         let layout = {
@@ -319,6 +323,8 @@ customElements.define(
         localStorage.setItem('sky-layout', JSON.stringify(layout))
         this.restoreLayout()
       })
+      //  'open-...' events triggered from icons
+      //  to open a new window with specific url
       $(this).on('open-landscape', (e) => {
         let shipUrl = localStorage.getItem('local-url')
         this.openWindow(e, `${shipUrl}/apps/landscape`)
@@ -332,12 +338,18 @@ customElements.define(
       $(this).on('open-watch', (e) => {
         this.openWindow(e, `${window.location.origin}/watch`)
       })
+      //  keps track of how many windows are open
+      //  and updates class of main element
       this.qs('main').className = !this.windowsOpen
         ? 'open-0'
         : `open-${this.windowsOpen}`
       this.restoreLayout()
       this.zoomListener()
     }
+    //
+    //  part of custome elment lifesycle,
+    //  called when attributes are changed, added, removed, or replaced
+    //
     attributeChangedCallback(name, oldValue, newValue) {
       //
       if (name === 'open') {
@@ -355,6 +367,10 @@ customElements.define(
           : `open-${this.windowsOpen}`
       }
     }
+    //  maps through slots and checks if each slot contains innerHTML(wi-nd element)
+    //  listenes for double-click or wheel zoom-out actions
+    //  on double-click assignes toggles 'zoom' class to change css settings
+    //  on wheel zoom-out action removes 'zoom' class
     zoomListener() {
       let slots = this.qsa('slot')
       slots.forEach((slot) => {
@@ -377,6 +393,8 @@ customElements.define(
         }
       })
     }
+    //  1st part of log-in flow
+    //  sending GET request to agent on ~bitdeg to fetch ship public url
     getUrl() {
       let our = $(this.gid('ship-input'))[0].value
       localStorage.setItem('our', our)
@@ -405,6 +423,8 @@ customElements.define(
           console.error('Error:', error)
         })
     }
+    //  2nd part of log-in flow
+    //  sending POST request to ship public url to access auth cookie
     async postCode() {
       let shipUrl = localStorage.getItem('local-url')
       let rift = localStorage.getItem('rift')
@@ -470,6 +490,9 @@ customElements.define(
       s.textContent = name
       return s
     }
+    //  rebuilds sidebar menu tabs by mapping through all wi-nd elements,
+    //  creating a new tab element for each wi-nd
+    //  with innerHTML of wi-nd 'tab-title' attribute or 'here' attribute
     renderTabs() {
       let tabs = $(this.gid('tabs'))
       tabs.children().remove()
@@ -528,6 +551,9 @@ customElements.define(
       })
       this.saveLayout()
     }
+    // retrieves the first 4 windows with 'slot' attribute
+    // removes the 'slot' attribute from all windows.
+    // maps through first 4 windows and assigns 'slot' with coesponding to index number
     fixSlots() {
       let slotted = $(this.windows).filter('[slot]').get().slice(0, 4)
       $(this.windows).removeAttr('slot')
@@ -535,6 +561,8 @@ customElements.define(
         s.setAttribute('slot', `s${i}`)
       })
     }
+    //  creates a new wi-nd element, opens it in first slot if doesn't have slot asigned in event
+    //  and appends it to vi-ew
     openWindow(e, here) {
       let wind = document.createElement('wi-nd')
       let slot = e.detail && e.detail.slot ? e.detail.slot : `s-1`
@@ -544,6 +572,8 @@ customElements.define(
       this.growFlock()
       this.fixSlots()
     }
+    //  increases the number of 'windows-open' attribute by 1,
+    //  ensuring that the total amount of open windows does not exceed 4
     growFlock() {
       let currentWindowsOpen = this.windowsOpen
       console.log('currentWindowsOpen', currentWindowsOpen)
@@ -553,9 +583,12 @@ customElements.define(
       $(this).attr('windows-open', Math.min(4, currentWindowsOpen + 1))
       console.log('windows-open', Math.min(4, currentWindowsOpen + 1))
     }
+    //  decreases 'windows-open' attribute by 1,
+    //  ensuring that the total does not go below 0.
     shrinkFlock() {
       $(this).attr('windows-open', Math.max(0, this.windowsOpen - 1))
     }
+    //  creates layout object and saves it in localStorage
     saveLayout() {
       let layout = {
         open: this.hasAttribute('open'),
@@ -572,6 +605,7 @@ customElements.define(
       }
       localStorage.setItem('sky-layout', JSON.stringify(layout))
     }
+    //  restoring layout based on localStorage items
     restoreLayout() {
       let layoutString = localStorage.getItem('sky-layout')
       let authenticated = localStorage.getItem('auth')
@@ -606,6 +640,8 @@ customElements.define(
         this.settingLayout(layoutString)
       }
     }
+    //  defining layout object, storing it in localStorage
+    //  and rendering new layout
     initialLayout(url) {
       console.log('new layout')
       // create initial layout
@@ -630,6 +666,10 @@ customElements.define(
       localStorage.setItem('sky-layout', JSON.stringify(layout))
       this.restoreLayout()
     }
+    //  parsing layout, updating 'open' and 'windows-open' attributes
+    //  removing all current wi-nd elements
+    //  mapping through windows in layout argument
+    //  to create and append new wi-nd elements
     settingLayout(layoutString) {
       let layout = JSON.parse(layoutString)
       $(this).attr('open', layout.open ? '' : null)
