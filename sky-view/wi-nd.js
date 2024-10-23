@@ -123,9 +123,10 @@ customElements.define(
             <span class="mso">content_copy</span>
           </button>
           <div
-            class="p1 s-1 b2 grabber f4 fc jc ac"
+            class="p1 s-1 b2 grabber br1 fc jc ac"
             draggable="true"
             id="dragger"
+            style="color: var(--b0)"
             >
             <span class="mso">drag_indicator</span>
           </div>
@@ -481,20 +482,20 @@ customElements.define(
       breadcrumbs.on('click', () => {
         $(this).attr('searching', '')
       })
+      breadcrumbs.on('mouseover', () => {
+        crumb.removeClass('hidden')
+      })
+      breadcrumbs.on('mouseout', () => {
+        crumb.addClass('hidden')
+      })
 
       breadcrumbs.children().remove()
       let crumb = $(document.createElement('span'))
-      crumb.addClass('p-1 hidden b2 br1 s-1 f2')
+      crumb.addClass('p-1 hidden b2 br1 s-1')
       crumb.text(this.here)
       breadcrumbs.append(crumb)
       let spacer = $(document.createElement('button'))
       spacer.addClass('grow b2 br1')
-      spacer.on('mouseover', () => {
-        crumb.removeClass('hidden')
-      })
-      spacer.on('mouseout', () => {
-        crumb.addClass('hidden')
-      })
       breadcrumbs.append(spacer)
     }
   }

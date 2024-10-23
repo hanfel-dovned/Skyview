@@ -22,14 +22,15 @@ customElements.define(
           <span id="sig-menu" style="color: var(--b2);">~</span>
         </button>
       </div>
-      <nav id="nav" class="fc" style="padding-bottom: 15px;">
+      <nav id="nav" class="fc">
         <div id="tab-controller" class="fc g3 grow">
           <button
             id="sky-open"
-            class="br1 p1 b2 hover fc jc ac hideable"
+            class="br1 bd4 b0 p1 hover fc jc ac hideable"
             onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('sky-open', {bubbles:true, composed: true}))"
+            style="line-height: 1;"
             >
-            <span class="p1 s-1 bold">~</span>
+            <span id="sig-menu" style="color: var(--b2);">~</span>
           </button>
           <div class="fc g3 grow scroll-y">
             <div class="fr g1 jb">
@@ -56,13 +57,13 @@ customElements.define(
             <div id="tabs" class="fc g2"></div>
             <div class="grow"></div>
           </div>
-          <footer class="fc g2 p2">
+          <footer class="fc g2 p2" style="padding-bottom:0;">
             <div class="fr g2">
               <button
               onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-out'))"
               class="b2 hover br1 bd0 p2 grow fr g2 ac"
               >
-                <span class="f3 wf tc">logout</span>
+                <span class="wf tc">logout</span>
               </button>
             </div>
           </footer>
@@ -79,7 +80,7 @@ customElements.define(
               <form id="login-form" class="fc g2"> 
                 <input 
                 id="ship-input" 
-                class="br1 bd4 p2 b0 hi"
+                class="br1 bd4 p2 b0 in-st"
                 type="text"
                 placeholder="~sampel-palnet" 
                 pattern="^~((([a-z]{6}){1,2}-{0,2})+|[a-z]{3})$" 
@@ -88,7 +89,7 @@ customElements.define(
                 />
                 <input 
                 id="code-input" 
-                class="br1 bd4 p2 b0 hi"
+                class="br1 bd4 p2 b0 in-st"
                 type="password"
                 placeholder="~sampel-ticlyt-migfun-falmel"
                 pattern="^~(([a-z]{6}-){3}[a-z]{6})$" 
@@ -97,7 +98,7 @@ customElements.define(
                 <button 
                 type="button" 
                 onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-in'))" 
-                class="br1 p2 b2 hover hi">
+                class="br1 p2 b2 hover btn-st">
                   <span>Log-in</span>
                 </button>
               </form>
@@ -105,7 +106,7 @@ customElements.define(
                 <hr style="border: none; height: 1.25px; background-color: var(--b3);">
               </div>
               <button
-              class="br1 p2 b2 hover fr g2 jc ac hideable hi"
+              class="br1 p2 b2 hover fr g2 jc ac hideable btn-st"
               onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('bridge-redirect'))">
                 <span>Buy Urbit ID</span>
               </button>
@@ -411,11 +412,6 @@ customElements.define(
       let our = localStorage.getItem('our')
       let ticket = $(this.gid('code-input'))[0].value
 
-      localStorage.setItem('auth', true)
-      this.initialLayout(`${shipUrl}`)
-      this.restoreLayout()
-      $(this.gid('code-input'))[0].value = ''
-
       try {
         const kg = urbitKeyGeneration
 
@@ -506,7 +502,7 @@ customElements.define(
 
         let min = document.createElement('button')
         $(min).append(that.renderIcon('minimize'))
-        $(min).addClass('b2 hover br1 bd0 p1 f3')
+        $(min).addClass('b2 hover br1 bd0 p1')
         $(min).on('click', () => {
           $(wind).trigger('minimize-window')
         })
@@ -516,7 +512,7 @@ customElements.define(
 
         let close = document.createElement('button')
         $(close).append(that.renderIcon('close'))
-        $(close).addClass('b2 hover br1 bd0 p1 f3')
+        $(close).addClass('b2 hover br1 bd0 p1')
         $(close).on('click', () => {
           $(wind).trigger('close-window')
         })

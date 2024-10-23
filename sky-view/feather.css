@@ -69,7 +69,7 @@ textarea, select {
   font-size: inherit;
   border: inherit;
   background: inherit;
-  color: inherit;
+  /* color: inherit; */
   letter-spacing: inherit;
   line-height: inherit;
   outline: none;
@@ -253,7 +253,7 @@ html {
 body {
   margin: 0;
   height: 100%;
-  color: var(--f0);
+  /* color: var(--f0); */
   background: var(--b0);
   font-feature-settings: normal;
   font-variation-settings: normal;
@@ -640,7 +640,8 @@ body {
   color: var(--f1);
 }
 .f2 {
-  color: var(--f2);
+  /* color: var(--f2); */
+  color: var(--b2);
 }
 .f3 {
   color: var(--f3);

@@ -90,8 +90,13 @@
   font-size: 34.5pt;
   font-weight: 100;
 }
-/* height input */
-.hi{
+/* height and style input */
+.in-st{
+  height: 34px;
+  color: var(--b2);
+}
+/* height and style button */
+.btn-st{
   height: 34px;
   color: var(--b0);
 }
