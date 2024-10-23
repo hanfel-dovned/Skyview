@@ -184,9 +184,11 @@ i {
   --dark-b-3: #551111;
   --dark-b-2: #555511;
   --dark-b-1: #225511;
-  --dark-b0: #222232;
+  /* --dark-b0: #222232; */
+  --dark-b0: #14140F;
   --dark-b1: #333343;
-  --dark-b2: #444454;
+  /* --dark-b2: #444454; */
+  --dark-b2: #878787;
   --dark-b3: #555565;
   --dark-b4: #666676;
   --dark-f-3: #ee7755;
@@ -712,7 +714,7 @@ body {
   border: 2px solid var(--f1);
 }
 .bd4 {
-  border: 2px solid var(--b3);
+  border: 1px solid var(--b2);
 }
 .br0 {
   border-radius: var(--br0);

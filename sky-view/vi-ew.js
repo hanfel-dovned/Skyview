@@ -16,11 +16,10 @@ customElements.define(
       <div id="tray" class="fc g2 js af">
         <button
           id="sky-open"
-          class="br1 p1 b2 hover fc js ac grow"
-          style="margin-bottom: 20px;"
+          class="br1 bd4 p1 b0 hover fc js ac grow"
           onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('sky-open', {bubbles:true, composed: true}))"
           >
-          <span class="p1 s-1 bold">~</span>
+          <span id="sig-menu" style="color: var(--b2);">~</span>
         </button>
       </div>
       <nav id="nav" class="fc" style="padding-bottom: 15px;">
@@ -74,13 +73,13 @@ customElements.define(
           <div class="wf hf b0 br1 fc ac jc f4">no windows open</div>
         </slot>
         <slot name="s-login" id="s-login">
-          <div class="wf hf b0 br1 fc ac jc g2">
+          <div class="wf hf b0 br1 bd4 fc ac jc g2">
             <span id="pattern-err" class="hidden f3">Please match requested format.</span>
             <div class="p2 fc g5" style="width:260px;">
               <form id="login-form" class="fc g2"> 
                 <input 
                 id="ship-input" 
-                class="br1 bd4 p2 b0 tc"
+                class="br1 bd4 p2 b0 hi"
                 type="text"
                 placeholder="~sampel-palnet" 
                 pattern="^~((([a-z]{6}){1,2}-{0,2})+|[a-z]{3})$" 
@@ -89,7 +88,7 @@ customElements.define(
                 />
                 <input 
                 id="code-input" 
-                class="br1 bd4 p2 b0 tc"
+                class="br1 bd4 p2 b0 hi"
                 type="password"
                 placeholder="~sampel-ticlyt-migfun-falmel"
                 pattern="^~(([a-z]{6}-){3}[a-z]{6})$" 
@@ -98,17 +97,17 @@ customElements.define(
                 <button 
                 type="button" 
                 onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-in'))" 
-                class="br1 p2 b2 hover">
-                  <span class="f3">Log-in</span>
+                class="br1 p2 b2 hover hi">
+                  <span>Log-in</span>
                 </button>
               </form>
               <div>
-                <hr style="border: none; height: 1px; background-color: var(--b3);">
+                <hr style="border: none; height: 1.25px; background-color: var(--b3);">
               </div>
               <button
-              class="br1 p2 b2 hover fr g2 jc ac hideable"
+              class="br1 p2 b2 hover fr g2 jc ac hideable hi"
               onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('bridge-redirect'))">
-                <span class="f3">Buy Urbit ID</span>
+                <span>Buy Urbit ID</span>
               </button>
             </div>
           </div>
