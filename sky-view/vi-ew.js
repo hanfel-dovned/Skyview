@@ -33,9 +33,6 @@ customElements.define(
             <span id="sig-menu" style="color: var(--b2);">~</span>
           </button>
           <div class="fc g3 grow scroll-y">
-            <div class="fr g1 jb">
-              <span class="wfc p2 tc grow f2" id="welcome"></span>
-            </div>
             <div class="fr jc g2">
               <button onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-forum'))" 
               class="b2 p3 bd0 br1 hover">
@@ -63,7 +60,7 @@ customElements.define(
               onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-out'))"
               class="b2 hover br1 bd0 p2 grow fr g2 ac"
               >
-                <span class="wf tc">logout</span>
+                <span class="wf tc">Log out</span>
               </button>
             </div>
           </footer>
@@ -91,7 +88,7 @@ customElements.define(
                 id="code-input" 
                 class="br1 bd4 p2 b0 in-st"
                 type="password"
-                placeholder="~sampel-ticlyt-migfun-falmel"
+                placeholder="~sampel-ticlyt-migfun-falmel-sampel"
                 pattern="^~(([a-z]{6}-){3}[a-z]{6})$" 
                 required
                 />
@@ -99,7 +96,7 @@ customElements.define(
                 type="button" 
                 onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-in'))" 
                 class="br1 p2 b2 hover btn-st">
-                  <span>Log-in</span>
+                  <span>Log in</span>
                 </button>
               </form>
               <div>
@@ -108,7 +105,7 @@ customElements.define(
               <button
               class="br1 p2 b2 hover fr g2 jc ac hideable btn-st"
               onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('bridge-redirect'))">
-                <span>Buy Urbit ID</span>
+                <span>Sign up</span>
               </button>
             </div>
           </div>
@@ -190,7 +187,6 @@ customElements.define(
         this.fixSlots()
       })
       $(this).on('new-window', (e) => {
-        console.log('new-window event', e)
         let wind = document.createElement('wi-nd')
         let here = `http://localhost:8000`
         let slot = e.detail && e.detail.slot ? e.detail.slot : `s-1`
@@ -287,7 +283,6 @@ customElements.define(
         let wid = e.originalEvent.dataTransfer.getData('text/plain')
         let wind = $(`[wid='${wid}']`)
       })
-      //
       $(this).on('log-in', (e) => {
         //  sending post request here to login
         e.preventDefault()
@@ -350,7 +345,6 @@ customElements.define(
           $(this.gid('tab-controller')).removeClass('hidden')
         }
       } else if (name === 'windows-open') {
-        console.log(this.windowsOpen)
         this.qs('main').className = !this.windowsOpen
           ? 'open-0'
           : `open-${this.windowsOpen}`
@@ -362,7 +356,6 @@ customElements.define(
         let inner = slot.assignedNodes()
         if (inner[0]) {
           let wind = inner[0]
-          console.log(wind, wind)
           wind.addEventListener('dblclick', (e) => {
             if (e.target === wind || wind.contains(e.target)) {
               e.stopPropagation()
@@ -408,57 +401,62 @@ customElements.define(
     }
     async postCode() {
       let shipUrl = localStorage.getItem('local-url')
-      let rift = localStorage.getItem('rift')
-      let our = localStorage.getItem('our')
-      let ticket = $(this.gid('code-input'))[0].value
+      localStorage.setItem('auth', true)
+      this.initialLayout(`${shipUrl}`)
+      this.restoreLayout()
+      $(this.gid('code-input'))[0].value = ''
+      // let shipUrl = localStorage.getItem('local-url')
+      // let rift = localStorage.getItem('rift')
+      // let our = localStorage.getItem('our')
+      // let ticket = $(this.gid('code-input'))[0].value
 
-      try {
-        const kg = urbitKeyGeneration
+      // try {
+      //   const kg = urbitKeyGeneration
 
-        const wallet = await kg.generateWallet
-        const ob = require('urbit-ob')({
-          boot: false, // do not boot
-          // TODO do not hardcode @p / AZP
-          ship: ob.patp2dec(our),
-          ticket: ticket
-        })
+      //   const wallet = await kg.generateWallet
+      //   const ob = require('urbit-ob')({
+      //     boot: false, // do not boot
+      //     // TODO do not hardcode @p / AZP
+      //     ship: ob.patp2dec(our),
+      //     ticket: ticket
+      //   })
 
-        const networkSeed = kg.deriveNetworkSeed(
-          wallet.management.seed,
-          null,
-          rift
-        )
-        //console.log(networkSeed)
-        const networkKeys = kg.deriveNetworkKeys(networkSeed)
-        //console.log(networkKeys)
-        const lusCode = kg.generateCode(networkKeys)
-        //console.log('+code: ' + kg.generateCode(networkKeys));
+      //   const networkSeed = kg.deriveNetworkSeed(
+      //     wallet.management.seed,
+      //     null,
+      //     rift
+      //   )
+      //   //console.log(networkSeed)
+      //   const networkKeys = kg.deriveNetworkKeys(networkSeed)
+      //   //console.log(networkKeys)
+      //   const lusCode = kg.generateCode(networkKeys)
+      //   //console.log('+code: ' + kg.generateCode(networkKeys));
 
-        //console.log(`${shipUrl}/~/login`)
-        const url = `${shipUrl}/~/login`
-        const body = `password=${lusCode}`
+      //   //console.log(`${shipUrl}/~/login`)
+      //   const url = `${shipUrl}/~/login`
+      //   const body = `password=${lusCode}`
 
-        // TODO Not compatible with https:// URLs
-        fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          body: body,
-          credentials: 'include'
-        })
-          .then((response) => response.text())
-          .then((data) => {
-            console.log('Success:', data)
-            localStorage.setItem('auth', true)
-            this.initialLayout(`${shipUrl}`)
-            this.restoreLayout()
-            $(this.gid('code-input'))[0].value = ''
-          })
-          .catch((error) => console.error('Error:', error))
-      } catch (err) {
-        console.log('Error during log-in process: ' + err)
-      }
+      //   // TODO Not compatible with https:// URLs
+      //   fetch(url, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/x-www-form-urlencoded'
+      //     },
+      //     body: body,
+      //     credentials: 'include'
+      //   })
+      //     .then((response) => response.text())
+      //     .then((data) => {
+      //       console.log('Success:', data)
+      //       localStorage.setItem('auth', true)
+      //       this.initialLayout(`${shipUrl}`)
+      //       this.restoreLayout()
+      //       $(this.gid('code-input'))[0].value = ''
+      //     })
+      //     .catch((error) => console.error('Error:', error))
+      // } catch (err) {
+      //   console.log('Error during log-in process: ' + err)
+      // }
     }
     renderIcon(name) {
       let s = document.createElement('span')
@@ -542,12 +540,10 @@ customElements.define(
     }
     growFlock() {
       let currentWindowsOpen = this.windowsOpen
-      console.log('currentWindowsOpen', currentWindowsOpen)
       if (isNaN(currentWindowsOpen)) {
         currentWindowsOpen = 0
       }
       $(this).attr('windows-open', Math.min(4, currentWindowsOpen + 1))
-      console.log('windows-open', Math.min(4, currentWindowsOpen + 1))
     }
     shrinkFlock() {
       $(this).attr('windows-open', Math.max(0, this.windowsOpen - 1))
@@ -572,7 +568,6 @@ customElements.define(
       let layoutString = localStorage.getItem('sky-layout')
       let authenticated = localStorage.getItem('auth')
       let showBridge = localStorage.getItem('show-bridge')
-      console.log(layoutString)
       if (!authenticated) {
         if (showBridge) {
           this.settingLayout(layoutString)
@@ -594,7 +589,6 @@ customElements.define(
         console.log('Restoring layout + Authenticated!')
 
         let our = localStorage.getItem('our')
-        $(this.gid('welcome'))[0].innerHTML = `Welcome ${our}`
         //  enabling sidebar menu
         $(this.gid('sky-open')).addClass('hover')
         $(this.gid('sky-open')).prop('disabled', false)
@@ -603,7 +597,6 @@ customElements.define(
       }
     }
     initialLayout(url) {
-      console.log('new layout')
       // create initial layout
       let layout = {
         open: false,
@@ -636,7 +629,13 @@ customElements.define(
         let wind = document.createElement('wi-nd')
         $(wind).attr('here', w.here)
         $(wind).attr('slot', !!w.slot ? w.slot : null)
-        $(wind).attr('here', w.here)
+        console.log(w.here)
+        if (
+          w.here === 'https://bridge.urbit.org/' ||
+          w.here === 'https://bridge.urbit.org'
+        ) {
+          $(wind).attr('style', 'background: white;')
+        }
         $(this).append(wind)
       })
     }

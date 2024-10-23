@@ -55,7 +55,7 @@ customElements.define(
          height: 100%;
          overflow: hidden;
          border-radius: 3px;
-         border: var(--sky-window-border, 1px) solid var(--b2);
+         border: 1px solid var(--b2);
        }
        #drag-overlay {
          background: blue;
@@ -92,7 +92,7 @@ customElements.define(
        }
       </style>
       <div id="drag-overlay" class="hidden"></div>
-      <header class="b2 fr af js g1">
+      <header class="b2 fr af js g1 hidden">
         <div id="breadcrumbs" class="hover grow fr af js"></div>
         <form id="searchbar" class="grow fr hidden">
           <input
@@ -288,6 +288,18 @@ customElements.define(
             })
           })
       })
+      this.addEventListener('mousemove', (e) => {
+        const rect = this.getBoundingClientRect()
+        const mouseY = e.clientY - rect.top
+        if (mouseY < rect.height / 2) {
+          $(this.qs('header')).removeClass('hidden')
+        } else {
+          $(this.qs('header')).addClass('hidden')
+        }
+      })
+      this.addEventListener('mouseout', (e) => {
+        $(this.qs('header')).addClass('hidden')
+      })
     }
     disconnectedCallback() {
       if (this.intervalId !== null) {
@@ -340,14 +352,6 @@ customElements.define(
         .filter((s) => !!s.trim().length)
     }
 
-    // get strategyPoke() {
-    //   let poke = {
-    //     here: this.here,
-    //     strategies: this.strategies.slice(0, -1)
-    //   }
-    //   return JSON.stringify(poke)
-    // }
-
     async checkUrl(url) {
       try {
         let response = await fetch(url, { method: 'GET' })
@@ -369,15 +373,12 @@ customElements.define(
       let el = document.createElement('iframe')
       el.setAttribute('lazy', '')
       el.setAttribute('src', here)
-      el.setAttribute(
-        'style',
-        'width: 100%; flex-grow: 1; border: none; background: var(--b0);'
-      )
+      el.setAttribute('style', 'width: 100%; flex-grow: 1; border: none;')
       if (!open) {
         el.hidden = true
       }
       el.addEventListener('load', () => {
-        this.registerServiceWorker(el)
+        //this.registerServiceWorker(el)
       })
       return el
     }
@@ -482,16 +483,10 @@ customElements.define(
       breadcrumbs.on('click', () => {
         $(this).attr('searching', '')
       })
-      breadcrumbs.on('mouseover', () => {
-        crumb.removeClass('hidden')
-      })
-      breadcrumbs.on('mouseout', () => {
-        crumb.addClass('hidden')
-      })
 
       breadcrumbs.children().remove()
       let crumb = $(document.createElement('span'))
-      crumb.addClass('p-1 hidden b2 br1 s-1')
+      crumb.addClass('p-1 b2 br1 s-1')
       crumb.text(this.here)
       breadcrumbs.append(crumb)
       let spacer = $(document.createElement('button'))
