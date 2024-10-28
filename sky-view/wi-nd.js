@@ -55,7 +55,6 @@ customElements.define(
          height: 100%;
          overflow: hidden;
          border-radius: 3px;
-         border: 1px solid var(--b2);
        }
        #drag-overlay {
          background: blue;
@@ -234,6 +233,7 @@ customElements.define(
       this.intervalId = setInterval(() => {
         let here = this.getAttribute('here')
         let favicon = this.getAttribute('favicon')
+        //console.log('icon', favicon)
         let tabTitle = this.getAttribute('tab-title')
         $(this.gid('tabs'))
           .children()
@@ -288,18 +288,18 @@ customElements.define(
             })
           })
       })
-      this.addEventListener('mousemove', (e) => {
-        const rect = this.getBoundingClientRect()
-        const mouseY = e.clientY - rect.top
-        if (mouseY < rect.height / 2) {
-          $(this.qs('header')).removeClass('hidden')
-        } else {
-          $(this.qs('header')).addClass('hidden')
-        }
-      })
-      this.addEventListener('mouseout', (e) => {
-        $(this.qs('header')).addClass('hidden')
-      })
+      // this.addEventListener('mousemove', (e) => {
+      //   const rect = this.getBoundingClientRect()
+      //   const mouseY = e.clientY - rect.top
+      //   if (mouseY < rect.height / 2) {
+      //     $(this.qs('header')).removeClass('hidden')
+      //   } else {
+      //     $(this.qs('header')).addClass('hidden')
+      //   }
+      // })
+      // this.addEventListener('mouseout', (e) => {
+      //   $(this.qs('header')).addClass('hidden')
+      // })
     }
     disconnectedCallback() {
       if (this.intervalId !== null) {

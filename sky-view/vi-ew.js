@@ -13,54 +13,89 @@ customElements.define(
         shadow.adoptedStyleSheets = [...shadow.adoptedStyleSheets, ...sheets]
       })
       shadow.innerHTML = `
-      <div id="tray" class="fc g2 js af">
+      <div id="tray" class="fc js af p2 br1"           
+      style="background: white; gap: 28px;">
         <button
           id="sky-open"
-          class="br1 bd4 p1 b0 hover fc js ac grow"
+          style="background: white"
+          class="br1 p2 b0 hover fc js ac"
           onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('sky-open', {bubbles:true, composed: true}))"
           >
-          <span id="sig-menu" style="color: var(--b2);">~</span>
+          <span id="sig-menu">~</span>
+        </button>
+        <div class="fc" style="gap: 19px;">
+        <button
+          id="sky-open"
+          style="background: white"
+          class="br1 p2 b0 hover fc js ac"
+          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-forum'))">
+          <img src="icons/Forum.svg" alt="landscape" height="18"/>
+        </button>
+        <button
+          id="sky-open"
+          style="background: white"
+          class="br1 p2 b0 hover fc js ac"
+          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-wallet'))">
+          <img src="icons/UrWallet.svg" alt="landscape" height="18"/>
+        </button>
+        <button
+          id="sky-open"
+          style="background: white"
+          class="br1 p2 b0 hover fc js ac"
+          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-landscape'))">
+          <img src="icons/Landscape.svg" alt="landscape" height="18"/>
+        </button>
+        <button
+          id="sky-open"
+          style="background: white"
+          class="br1 p2 b0 hover fc js ac"
+          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-watch'))">
+          <img src="icons/Clock.svg" alt="landscape" height="18"/>
+        </button>
+                <button
+          id="sky-open"
+          style="background: white"
+          class="br1 p2 b0 hover fc js ac"
+          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-messenger'))">
+          <img src="../forum/external/bubble.svg" alt="messenger" height="18"/>
+        </button>
+        <button
+          id="sky-open"
+          style="background: white"
+          class="br1 p2 b0 hover fc js ac"
+          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-files'))">
+          <img src="icons/folder.svg" alt="files" height="18"/>
         </button>
       </div>
-      <nav id="nav" class="fc">
-        <div id="tab-controller" class="fc g3 grow">
+      </div>
+      <nav id="nav" class="fc br1" style="background: white;">
+        <div id="tab-controller" class=" br3 fc g3 grow p2">
           <button
             id="sky-open"
-            class="br1 bd4 b0 p1 hover fc jc ac hideable"
+            class="hover fc jc as hideable"
             onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('sky-open', {bubbles:true, composed: true}))"
-            style="line-height: 1;"
+            style="line-height: 1; height:47px;"
             >
-            <span id="sig-menu" style="color: var(--b2);">~</span>
+            <span id="sig-menu">~</span>
           </button>
+          <div style="border-bottom: solid 1px #CFCFCF;"></div>
+          <div class="p2">
+            <img class="p2 br1" style="box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25); background: #C3CDC3" src="./icons/UrbitCard.svg"/>
+          </div>
+          <div style="border-bottom: solid 1px #CFCFCF;"></div>
           <div class="fc g3 grow scroll-y">
-            <div class="fr jc g2">
-              <button onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-forum'))" 
-              class="b2 p3 bd0 br1 hover">
-                <span class="material-symbols-outlined" id="icon">forum</span>
-              </button>
-              <button onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-landscape'))"
-              class="b2 p3 bd0 br1 hover">
-                <img src="icons/landscape.svg" alt="landscape" height="30">
-              </button>
-              <button onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-bridge'))"
-              class="b2 p3 bd0 br1 hover">
-                <img src="icons/semi-bold_02_planet.svg" alt="bridge" height="30">
-              </button>
-              <button onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-watch'))" 
-              class="b2 p3 bd0 br1 hover">
-                <span class="material-symbols-outlined" id="icon">schedule</span>
-              </button>
-            </div>
-            <div id="tabs" class="fc g2"></div>
+            <div id="tabs" class="fc g2 p2"></div>
+            <div style="border-bottom: solid 1px #CFCFCF;"></div>
             <div class="grow"></div>
           </div>
           <footer class="fc g2 p2" style="padding-bottom:0;">
             <div class="fr g2">
               <button
               onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-out'))"
-              class="b2 hover br1 bd0 p2 grow fr g2 ac"
+              class="hover br1 bd0 p2 grow fr g2 ac"
               >
-                <span class="wf tc">Log out</span>
+                <img src="./icons/LogOut.svg"/>
+                <span class="wf tl">Log out</span>
               </button>
             </div>
           </footer>
@@ -71,42 +106,52 @@ customElements.define(
           <div class="wf hf b0 br1 fc ac jc f4">no windows open</div>
         </slot>
         <slot name="s-login" id="s-login">
-          <div class="wf hf b0 br1 bd4 fc ac jc g2">
+          <div class="wf hf b0 br1 fc ac jc g2">
             <span id="pattern-err" class="hidden f3">Please match requested format.</span>
-            <div class="p2 fc g5" style="width:260px;">
+            <div class="p2 fc g2" style="width:260px;">
+              <span style="font-size: 40pt;" class="tc">Urbit</span>
               <form id="login-form" class="fc g2"> 
                 <input 
                 id="ship-input" 
-                class="br1 bd4 p2 b0 in-st"
+                class="br3 bd4 p2 in-st"
                 type="text"
                 placeholder="~sampel-palnet" 
                 pattern="^~((([a-z]{6}){1,2}-{0,2})+|[a-z]{3})$" 
                 autocomplete="off"
                 required
                 />
-                <input 
-                id="code-input" 
-                class="br1 bd4 p2 b0 in-st"
-                type="password"
-                placeholder="~sampel-ticlyt-migfun-falmel-sampel"
-                pattern="^~(([a-z]{6}-){3}[a-z]{6})$" 
-                required
-                />
+                <div
+                class="br3 bd4 p2 fr g1 ac jb in-st">
+                  <input 
+                  id="code-input" 
+                  style="border: none;"
+                  class="wf"
+                  type="password"
+                  placeholder="~sampel-ticlyt-migfun-falmel"
+                  pattern="^~(([a-z]{6}-){3}[a-z]{6})$" 
+                  required
+                  />
+                  <button 
+                  type="button" 
+                  style="border: none;"
+                  onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('toggle-password'))">
+                    <span id="eye-icon" 
+                    class="mso f2 hover">visibility</span>
+                  </button>
+                </div>
                 <button 
                 type="button" 
                 onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-in'))" 
-                class="br1 p2 b2 hover btn-st">
+                class="br3 p2 b4 hover btn-st fr ac jc">
                   <span>Log in</span>
                 </button>
               </form>
-              <div>
-                <hr style="border: none; height: 1.25px; background-color: var(--b3);">
+              <div class="fr jc g1">
+                <span class="f2">
+                Don’t have an Urbit ID? 
+                </span>
+                <span onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('bridge-redirect'))" class="sign-up hover"> Sign Up</span>
               </div>
-              <button
-              class="br1 p2 b2 hover fr g2 jc ac hideable btn-st"
-              onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('bridge-redirect'))">
-                <span>Sign up</span>
-              </button>
             </div>
           </div>
         </slot>
@@ -114,6 +159,7 @@ customElements.define(
         <slot name="s1" id="s1"></slot>
         <slot name="s2" id="s2"></slot>
         <slot name="s3" id="s3"></slot>
+        <slot name="s4" id="s4"></slot>
       </main>
       <slot id="default" style="display: none;"></slot>
     `
@@ -186,16 +232,6 @@ customElements.define(
       $(this).on('fix-slots', () => {
         this.fixSlots()
       })
-      $(this).on('new-window', (e) => {
-        let wind = document.createElement('wi-nd')
-        let here = `http://localhost:8000`
-        let slot = e.detail && e.detail.slot ? e.detail.slot : `s-1`
-        $(wind).attr('here', here)
-        $(wind).attr('slot', slot)
-        this.appendChild(wind)
-        this.growFlock()
-        this.fixSlots()
-      })
       $(this).on('close-window', (e) => {
         let wind = $(e.target)
         if (wind.attr('slot') != undefined) {
@@ -237,6 +273,12 @@ customElements.define(
         wind.attr('slot', 's-1')
         this.fixSlots()
         this.renderTabs()
+      })
+      $(this).on('zoom-window', (e) => {
+        let wind = $(e.target)
+        let windSlot = wind.attr('slot')
+        let slot = this.gid(windSlot)
+        slot.classList.toggle('zoom')
       })
       $(this).on('drag-start', (e) => {
         $(this.windows).attr('dragging', '')
@@ -283,6 +325,17 @@ customElements.define(
         let wid = e.originalEvent.dataTransfer.getData('text/plain')
         let wind = $(`[wid='${wid}']`)
       })
+      $(this).on('toggle-password', (e) => {
+        let input = this.gid('code-input')
+        let eyeIcon = this.gid('eye-icon')
+        if (input.getAttribute('type') === 'password') {
+          $(input).attr('type', 'text')
+          eyeIcon.innerHTML = 'visibility_off'
+        } else {
+          $(input).attr('type', 'password')
+          eyeIcon.innerHTML = 'visibility'
+        }
+      })
       $(this).on('log-in', (e) => {
         //  sending post request here to login
         e.preventDefault()
@@ -317,16 +370,25 @@ customElements.define(
       })
       $(this).on('open-landscape', (e) => {
         let shipUrl = localStorage.getItem('local-url')
-        this.openWindow(e, `${shipUrl}/apps/landscape`)
+        this.openWindow(
+          e,
+          `https://tolmud-tobtud.startram.io/~/login?/apps/landscape`
+        )
       })
       $(this).on('open-forum', (e) => {
         this.openWindow(e, `${window.location.origin}/forum`)
       })
-      $(this).on('open-bridge', (e) => {
-        this.openWindow(e, 'https://bridge.urbit.org/')
+      $(this).on('open-wallet', (e) => {
+        this.openWindow(e, `${window.location.origin}/wallet`)
       })
       $(this).on('open-watch', (e) => {
         this.openWindow(e, `${window.location.origin}/watch`)
+      })
+      $(this).on('open-messenger', (e) => {
+        this.openWindow(e, `${window.location.origin}/messenger`)
+      })
+      $(this).on('open-files', (e) => {
+        this.openWindow(e, `${window.location.origin}/file-app`)
       })
       this.qs('main').className = !this.windowsOpen
         ? 'open-0'
@@ -376,28 +438,28 @@ customElements.define(
       localStorage.setItem('our', our)
       const url = `https://bitdeg.arvo.network/apps/ship-url-getter/${our}`
 
-      fetch(url)
-        .then((response) => {
-          if (!response.ok) {
-            // err handling
-            throw new Error('Network response ' + response.statusText)
-          }
-          return response.json()
-        })
-        .then((data) => {
-          console.log('Success:', data)
-          console.log('URL: ' + data.url)
-          let rawUrl = data.url
-          let url = rawUrl.replace(/\/~\/eauth$/, '')
-          let rift = parseInt(data.rift, 10)
-          localStorage.setItem('local-url', url)
-          localStorage.setItem('rift', rift)
-          this.postCode()
-        })
-        .catch((error) => {
-          // err handling
-          console.error('Error:', error)
-        })
+      // fetch(url)
+      //   .then((response) => {
+      //     if (!response.ok) {
+      //       // err handling
+      //       throw new Error('Network response ' + response.statusText)
+      //     }
+      //     return response.json()
+      //   })
+      //   .then((data) => {
+      // console.log('Success:', data)
+      // console.log('URL: ' + data.url)
+      // let rawUrl = data.url
+      // let url = rawUrl.replace(/\/~\/eauth$/, '')
+      // let rift = parseInt(data.rift, 10)
+      // localStorage.setItem('local-url', url)
+      // localStorage.setItem('rift', rift)
+      this.postCode()
+      // })
+      // .catch((error) => {
+      //   // err handling
+      //   console.error('Error:', error)
+      // })
     }
     async postCode() {
       let shipUrl = localStorage.getItem('local-url')
@@ -458,26 +520,26 @@ customElements.define(
       //   console.log('Error during log-in process: ' + err)
       // }
     }
-    renderIcon(name) {
-      let s = document.createElement('span')
-      s.className = 'mso'
-      s.textContent = name
-      return s
+    renderIcon(src) {
+      let img = document.createElement('img')
+      $(img).attr('src', src)
+      return img
     }
     renderTabs() {
       let tabs = $(this.gid('tabs'))
       tabs.children().remove()
       let windowsOpen = this.windowsOpen
       let that = this
+      console.log('windows', this.windows)
       $(this.windows).each(function (i) {
         let wind = this
         let tab = document.createElement('div')
-        $(tab).addClass('b2 br1 fr af js bd1')
+        $(tab).addClass('br1 fr af js bw s17')
         if (i < windowsOpen) {
           $(tab).addClass('toggled')
         }
         let mux = document.createElement('button')
-        mux.className = 'b2 hover br1 bd0 p2 grow tl fr g2 ac js'
+        mux.className = 'hover br1 bd0 p2 grow tl fr g2 ac js bw s17'
         mux.style =
           'overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: left;'
         let im = wind.getAttribute('favicon')
@@ -487,6 +549,7 @@ customElements.define(
         )}" style="width: 20px; height: 20px;" />
         `
           : ``
+        console.log('title', $(wind).attr('tab-title'))
         mux.innerHTML = `
         ${im}
         <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: left;">
@@ -499,8 +562,8 @@ customElements.define(
         })
 
         let min = document.createElement('button')
-        $(min).append(that.renderIcon('minimize'))
-        $(min).addClass('b2 hover br1 bd0 p1')
+        $(min).append(that.renderIcon('./icons/minimize.svg'))
+        $(min).addClass('hover br1 bd0 p1 bw s17')
         $(min).on('click', () => {
           $(wind).trigger('minimize-window')
         })
@@ -508,42 +571,73 @@ customElements.define(
           $(min).hide()
         }
 
+        let zoom = document.createElement('button')
+        $(zoom).append(that.renderIcon('./icons/max.svg'))
+        $(zoom).addClass('hover br1 bd0 p1 bw s17')
+        $(zoom).on('click', () => {
+          $(wind).trigger('zoom-window')
+        })
+        if (i >= windowsOpen) {
+          $(zoom).hide()
+        }
+
         let close = document.createElement('button')
-        $(close).append(that.renderIcon('close'))
-        $(close).addClass('b2 hover br1 bd0 p1')
+        $(close).append(that.renderIcon('./icons/close.svg'))
+        $(close).addClass('hover br1 bd0 p1 bw s17')
         $(close).on('click', () => {
           $(wind).trigger('close-window')
         })
 
         $(tab).append(max)
         $(tab).append(min)
+        $(tab).append(zoom)
         $(tab).append(close)
         tabs.append(tab)
       })
       this.saveLayout()
     }
     fixSlots() {
-      let slotted = $(this.windows).filter('[slot]').get().slice(0, 4)
+      let slotted = $(this.windows).filter('[slot]').get().slice(0, 5)
       $(this.windows).removeAttr('slot')
       slotted.forEach((s, i) => {
         s.setAttribute('slot', `s${i}`)
       })
+      console.log('slotted', slotted)
     }
     openWindow(e, here) {
+      console.log('open window')
       let wind = document.createElement('wi-nd')
       let slot = e.detail && e.detail.slot ? e.detail.slot : `s-1`
-      $(wind).attr('here', here)
-      $(wind).attr('slot', slot)
-      this.appendChild(wind)
-      this.growFlock()
-      this.fixSlots()
+      const setAttributes = (attributes) => {
+        console.log('setting up', attributes)
+        $(wind).attr(
+          'favicon',
+          attributes ? attributes.iconUrl : './icons/Landscape.svg'
+        )
+        $(wind).attr('tab-title', attributes ? attributes.title : 'Landscape')
+        $(wind).attr('here', here)
+        $(wind).attr('slot', slot)
+        console.log('new-wind', wind)
+        this.appendChild(wind)
+        this.growFlock()
+        this.fixSlots()
+      }
+      this.getIconUrl(here)
+        .then((atributes) => {
+          console.log('got icon and title', atributes)
+          setAttributes(atributes)
+        })
+        .catch((error) => {
+          console.log('error')
+          setAttributes(null)
+        })
     }
     growFlock() {
       let currentWindowsOpen = this.windowsOpen
       if (isNaN(currentWindowsOpen)) {
         currentWindowsOpen = 0
       }
-      $(this).attr('windows-open', Math.min(4, currentWindowsOpen + 1))
+      $(this).attr('windows-open', Math.min(5, currentWindowsOpen + 1))
     }
     shrinkFlock() {
       $(this).attr('windows-open', Math.max(0, this.windowsOpen - 1))
@@ -574,6 +668,7 @@ customElements.define(
         } else {
           //  opening login setup
           this.qs('main').className = `open-login`
+          $(this).addClass('login')
           //
           //  easy solution for now
           //
@@ -588,7 +683,7 @@ customElements.define(
       } else if (!!layoutString && authenticated) {
         console.log('Restoring layout + Authenticated!')
 
-        let our = localStorage.getItem('our')
+        $(this).removeClass('login')
         //  enabling sidebar menu
         $(this.gid('sky-open')).addClass('hover')
         $(this.gid('sky-open')).prop('disabled', false)
@@ -603,17 +698,25 @@ customElements.define(
         windowsOpen: 3,
         windows: [
           {
-            here: `${url}/apps/landscape`,
+            here: `https://tolmud-tobtud.startram.io/~/login?/apps/landscape`,
             slot: 's0'
           },
           {
-            here: `https://urbit.org`,
+            here: `${window.location.origin}/forum`,
             slot: 's1'
           },
           {
-            here: `https://bridge.urbit.org`,
+            here: `${window.location.origin}/wallet`,
             slot: 's2'
           }
+          // {
+          //   here: `${window.location.origin}/file-app`,
+          //   slot: 's3'
+          // },
+          // {
+          //   here: `${window.location.origin}/watch`,
+          //   slot: 's4'
+          // }
         ]
       }
       localStorage.setItem('sky-layout', JSON.stringify(layout))
@@ -627,16 +730,59 @@ customElements.define(
 
       layout.windows.forEach((w) => {
         let wind = document.createElement('wi-nd')
-        $(wind).attr('here', w.here)
-        $(wind).attr('slot', !!w.slot ? w.slot : null)
-        console.log(w.here)
-        if (
-          w.here === 'https://bridge.urbit.org/' ||
-          w.here === 'https://bridge.urbit.org'
-        ) {
-          $(wind).attr('style', 'background: white;')
+        const setAttributes = (attributes) => {
+          console.log('setting attr', attributes)
+          $(wind).attr(
+            'favicon',
+            attributes ? attributes.iconUrl : './icons/Landscape.svg'
+          )
+          $(wind).attr('tab-title', attributes ? attributes.title : 'Landscape')
+          $(wind).attr('here', w.here)
+          $(wind).attr('slot', w.slot || null)
+
+          if (
+            w.here === 'https://bridge.urbit.org/' ||
+            w.here === 'https://bridge.urbit.org'
+          ) {
+            $(wind).attr('style', 'background: white;')
+          }
+
+          $(this).append(wind)
         }
-        $(this).append(wind)
+        this.getIconUrl(w.here)
+          .then((attributes) => {
+            console.log('new-title', attributes)
+            setAttributes(attributes)
+          })
+          .catch((error) => {
+            setAttributes(null)
+            console.error('Failed to get icon:', error)
+          })
+      })
+    }
+    getIconUrl(here) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(here)
+          .then((response) => {
+            const parser = new DOMParser()
+            const doc = parser.parseFromString(response.data, 'text/html')
+            const iconLink = doc.querySelector("link[rel='icon']")
+            const title = doc.querySelector('title')
+              ? doc.querySelector('title').innerHTML
+              : ''
+            if (iconLink) {
+              const iconUrl = new URL(iconLink.href, here).href
+              console.log('resolve', title)
+              resolve({ iconUrl, title })
+            } else {
+              resolve(null)
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching the URL:', error)
+            reject(error)
+          })
       })
     }
   }

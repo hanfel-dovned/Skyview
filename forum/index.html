@@ -5,30 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="forum">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <title>forum</title>
+    <link rel="stylesheet" href="../sky-view/feather.css">
+    <title>Forum</title>
+    <link rel="icon" href="../sky-view/icons/Forum.svg" 
+    type="image/svg+xml">
     <style>
-        .material-symbols-outlined {
-            font-family: 'Material Symbols Outlined', sans-serif;
-            font-weight: normal;
-            font-style: normal;
-            line-height: 1;
-            letter-spacing: normal;
-            text-transform: none;
-            display: inline-block;
-            white-space: nowrap;
-            align-items: center;
-            justify-content: center;
-            direction: ltr;
-            -webkit-font-feature-settings: 'liga';
-            -webkit-font-smoothing: antialiased;
-            font-variation-settings:
-                'FILL' 0,
-                'wght' 400,
-                'GRAD' 0,
-                'opsz' 24;
-            }
+        @font-face {
+          font-family: "Urbit Sans";
+          src: url("https://media.urbit.org/fonts/UrbitSans/UrbitSansVFWeb-Regular.woff2")
+               format("woff2");
+          font-weight: 100 700;
+          font-style: normal;
+        }
         body {
-            font-family: monospace;
+            font-family: "Urbit Sans", monospace;
             margin: 0;
             padding: 0;
             background-color: rgb(255, 255, 255);
@@ -40,65 +30,54 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: rgb(58, 58, 58);
+            background-color: white;
             padding: 10px 20px;
-            color: white;
+            border-bottom: 1px solid #CFCFCF;
+            height: 67px;
         }
-        nav {
-            display: flex;
-            align-items: center;
-            flex-direction: row;
+        img{
+            max-width: 500px;
+        }
+        img:hover {
+            filter: invert(20%);
+            cursor: pointer;
         }
         nav a {
             margin-left: 15px;
             color: white;
             text-decoration: none;
         }
-        .title {
-            font-size: 1.5em;
-        }
-        .container {
-            padding: 20px;
-        }
-        .discussion {
-            display: flex;
-            flex-direction: column;
-            background-color: #f2f2f2;
-            margin: 10px 0;
-            padding: 10px;
+        button{
+            background: none;
+            border: none;
         }
         .border{
             border: 1px solid #ddd;
             border-radius: 5px;
         }
         .fs1 {
-            font-size: 1.5em;
+            font-size: 30pt;
         }
         .fs2 {
-            font-size: 2em;
+            font-size: 26pt;
         }
         .fs3 {
-            font-size: 3em;
-        }
-        .fr {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 5px;
+            font-size: 17pt;
         }
         .pd {
             padding: 5px;
         }
-        .bw {
-            background-color: #f2f2f2;
+        .bg{
+            background-color: #CFCFCF;
         }
-        .bg {
-            background-color: #dfdfdf;
+        .cg{
+            color: #747474;
         }
-        .bw:hover {
-            background-color: #dfdfdf;
-            border-color:  #f2f2f2;
+        .br4{
+            border-radius: 8px;
+        }
+        .g30{
+            gap: 30px;
         }
         .disc-header {
             justify-content: space-between;
@@ -106,119 +85,224 @@
         .disc-info {
             justify-content: end;
         }
-        .discussion:hover{
-            background-color: #dfdfdf;
+        .circle{
+            width: 30pt;         
+            height: 30pt;        
+            display: flex;     
+            justify-content: center; 
+            align-items: center; 
+            border-radius: 50%;
+        }
+        .circle-lus{
+            width: 17pt;         
+            height: 17pt;        
+            display: flex;     
+            justify-content: center; 
+            align-items: center; 
+            border-radius: 50%;
+            color:white;
+        }
+        .pad{
+            padding: 20px;
+        }
+         .pointer{
+            cursor: pointer;
+         }
+         .btn{
+            display: flex;
+            width: 76px;
+            padding: 3px 7px;
+            align-items: flex-start;
+            gap: 7.118px;
+            border-radius: 7px; 
+            background: #C9C9C9;
+            color:white
         }
     </style>
 </head>
 <body>
     <header>
-            <div class="fr">
-                <span class="material-symbols-outlined fs3">forum</span>
-                <div class="title">Forum</div>
+            <div class="fr g2">
+                <img src="external/forum-icon.svg" />
+                <div class="fs3">Forum</div>
             </div>
-            <nav class="fr">
-                <a href="/example">
-                <span class="material-symbols-outlined fs2">person</span>
-                </a>
+            <nav class="fr ac g2">
+                <div class="circle-lus bg hover pointer">
+                    <span class="fs2" style="transform: translateY(-3px);">+</span>
+                </div>
+                <button class="btn hover pointer">
+                     <span style="width:100%;">New Post</span>
+                </button>
+                <img class="pointer" src="./external/bell.svg" />
+                <img class="hover" src="../wallet/icons/sigil-circle.svg"/>
             </nav>
     </header>
-    <div class="container">
-        <a class="discussion border">
-            <div class="fr disc-header">
-                <h3>Weekly Tech Thread - ~2024.10.16</h3>
-                <h3>~lagrev-nocfep</h3>
+    <div class="fc g2 p3" style="background: white;">
+        <div class="fc g30 br2 bd1 pad">
+            <div class="fr g2">
+                <img src="./external/sigil.svg" />
+                <span class="fs3">~hanfel-dovned</span>
+                <span class="fs3 cg">3h</span>
             </div>
-            <div class="fr disc-header">
-                <div>19 hours ago</div>
-                <div class="fr disc-info">
-                    <div class="fr border pd bg">
-                        <span class="material-symbols-outlined fs1">mode_comment</span>
-                        <div>7</div>
+            <div class="fc g30">
+                <span class="fs3">
+                    This is Borobudur in Indonesia, one of the world's most important and mysterious buildings.
+                    <br>
+                    <br>
+                    Why? Because it's the largest Buddhist temple ever built — and it was also abandoned for nearly one thousand years...
+                </span>
+                <img style="width:100%; align-self: center;" src="https://s3-alpha-sig.figma.com/img/6b37/2463/f1f71ecfde2f890d4c3737e709b7ea55?Expires=1730678400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Ti3AsmPSvcdSRMmX1UZDkfko8YlPH~wtUnI5af~5aFBqloVS9fQGlARL83XD96WXgf7HGoeeWYUUdNuYE49o9~Zt25XszWJb8~uHe0Xc4r09cRI-x8W2TYuf8KtmQz~lNsF2fJuRP6hRTf-jS9qmmbc-jycPR5c-smktarLWepg-ATTmti7uMO6yW9UtvUhVglyCXMvpW-CJvcOuo9aNwK8hgnQfatC90UXPxxYnckFRMUYc3i50fmp3qSKAmpwl9VLSyJoS--RsDL5vBmLGiugR0yNqzsuQWXZqbP6Mu5ggDrdX8Ol2WPNpaRl2vSVbipBNQAMpbb~Uj2pL0-SAEw__"/>
+                <div class="fr jb ac">
+                    <div class="fr pd g2">
+                        <img src="./external/bubble.svg" />
+                        <div class="fs3 cg">15</div>
                     </div>
-                    <div class="fr border pd bg">
-                        <span class="material-symbols-outlined fs1">recommend</span>
-                        <div>20</div>
+                    <div class="fr pd g2">
+                        <img src="./external/repost.svg" />
+                        <div class="fs3 cg">7</div>
                     </div>
-                </div>
-            </div>
-        </a>
-        <a class="discussion border">
-            <div class="fr disc-header">
-                <h3>USTJ vol1 iss1 art07 - The Urwasm WebAssembly Interpreter Suite on Urbit</h3>
-                <h3>~dozreg-toplud</h3>
-            </div>
-            <div class="fr disc-header">
-                <div>2 days ago</div>
-                <div class="fr disc-info">
-                    <div class="fr border pd bg">
-                        <span class="material-symbols-outlined fs1">mode_comment</span>
-                        <div>9</div>
+                    <div class="fr pd g2">
+                        <img src="./external/heart.svg" />
+                        <div class="fs3 cg">26</div>
                     </div>
-                    <div class="fr border pd bg">
-                        <span class="material-symbols-outlined fs1">recommend</span>
-                        <div>31</div>
+                    <div class="fr pd g2">
+                        <img src="./external/group.svg" />
                     </div>
                 </div>
             </div>
-        </a>
-        <a class="discussion border">
-            <div class="fr disc-header">
-                <h3>Weekly Tech Thread - ~2024.10.9</h3>
-                <h3>~lagrev-nocfep</h3>
+        </div>
+        <div class="fc g30 br2 bd1 pad">
+            <div class="fr g2">
+                <img src="./external/sigil.svg" />
+                <span class="fs3">~hanfel-dovned</span>
+                <span class="fs3 cg">3h</span>
             </div>
-            <div class="fr disc-header">
-                <div>7 days ago</div>
-                <div class="fr disc-info">
-                    <div class="fr border pd bg">
-                        <span class="material-symbols-outlined fs1">mode_comment</span>
-                        <div>7</div>
+            <div class="fc g30">
+                <span class="fs3">
+                The reasonable man accommodates himself to the world; the
+                unreasonable man makes the world accommodate him. Therefore, all
+                progress depends on the unreasonable man. The freedom of
+                normal people depends on &quot;herd immunity&quot; from tools
+                built for and by unreasonable people.
+                </span>
+                <div class="fr jb ac">
+                    <div class="fr pd g2">
+                        <img src="./external/bubble.svg" />
+                        <div class="fs3 cg">15</div>
                     </div>
-                    <div class="fr border pd bg">
-                        <span class="material-symbols-outlined fs1">recommend</span>
-                        <div>22</div>
+                    <div class="fr pd g2">
+                        <img src="./external/repost.svg" />
+                        <div class="fs3 cg">7</div>
                     </div>
-                </div>
-            </div>
-        </a>
-        <a class="discussion border">
-            <div class="fr disc-header">
-                <h3>Weekly Tech Thread - ~2024.10.2</h3>
-                <h3>~lagrev-nocfep</h3>
-            </div>
-            <div class="fr disc-header">
-                <div>13 days ago</div>
-                <div class="fr disc-info">
-                    <div class="fr border pd bg">
-                        <span class="material-symbols-outlined fs1">mode_comment</span>
-                        <div>11</div>
+                    <div class="fr pd g2">
+                        <img src="./external/heart.svg" />
+                        <div class="fs3 cg">26</div>
                     </div>
-                    <div class="fr border pd bg">
-                        <span class="material-symbols-outlined fs1">recommend</span>
-                        <div>14</div>
+                    <div class="fr pd g2">
+                        <img src="./external/group.svg" />
                     </div>
                 </div>
             </div>
-        </a>
-        <a class="discussion border">
-            <div class="fr disc-header">
-                <h3>Weekly Tech Thread - ~2024.9.25</h3>
-                <h3>~lagrev-nocfep</h3>
+        </div>
+        <div class="fc g30 br2 bd1 pad">
+            <div class="fr g2">
+                <img src="./external/sigil.svg" />
+                <span class="fs3">~hanfel-dovned</span>
+                <span class="fs3 cg">3h</span>
             </div>
-            <div class="fr disc-header">
-                <div>21 days ago</div>
-                <div class="fr disc-info">
-                    <div class="fr border pd bg">
-                        <span class="material-symbols-outlined fs1">mode_comment</span>
-                        <div>3</div>
+            <div class="fc g30">
+                <span class="fs3">
+                The reasonable man accommodates himself to the world; the
+                unreasonable man makes the world accommodate him. Therefore, all
+                progress depends on the unreasonable man. The freedom of
+                normal people depends on &quot;herd immunity&quot; from tools
+                built for and by unreasonable people.
+                </span>
+                <div class="fr jb ac">
+                    <div class="fr pd g2">
+                        <img src="./external/bubble.svg" />
+                        <div class="fs3 cg">15</div>
                     </div>
-                    <div class="fr border pd bg">
-                        <span class="material-symbols-outlined fs1">recommend</span>
-                        <div>17</div>
+                    <div class="fr pd g2">
+                        <img src="./external/repost.svg" />
+                        <div class="fs3 cg">7</div>
+                    </div>
+                    <div class="fr pd g2">
+                        <img src="./external/heart.svg" />
+                        <div class="fs3 cg">26</div>
+                    </div>
+                    <div class="fr pd g2">
+                        <img src="./external/group.svg" />
                     </div>
                 </div>
             </div>
-        </a>
+        </div>
+        <div class="fc g30 br2 bd1 pad">
+            <div class="fr g2">
+                <img src="./external/sigil.svg" />
+                <span class="fs3">~hanfel-dovned</span>
+                <span class="fs3 cg">3h</span>
+            </div>
+            <div class="fc g30">
+                <span class="fs3">
+                The reasonable man accommodates himself to the world; the
+                unreasonable man makes the world accommodate him. Therefore, all
+                progress depends on the unreasonable man. The freedom of
+                normal people depends on &quot;herd immunity&quot; from tools
+                built for and by unreasonable people.
+                </span>
+                <div class="fr jb ac">
+                    <div class="fr pd g2">
+                        <img src="./external/bubble.svg" />
+                        <div class="fs3 cg">15</div>
+                    </div>
+                    <div class="fr pd g2">
+                        <img src="./external/repost.svg" />
+                        <div class="fs3 cg">7</div>
+                    </div>
+                    <div class="fr pd g2">
+                        <img src="./external/heart.svg" />
+                        <div class="fs3 cg">26</div>
+                    </div>
+                    <div class="fr pd g2">
+                        <img src="./external/group.svg" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fc g30 br2 bd1 pad">
+            <div class="fr g2">
+                <img src="./external/sigil.svg" />
+                <span class="fs3">~hanfel-dovned</span>
+                <span class="fs3 cg">3h</span>
+            </div>
+            <div class="fc g30">
+                <span class="fs3">
+                The reasonable man accommodates himself to the world; the
+                unreasonable man makes the world accommodate him. Therefore, all
+                progress depends on the unreasonable man. The freedom of
+                normal people depends on &quot;herd immunity&quot; from tools
+                built for and by unreasonable people.
+                </span>
+                <div class="fr jb ac">
+                    <div class="fr pd g2">
+                        <img src="./external/bubble.svg" />
+                        <div class="fs3 cg">15</div>
+                    </div>
+                    <div class="fr pd g2">
+                        <img src="./external/repost.svg" />
+                        <div class="fs3 cg">7</div>
+                    </div>
+                    <div class="fr pd g2">
+                        <img src="./external/heart.svg" />
+                        <div class="fs3 cg">26</div>
+                    </div>
+                    <div class="fr pd g2">
+                        <img src="./external/group.svg" />
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

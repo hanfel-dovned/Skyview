@@ -167,11 +167,14 @@ i {
   --light-b-3: #dd5522;
   --light-b-2: #ddaa33;
   --light-b-1: #55dd33;
-  --light-b0: #dddded;
+  /* --light-b0: #dddded; */
+  --light-b0: #f3f5f3;
   --light-b1: #ccccdc;
-  --light-b2: #bbbbcb;
+  --light-b2: #878787;
+  /* --light-b2: #bbbbcb; */
   --light-b3: #aaaaba;
-  --light-b4: #9999a9;
+  /* --light-b4: #9999a9; */
+  --light-b4: #14140F;
   --light-f-3: #993311;
   --light-f-2: #aaaa22;
   --light-f-1: #339911;
@@ -674,6 +677,9 @@ body {
 .b4 {
   background-color: var(--b4);
 }
+.bw{
+  background-color: white;
+}
 
 .s-2 {
   font-size: 0.7rem;
@@ -701,6 +707,9 @@ body {
 }
 .s6 {
   font-size: 2.4rem;
+}
+.s17{
+  font-size: 17px;
 }
 .bd0 {
   border: none;
@@ -916,12 +925,13 @@ input:focus {
   filter: brightness(115%);
 }
 ::-webkit-scrollbar {
-    width: 12px;
+    display: none;
+    /* width: 12px; */
 }
 
 /* Scrollbar Handle */
 ::-webkit-scrollbar-thumb {
-    background-color: var(--b4); /* Color of the scrollbar handle */
+    background-color: var(--b0); /* Color of the scrollbar handle */
     border-radius: var(--br1); /* Roundness of the scrollbar handle */
 }
 
@@ -932,7 +942,7 @@ input:focus {
 
 /* Scrollbar Track Background */
 ::-webkit-scrollbar-track {
-    background: var(--b2); /* Background color of the scrollbar track */
+    background: white; /* Background color of the scrollbar track */
 }
 
 scrollbar-width: thick; /* Width of the scrollbar */
