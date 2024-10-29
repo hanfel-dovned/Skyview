@@ -24,15 +24,24 @@
             padding: 0;
             background-color: rgb(255, 255, 255);
         }
-        header{
-            height: 67px;
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 10px 20px;
+            border-bottom: 1px solid #CFCFCF;
+            height: 48px;
         }
         .grid{
-            height: 59px;
             display: grid;
-            grid-template-columns: 8% 12% 25% auto 9% 9%;
+            padding-left: 13px;
+            grid-template-columns: 7% 12% 25% auto 6% 6%;
             justify-items: center;
             align-items: center;
+        }
+        .c2{
+            grid-column: span 2;
         }
         .circle{
             width: 30pt;         
@@ -44,8 +53,11 @@
             color: white;
         }
         .coin-circle{
-            width: 30pt;         
-            height: 30pt;        
+            /* width: 10vw;  */
+            max-width: 25pt;    
+            min-width: auto;
+            /* height: 10vw;  */
+            max-height: 25pt;
             display: flex;     
             justify-content: center; 
             align-items: center; 
@@ -104,14 +116,45 @@
         .cg{
             color: #5A5A55;
         }
+        .cg7{
+            color: #7E7E7E;
+        }
         .cgl{
             color: #C3CDC3;
+        }
+        @media (max-width: 700px) {
+            .grid{
+            display: grid;
+            grid-template-columns: 8% 17% auto 17% 8% 8%;
+            justify-items: center;
+            align-items: center;
+        }
+        .f32{
+            font-size: 29px;
+        }
+        }
+        @media (max-width: 400px) {
+            .grid{
+            display: grid;
+            grid-template-columns: 10% 25% auto 10% 10% 10%;
+            justify-items: center;
+            align-items: center;
+        }
+        .f32{
+            font-size: 25px;
+        }
+        .f14{
+            font-size: 10px;
+        }
+        .fw2{
+            font-size: 10px;
+        }
         }
     </style>
 </head>
 <body class="fc">
-    <header class="fr jb ac p3 bh">
-        <div class="fr g4 ac">
+    <header>
+        <div class="fr g2">
             <img src="../sky-view/icons/UrWallet.svg" width="25px"/>
             <span class="f20">UrWallet</span>
         </div>
@@ -123,50 +166,50 @@
         </div>
     </header>
     <main>
-        <div class="bb fr ac g4 p2">
-            <span class="f32 cg fw7" style="padding-left:8px;">$7,382.82</span>
-            <span class="f20 cgl fw7">+$132.54</span>
+        <div class="bb p2 grid">
+            <span class="f32 cg fw7 c2 jss" style="padding-left:5px;">$7,382.82</span>
+            <span class="f20 cgl fw7 jss p2">+$132.54</span>
         </div>
         <div class="grid p2 bb">
-            <div class="coin-circle hover bg">
+            <div class="coin-circle hover bg p2">
                 <img src="icons/btc.svg" width="22px"/>
             </div>
-            <span class="f20 jss">Bitcoin</span>
-            <span class="f14 fw5 cgl jss">0.152 BTC/$60,001.23</span>
-            <span class="fw2 jse">1Lbcfr7...X71</span>
-            <div class="coin-circle hover bgl jse">
-                <img src="icons/arr-up.svg" width="14px"/>
+            <span class="f20 jss p2">Bitcoin</span>
+            <span class="f14 fw5 cg7 jss p2">0.152 BTC/$60,001.23</span>
+            <span class="fw2 jse p2">1Lbcfr7...X71</span>
+            <div class="coin-circle hover bgl p2">
+                <img src="icons/arr-up.svg" width="22px" style="padding: 3px;"/>
             </div>
-            <div class="coin-circle hover bgl">
-                <img src="icons/arr-down.svg" width="14px"/>
+            <div class="coin-circle hover bgl p2">
+                <img src="icons/arr-down.svg" width="22px" style="padding: 3px;"/>
             </div>
         </div>
         <div class="grid p2 bb">
-            <div class="coin-circle hover bg">
-                <img src="icons/eth.svg" width="16px"/>
+            <div class="coin-circle hover bg p2">
+                <img src="icons/eth.svg" width="22px" style="padding: 3px;"/>
             </div>
-            <span class="f20 jss">Ethereum</span>
-            <span class="f14 fw5 cgl jss">0.152 ETH/$3,001.23</span>
-            <span class="fw2 jse">1Lbcfr7...X71</span>
-            <div class="coin-circle hover bgl jse">
-                <img src="icons/arr-up.svg" width="14px"/>
+            <span class="f20 jss p2">Ethereum</span>
+            <span class="f14 fw5 cg7 jss p2">0.152 ETH/$3,001.23</span>
+            <span class="fw2 jse p2">1Lbcfr7...X71</span>
+            <div class="coin-circle hover bgl p2">
+                <img src="icons/arr-up.svg" width="22px" style="padding: 3px;"/>
             </div>
-            <div class="coin-circle hover bgl">
-                <img src="icons/arr-down.svg" width="14px"/>
+            <div class="coin-circle hover bgl p2">
+                <img src="icons/arr-down.svg" width="22px" style="padding: 3px;"/>
             </div>
         </div>
         <div class="grid p2 bb">
             <div class="coin-circle hover bg">
                 <img src="icons/usdc.svg" width="36px"/>
             </div>
-            <span class="f20 jss">USD Coin</span>
-            <span class="f14 fw5 cgl jss">0.152 USDC/$1.00</span>
-            <span class="fw2 jse">1Lbcfr7...X71</span>
-            <div class="coin-circle hover bgl jse">
-                <img src="icons/arr-up.svg" width="14px"/>
+            <span class="f20 jss p2">USD Coin</span>
+            <span class="f14 fw5 cg7 jss p2">0.152 USDC/$1.00</span>
+            <span class="fw2 jse p2">1Lbcfr7...X71</span>
+            <div class="coin-circle hover bgl p2">
+                <img src="icons/arr-up.svg" width="22px" style="padding: 3px;"/>
             </div>
-            <div class="coin-circle hover bgl">
-                <img src="icons/arr-down.svg" width="14px"/>
+            <div class="coin-circle hover bgl p2">
+                <img src="icons/arr-down.svg" width="22px" style="padding: 3px;"/>
             </div>
         </div>
     </main>

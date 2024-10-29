@@ -9,8 +9,199 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="../sky-view/feather.css">
     <title>Files</title>
+    <style>
+        @font-face {
+            font-family: "Urbit Sans";
+            src: url("https://media.urbit.org/fonts/UrbitSans/UrbitSansVFWeb-Regular.woff2")
+                format("woff2");
+            font-weight: 100 700;
+            font-style: normal;
+        }
+        body {
+            font-family: "Urbit Sans", monospace;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(255, 255, 255);
+            height: 100%;
+        }
+        main{
+            height: 100%;
+        }
+        header{
+            height: 48px;
+        }
+        .jse{
+            justify-self: end; 
+        }
+        .jss{
+            justify-self: start; 
+        }
+        .asc{
+            align-self: center;
+        }
+        .bh{
+            border-bottom: 1.25px solid #CFCFCF;
+        }
+        .bl{
+            border-left: 1.25px solid #CFCFCF;
+            height: 100%;
+        }
+        .pt{
+            padding-top: 8px;
+        }
+        .view{
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            height: 100%;
+        }
+        .open{
+            background: #e6ebe6;
+        }
+        .f20{
+            font-size: 20px;
+        }
+        .pointer{
+            cursor: pointer;
+        }
+        .h22{
+            height: 28px;
+            background-clip: padding-box;
+        }
+    </style>
 </head>
-<body style="background-color: white;" class="fc je">
-    <img src="./file-app.svg" width="100%"/>
+<body>
+    <header class="fr jb ac bh">
+        <div class="fr g2 p4">
+            <img src="../sky-view/icons/folder.svg" width="19px"/>
+            <span class="f20">Files</span>
+        </div>
+        <div class="fr" style="height: 100%;">
+            <div class="fr g2 bl p2 mhf ac" style="height: 100%;">
+                <img class="hover" src="./icons/col.svg" height="30px"/>
+                <img class="hover" src="./icons/row.svg" height="30px"/>
+                <img class="hover" src="./icons/tile.svg" height="30px" />
+            </div>
+            <div class="fr g2 bl p2 ac" style="height: 100%;">
+                <img class="hover" src="./icons/globe.svg" height="30px" />
+                <img class="hover" src="./icons/view.svg" height="30px"/>
+                <img class="hover" src="./icons/downoload.svg" height="30px"/>
+                <img class="hover" src="./icons/del.svg" height="30px"/>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="view pointer" id="folder-view">
+            <div class="pt">
+                <div class="fr g2 p4 hover h22"
+                onclick="openFirstFolder(this)">
+                    <img class="asc" src="../sky-view/icons/folder.svg"/>
+                    <span class="f20 asc">favorites</span>
+                </div>
+                <div class="fr g2 p4 hover h22"
+                onclick="openFirstFolder(this)">
+                    <img class="asc" src="../sky-view/icons/folder.svg"/>
+                    <span class="f20 asc">documents</span>
+                </div>
+                <div class="fr g2 p4 hover h22"
+                onclick="openFirstFolder(this)">
+                    <img class="asc" src="../sky-view/icons/folder.svg"/>
+                    <span class="f20 asc">recent</span>
+                </div>
+                <div class="fr g2 p4 hover h22"
+                onclick="openFirstFolder(this)">
+                    <img class="asc" src="../sky-view/icons/folder.svg"/>
+                    <span class="f20 asc">shared</span>
+                </div>
+            </div>
+            <div id="folder" class="bl pt hidden">
+                <div class="fr g2 p4 hover h22" onclick="openFolder(this)" data-name="music">
+                    <img class="asc" src="../sky-view/icons/folder.svg"/>
+                    <span class="f20 asc">music</span>
+                </div>
+                <div class="fr g2 p4 hover h22" onclick="openFolder(this)" data-name="videos">
+                    <img class="asc" src="../sky-view/icons/folder.svg"/>
+                    <span class="f20 asc">videos</span>
+                </div>
+                <div class="fr g2 p4 hover h22" onclick="openFolder(this)" data-name="pdfs">
+                    <img class="asc" src="../sky-view/icons/folder.svg"/>
+                    <span class="f20 asc">pdfs</span>
+                </div>
+                <div class="fr g2 p4 hover h22" onclick="openFolder(this)" data-name="pictures">
+                    <img class="asc" src="../sky-view/icons/folder.svg"/>
+                    <span class="f20 asc">pictures</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function openFirstFolder(element){
+            let folder = document.getElementById('folder')
+            if(folder.classList.contains('hidden')){
+                folder.classList.remove('hidden')
+                element.classList.add('open');
+            }else{
+                element.classList.remove('open');
+                folder.classList.add('hidden')
+
+                let nextSibling = element.parentElement.nextElementSibling.nextElementSibling;
+                while (nextSibling) {
+                    const toRemove = nextSibling; 
+                    nextSibling = nextSibling.nextElementSibling; 
+                    toRemove.remove();
+                }
+
+                let sibling = element.parentNode.nextElementSibling.firstElementChild
+                while (sibling) {
+                    sibling.classList.remove('open');
+                    sibling = sibling.nextElementSibling;
+                }
+            }
+        }
+        function openFolder(element) {
+            let name = element.dataset.name
+            let curentId = element.id
+            let view = document.getElementById('folder-view')
+
+            if(!element.classList.contains('open')){
+            if(curentId !== 'folder-version'){
+                let arr1 = ['v1', 'v2', 'v3']
+                view.insertAdjacentHTML('beforeend', `
+                <div data-name="${arr1.join(', ')}" class="bl pt">
+                    ${arr1.map((newName, i) => `
+                        <div id="folder-version" class="fr g2 p4 hover h22" onclick="openFolder(this, ${i})" data-name="${name}_${newName}">
+                            <img class="asc" src="../sky-view/icons/folder.svg"/>
+                            <span class="f20 asc">${name} ${newName}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                `);
+                element.classList.add('open');
+            }else{
+                let arr = [ `${name}_1.pdf`, `${name}_2.pdf`, `${name}_3.pdf`, `${name}_4.pdf`, `${name}_5.pdf`, `${name}_6.pdf`]
+                view.insertAdjacentHTML('beforeend', `
+                <div id="folder" data-name="${arr.join(', ')}" class="bl pt">
+                    ${arr.map((newName, i) => `
+                        <div id="folder-version" class="fr g2 p4 hover h22" onclick="openFolder(this, ${i})">
+                            <img class="asc" src="./icons/file.svg"/>
+                            <span class="f20 asc">${newName}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                `);
+                element.classList.add('open');
+            }
+        }else{
+            let nextSibling = element.parentElement.nextElementSibling;
+            while (nextSibling) {
+            const toRemove = nextSibling; 
+            nextSibling = nextSibling.nextElementSibling; 
+            toRemove.remove();
+            }
+            element.classList.remove('open');
+        }
+        }
+        </script>
+
 </body>
 </html>

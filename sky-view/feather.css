@@ -168,7 +168,8 @@ i {
   --light-b-2: #ddaa33;
   --light-b-1: #55dd33;
   /* --light-b0: #dddded; */
-  --light-b0: #f3f5f3;
+  /* --light-b0: #f3f5f3; */
+  --light-b0: rgb(227, 232, 227);
   --light-b1: #ccccdc;
   --light-b2: #878787;
   /* --light-b2: #bbbbcb; */
@@ -926,23 +927,32 @@ input:focus {
 }
 ::-webkit-scrollbar {
     display: none;
-    /* width: 12px; */
+    scrollbar-width: none;
 }
 
 /* Scrollbar Handle */
 ::-webkit-scrollbar-thumb {
+    display: none;
     background-color: var(--b0); /* Color of the scrollbar handle */
     border-radius: var(--br1); /* Roundness of the scrollbar handle */
 }
 
 /* Scrollbar Handle on Hover */
 ::-webkit-scrollbar-thumb:hover {
+    display: none;
     background-color: var(--b3); /* Color of the scrollbar handle when hovered */
 }
 
 /* Scrollbar Track Background */
 ::-webkit-scrollbar-track {
+    display: none;
     background: white; /* Background color of the scrollbar track */
+}
+@-moz-document url-prefix() { /* Disable scrollbar Firefox */
+  html{
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
 }
 
 scrollbar-width: thick; /* Width of the scrollbar */

@@ -4,13 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="forum">
-    <link rel="icon" href="../forum/external/bubble.svg" 
+    <link rel="icon" href="../forum/external/post-icons/bubble.svg" 
     type="image/svg+xml" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="../sky-view/feather.css">
     <title>Messages</title>
+    <style>
+        @font-face {
+            font-family: "Urbit Sans";
+            src: url("https://media.urbit.org/fonts/UrbitSans/UrbitSansVFWeb-Regular.woff2")
+                format("woff2");
+            font-weight: 100 700;
+            font-style: normal;
+        }
+        body {
+            font-family: "Urbit Sans", monospace;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(255, 255, 255);
+            width: 100%;
+        }
+        .msg{
+            font-size: 20px;
+        }
+        .border{
+            border:none;
+            border-radius: 16px;
+        }
+        .bc{
+            border: solid 1px #A7BCA7;
+            border-radius: 30px;
+            color: #A7BCA7;
+        }
+        .bc:focus,
+        .bc:not(:placeholder-shown) {
+            color: black;
+        }
+        .me{
+            background-color: #DDEADD;
+            align-self: end;
+        }
+        .you{
+            background: #E4E7E4;
+            align-self: start;
+        }
+        .circle{
+            display:flex;
+            background-color: #DDEADD;
+            width: 43px;
+            height: 43px;
+            border: none;
+            border-radius: 50%;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .btn-txt{
+            line-height: normal;
+            text-align: center;
+            font-weight: 100;
+            font-size: 32px;
+            margin: 0;
+        }
+    </style>
 </head>
-<body style="background-color: white;" class="fc je">
-    <img src="./messenger.svg" width="100%"/>
+<body class="fc je p2">
+    <main class="fc g2 je p2" style="width:100%">
+        <div id="chat" class="fc g2 je p2 wf">
+            <div class="you p2 border">
+                <span class="msg">
+                    Hey! Long time no chat. What’s new with you?
+                </span>
+            </div>
+            <div class="me p2 border">
+                <span class="msg">
+                    Hey! Been busy setting up a little homestead, actually.
+                </span>
+            </div>
+            <div class="me p2 border">
+                <span class="msg">
+                    Got some chickens and started a garden!
+                </span>
+            </div>
+            <div class="you p2 border">
+                <span class="msg">
+                    No way, that sounds amazing! I just started messing around with crypto mining on the side.
+                </span>
+            </div>
+            <div class="me p2 border">
+                <span class="msg">
+                    Nice! I keep hearing about it.
+                </span>
+            </div>
+            <div class="you p2 border">
+                <span class="msg">
+                    It’s a learning curve, but yeah, kind of fun to see it build up. How’s the garden going?
+                </span>
+            </div>
+        </div>
+        <form class="fr g2 ac p2" id="form">
+            <input
+            id="input"
+            class="bc p2 grow msg hover"
+            style="padding-left: 12px;"
+            type="text"
+            placeholder="Message"
+            autocomplete="off">
+            <button 
+            class="circle hover" 
+            type="submit">
+                <span class="btn-txt">></span>
+            </button>
+        </form>
+    </main>
+    <script>
+        document.getElementById('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const input = document.getElementById('input');
+            const msg = input.value;
+
+            const chat = document.getElementById('chat');
+
+            chat.insertAdjacentHTML('beforeend', `
+                <div class="me p2 border">
+                    <span class="msg">
+                        ${msg}
+                    </span>
+                </div>
+            `)
+
+            input.value = '';
+        })
+    </script>
 </body>
 </html>

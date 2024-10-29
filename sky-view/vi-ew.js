@@ -18,7 +18,7 @@ customElements.define(
         <button
           id="sky-open"
           style="background: white"
-          class="br1 p2 b0 hover fc js ac"
+          class="br1 p2 b0 hover fc js ac ass"
           onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('sky-open', {bubbles:true, composed: true}))"
           >
           <span id="sig-menu">~</span>
@@ -27,44 +27,51 @@ customElements.define(
         <button
           id="sky-open"
           style="background: white"
-          class="br1 p2 b0 hover fc js ac"
+          class="br1 p2 b0 fc js ac ass"
+          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('sky-open', {bubbles:true, composed: true}))">
+          <img class="icon-light" src="icons/sigil.svg" alt="sigil" height="18"/>
+        </button>
+        <button
+          id="sky-open"
+          style="background: white"
+          class="br1 p2 b0 fc js ac ass"
           onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-forum'))">
-          <img src="icons/Forum.svg" alt="landscape" height="18"/>
+          <img class="icon-light" src="icons/Forum.svg" alt="landscape" height="18"/>
         </button>
         <button
           id="sky-open"
           style="background: white"
-          class="br1 p2 b0 hover fc js ac"
+          class="br1 p2 b0 fc js ac ass"
           onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-wallet'))">
-          <img src="icons/UrWallet.svg" alt="landscape" height="18"/>
+          <img class="icon-light" src="icons/UrWallet.svg" alt="landscape" height="18"/>
         </button>
         <button
           id="sky-open"
           style="background: white"
-          class="br1 p2 b0 hover fc js ac"
+          class="br1 p2 b0 fc js ac ass"
           onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-landscape'))">
-          <img src="icons/Landscape.svg" alt="landscape" height="18"/>
+          <img class="icon-light" src="icons/Landscape.svg" alt="landscape" height="18"/>
         </button>
         <button
           id="sky-open"
           style="background: white"
-          class="br1 p2 b0 hover fc js ac"
+          class="br1 p2 b0 fc js ac ass"
           onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-watch'))">
-          <img src="icons/Clock.svg" alt="landscape" height="18"/>
-        </button>
-                <button
-          id="sky-open"
-          style="background: white"
-          class="br1 p2 b0 hover fc js ac"
-          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-messenger'))">
-          <img src="../forum/external/bubble.svg" alt="messenger" height="18"/>
+          <img class="icon-light" src="icons/Clock.svg" alt="landscape" height="18"/>
         </button>
         <button
           id="sky-open"
           style="background: white"
-          class="br1 p2 b0 hover fc js ac"
+          class="br1 p2 b0 fc js ac ass"
+          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-messenger'))">
+          <img class="icon-light" src="icons/text-bubble.svg" alt="messenger" height="18"/>
+        </button>
+        <button
+          id="sky-open"
+          style="background: white"
+          class="br1 p2 b0 fc js ac ass"
           onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-files'))">
-          <img src="icons/folder.svg" alt="files" height="18"/>
+          <img class="icon-light" src="icons/folder.svg" alt="files" height="18"/>
         </button>
       </div>
       </div>
@@ -85,7 +92,7 @@ customElements.define(
           <div style="border-bottom: solid 1px #CFCFCF;"></div>
           <div class="fc g3 grow scroll-y">
             <div id="tabs" class="fc g2 p2"></div>
-            <div style="border-bottom: solid 1px #CFCFCF;"></div>
+            <div id="bb" style="border-bottom: solid 1px #CFCFCF;"></div>
             <div class="grow"></div>
           </div>
           <footer class="fc g2 p2" style="padding-bottom:0;">
@@ -103,10 +110,10 @@ customElements.define(
       </nav>
       <main>
         <slot name="s-none" id="s-none">
-          <div class="wf hf b0 br1 fc ac jc f4">no windows open</div>
+          <div class="wf hf br1 fc ac jc f4">no windows open</div>
         </slot>
         <slot name="s-login" id="s-login">
-          <div class="wf hf b0 br1 fc ac jc g2">
+          <div class="wf hf br1 fc ac jc g2">
             <span id="pattern-err" class="hidden f3">Please match requested format.</span>
             <div class="p2 fc g2" style="width:260px;">
               <span style="font-size: 40pt;" class="tc">Urbit</span>
@@ -125,7 +132,7 @@ customElements.define(
                   <input 
                   id="code-input" 
                   style="border: none;"
-                  class="wf"
+                  class="wf in-st"
                   type="password"
                   placeholder="~sampel-ticlyt-migfun-falmel"
                   pattern="^~(([a-z]{6}-){3}[a-z]{6})$" 
@@ -288,6 +295,13 @@ customElements.define(
       })
       $(this).on('here-moved', () => {
         this.renderTabs()
+      })
+      $(this.gid('s-none')).off()
+      $(this.gid('s-none')).on('slotchange', (e) => {
+        let authenticated = localStorage.getItem('auth')
+        if (authenticated) {
+          this.renderTabs()
+        }
       })
       $(this.gid('s0')).off()
       $(this.gid('s0')).on('slotchange', (e) => {
@@ -465,7 +479,6 @@ customElements.define(
       let shipUrl = localStorage.getItem('local-url')
       localStorage.setItem('auth', true)
       this.initialLayout(`${shipUrl}`)
-      this.restoreLayout()
       $(this.gid('code-input'))[0].value = ''
       // let shipUrl = localStorage.getItem('local-url')
       // let rift = localStorage.getItem('rift')
@@ -512,7 +525,6 @@ customElements.define(
       //       console.log('Success:', data)
       //       localStorage.setItem('auth', true)
       //       this.initialLayout(`${shipUrl}`)
-      //       this.restoreLayout()
       //       $(this.gid('code-input'))[0].value = ''
       //     })
       //     .catch((error) => console.error('Error:', error))
@@ -523,6 +535,7 @@ customElements.define(
     renderIcon(src) {
       let img = document.createElement('img')
       $(img).attr('src', src)
+      $(img).addClass('icon-dark w20')
       return img
     }
     renderTabs() {
@@ -530,7 +543,7 @@ customElements.define(
       tabs.children().remove()
       let windowsOpen = this.windowsOpen
       let that = this
-      console.log('windows', this.windows)
+
       $(this.windows).each(function (i) {
         let wind = this
         let tab = document.createElement('div')
@@ -563,7 +576,7 @@ customElements.define(
 
         let min = document.createElement('button')
         $(min).append(that.renderIcon('./icons/minimize.svg'))
-        $(min).addClass('hover br1 bd0 p1 bw s17')
+        $(min).addClass('br1 bd0 p1 bw s17')
         $(min).on('click', () => {
           $(wind).trigger('minimize-window')
         })
@@ -573,7 +586,7 @@ customElements.define(
 
         let zoom = document.createElement('button')
         $(zoom).append(that.renderIcon('./icons/max.svg'))
-        $(zoom).addClass('hover br1 bd0 p1 bw s17')
+        $(zoom).addClass('br1 bd0 p1 bw s17')
         $(zoom).on('click', () => {
           $(wind).trigger('zoom-window')
         })
@@ -583,7 +596,7 @@ customElements.define(
 
         let close = document.createElement('button')
         $(close).append(that.renderIcon('./icons/close.svg'))
-        $(close).addClass('hover br1 bd0 p1 bw s17')
+        $(close).addClass('br1 bd0 p1 bw s17')
         $(close).on('click', () => {
           $(wind).trigger('close-window')
         })
@@ -594,6 +607,15 @@ customElements.define(
         $(tab).append(close)
         tabs.append(tab)
       })
+
+      let border = this.gid('bb')
+
+      if (this.windows.length === 0) {
+        border.classList.add('hidden')
+      } else {
+        border.classList.remove('hidden')
+      }
+
       this.saveLayout()
     }
     fixSlots() {
@@ -689,6 +711,7 @@ customElements.define(
         $(this.gid('sky-open')).prop('disabled', false)
         //  seting up windows layout
         this.settingLayout(layoutString)
+        console.log('LAYOUT', layoutString)
       }
     }
     initialLayout(url) {
@@ -730,8 +753,8 @@ customElements.define(
 
       layout.windows.forEach((w) => {
         let wind = document.createElement('wi-nd')
+
         const setAttributes = (attributes) => {
-          console.log('setting attr', attributes)
           $(wind).attr(
             'favicon',
             attributes ? attributes.iconUrl : './icons/Landscape.svg'
@@ -749,6 +772,7 @@ customElements.define(
 
           $(this).append(wind)
         }
+
         this.getIconUrl(w.here)
           .then((attributes) => {
             console.log('new-title', attributes)
@@ -775,8 +799,10 @@ customElements.define(
               const iconUrl = new URL(iconLink.href, here).href
               console.log('resolve', title)
               resolve({ iconUrl, title })
+              return
             } else {
               resolve(null)
+              return
             }
           })
           .catch((error) => {

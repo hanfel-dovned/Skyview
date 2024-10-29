@@ -55,6 +55,7 @@ customElements.define(
          height: 100%;
          overflow: hidden;
          border-radius: 3px;
+         scrollbar-width: none;
        }
        #drag-overlay {
          background: blue;

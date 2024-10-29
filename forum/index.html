@@ -33,14 +33,17 @@
             background-color: white;
             padding: 10px 20px;
             border-bottom: 1px solid #CFCFCF;
-            height: 67px;
+            height: 48px;
         }
         img{
             max-width: 500px;
         }
         img:hover {
-            filter: invert(20%);
+            filter: invert(50%);
             cursor: pointer;
+        }
+        #post:hover {
+            filter: none !important;
         }
         nav a {
             margin-left: 15px;
@@ -50,6 +53,15 @@
         button{
             background: none;
             border: none;
+        }
+        .main{
+            background: white;
+            display: grid;
+            grid-template-columns: 10% 90%;
+        }
+        .feed{
+            justify-self: center; 
+            max-width: 600px;
         }
         .border{
             border: 1px solid #ddd;
@@ -62,7 +74,7 @@
             font-size: 26pt;
         }
         .fs3 {
-            font-size: 17pt;
+            font-size: 20px;
         }
         .pd {
             padding: 5px;
@@ -123,7 +135,7 @@
 <body>
     <header>
             <div class="fr g2">
-                <img src="external/forum-icon.svg" />
+                <img id="post" src="external/forum-icon.svg" />
                 <div class="fs3">Forum</div>
             </div>
             <nav class="fr ac g2">
@@ -137,168 +149,177 @@
                 <img class="hover" src="../wallet/icons/sigil-circle.svg"/>
             </nav>
     </header>
-    <div class="fc g2 p3" style="background: white;">
-        <div class="fc g30 br2 bd1 pad">
-            <div class="fr g2">
-                <img src="./external/sigil.svg" />
-                <span class="fs3">~hanfel-dovned</span>
-                <span class="fs3 cg">3h</span>
-            </div>
-            <div class="fc g30">
-                <span class="fs3">
-                    This is Borobudur in Indonesia, one of the world's most important and mysterious buildings.
-                    <br>
-                    <br>
-                    Why? Because it's the largest Buddhist temple ever built — and it was also abandoned for nearly one thousand years...
-                </span>
-                <img style="width:100%; align-self: center;" src="https://s3-alpha-sig.figma.com/img/6b37/2463/f1f71ecfde2f890d4c3737e709b7ea55?Expires=1730678400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Ti3AsmPSvcdSRMmX1UZDkfko8YlPH~wtUnI5af~5aFBqloVS9fQGlARL83XD96WXgf7HGoeeWYUUdNuYE49o9~Zt25XszWJb8~uHe0Xc4r09cRI-x8W2TYuf8KtmQz~lNsF2fJuRP6hRTf-jS9qmmbc-jycPR5c-smktarLWepg-ATTmti7uMO6yW9UtvUhVglyCXMvpW-CJvcOuo9aNwK8hgnQfatC90UXPxxYnckFRMUYc3i50fmp3qSKAmpwl9VLSyJoS--RsDL5vBmLGiugR0yNqzsuQWXZqbP6Mu5ggDrdX8Ol2WPNpaRl2vSVbipBNQAMpbb~Uj2pL0-SAEw__"/>
-                <div class="fr jb ac">
-                    <div class="fr pd g2">
-                        <img src="./external/bubble.svg" />
-                        <div class="fs3 cg">15</div>
-                    </div>
-                    <div class="fr pd g2">
-                        <img src="./external/repost.svg" />
-                        <div class="fs3 cg">7</div>
-                    </div>
-                    <div class="fr pd g2">
-                        <img src="./external/heart.svg" />
-                        <div class="fs3 cg">26</div>
-                    </div>
-                    <div class="fr pd g2">
-                        <img src="./external/group.svg" />
+    <div class="main">
+        <div class="fc g2" style="padding: 12px 20px;">
+            <img src="./external/side-icons/home.svg" width="22px">
+            <img src="./external/side-icons/search.svg" width="22px">
+            <img src="./external/side-icons/statistics.svg" width="22px">
+            <img src="./external/side-icons/mail.svg" width="22px">
+            <img src="./external/side-icons/settings.svg" width="22px">
+        </div>
+        <div class="feed fc g2 p3">
+            <div class="fc g30 br2 bd1 pad">
+                <div class="fr g2">
+                    <img src="./external/sigil.svg" style="width: 19px"/>
+                    <span class="fs3">~hanfel-dovned</span>
+                    <span class="fs3 cg">3h</span>
+                </div>
+                <div class="fc g30">
+                    <span class="fs3">
+                        This is Borobudur in Indonesia, one of the world's most important and mysterious buildings.
+                        <br>
+                        <br>
+                        Why? Because it's the largest Buddhist temple ever built — and it was also abandoned for nearly one thousand years...
+                    </span>
+                    <img id="post" style="width:100%; align-self: center;" src="https://s3-alpha-sig.figma.com/img/6b37/2463/f1f71ecfde2f890d4c3737e709b7ea55?Expires=1730678400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Ti3AsmPSvcdSRMmX1UZDkfko8YlPH~wtUnI5af~5aFBqloVS9fQGlARL83XD96WXgf7HGoeeWYUUdNuYE49o9~Zt25XszWJb8~uHe0Xc4r09cRI-x8W2TYuf8KtmQz~lNsF2fJuRP6hRTf-jS9qmmbc-jycPR5c-smktarLWepg-ATTmti7uMO6yW9UtvUhVglyCXMvpW-CJvcOuo9aNwK8hgnQfatC90UXPxxYnckFRMUYc3i50fmp3qSKAmpwl9VLSyJoS--RsDL5vBmLGiugR0yNqzsuQWXZqbP6Mu5ggDrdX8Ol2WPNpaRl2vSVbipBNQAMpbb~Uj2pL0-SAEw__"/>
+                    <div class="fr jb ac">
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/bubble.svg" width="15px"/>
+                            <div class="fs3 cg">15</div>
+                        </div>
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/repost.svg" width="22px"/>
+                            <div class="fs3 cg">7</div>
+                        </div>
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/heart.svg" width="16.5px"/>
+                            <div class="fs3 cg">26</div>
+                        </div>
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/group.svg" width="37px"/>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="fc g30 br2 bd1 pad">
-            <div class="fr g2">
-                <img src="./external/sigil.svg" />
-                <span class="fs3">~hanfel-dovned</span>
-                <span class="fs3 cg">3h</span>
-            </div>
-            <div class="fc g30">
-                <span class="fs3">
-                The reasonable man accommodates himself to the world; the
-                unreasonable man makes the world accommodate him. Therefore, all
-                progress depends on the unreasonable man. The freedom of
-                normal people depends on &quot;herd immunity&quot; from tools
-                built for and by unreasonable people.
-                </span>
-                <div class="fr jb ac">
-                    <div class="fr pd g2">
-                        <img src="./external/bubble.svg" />
-                        <div class="fs3 cg">15</div>
-                    </div>
-                    <div class="fr pd g2">
-                        <img src="./external/repost.svg" />
-                        <div class="fs3 cg">7</div>
-                    </div>
-                    <div class="fr pd g2">
-                        <img src="./external/heart.svg" />
-                        <div class="fs3 cg">26</div>
-                    </div>
-                    <div class="fr pd g2">
-                        <img src="./external/group.svg" />
+            <div class="fc g30 br2 bd1 pad">
+                <div class="fr g2">
+                    <img src="./external/sigil.svg" style="width: 19px"/>
+                    <span class="fs3">~hanfel-dovned</span>
+                    <span class="fs3 cg">3h</span>
+                </div>
+                <div class="fc g30">
+                    <span class="fs3">
+                    The reasonable man accommodates himself to the world; the
+                    unreasonable man makes the world accommodate him. Therefore, all
+                    progress depends on the unreasonable man. The freedom of
+                    normal people depends on &quot;herd immunity&quot; from tools
+                    built for and by unreasonable people.
+                    </span>
+                    <div class="fr jb ac">
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/bubble.svg" width="15px"/>
+                            <div class="fs3 cg">15</div>
+                        </div>
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/repost.svg" width="22px"/>
+                            <div class="fs3 cg">7</div>
+                        </div>
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/heart.svg" width="16.5px"/>
+                            <div class="fs3 cg">26</div>
+                        </div>
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/group.svg" width="37px"/>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="fc g30 br2 bd1 pad">
-            <div class="fr g2">
-                <img src="./external/sigil.svg" />
-                <span class="fs3">~hanfel-dovned</span>
-                <span class="fs3 cg">3h</span>
-            </div>
-            <div class="fc g30">
-                <span class="fs3">
-                The reasonable man accommodates himself to the world; the
-                unreasonable man makes the world accommodate him. Therefore, all
-                progress depends on the unreasonable man. The freedom of
-                normal people depends on &quot;herd immunity&quot; from tools
-                built for and by unreasonable people.
-                </span>
-                <div class="fr jb ac">
-                    <div class="fr pd g2">
-                        <img src="./external/bubble.svg" />
-                        <div class="fs3 cg">15</div>
-                    </div>
-                    <div class="fr pd g2">
-                        <img src="./external/repost.svg" />
-                        <div class="fs3 cg">7</div>
-                    </div>
-                    <div class="fr pd g2">
-                        <img src="./external/heart.svg" />
-                        <div class="fs3 cg">26</div>
-                    </div>
-                    <div class="fr pd g2">
-                        <img src="./external/group.svg" />
+            <div class="fc g30 br2 bd1 pad">
+                <div class="fr g2">
+                    <img src="./external/sigil.svg" style="width: 19px"/>
+                    <span class="fs3">~hanfel-dovned</span>
+                    <span class="fs3 cg">3h</span>
+                </div>
+                <div class="fc g30">
+                    <span class="fs3">
+                    The reasonable man accommodates himself to the world; the
+                    unreasonable man makes the world accommodate him. Therefore, all
+                    progress depends on the unreasonable man. The freedom of
+                    normal people depends on &quot;herd immunity&quot; from tools
+                    built for and by unreasonable people.
+                    </span>
+                    <div class="fr jb ac">
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/bubble.svg" width="15px"/>
+                            <div class="fs3 cg">15</div>
+                        </div>
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/repost.svg" width="22px"/>
+                            <div class="fs3 cg">7</div>
+                        </div>
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/heart.svg" width="16.5px"/>
+                            <div class="fs3 cg">26</div>
+                        </div>
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/group.svg" width="37px"/>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="fc g30 br2 bd1 pad">
-            <div class="fr g2">
-                <img src="./external/sigil.svg" />
-                <span class="fs3">~hanfel-dovned</span>
-                <span class="fs3 cg">3h</span>
-            </div>
-            <div class="fc g30">
-                <span class="fs3">
-                The reasonable man accommodates himself to the world; the
-                unreasonable man makes the world accommodate him. Therefore, all
-                progress depends on the unreasonable man. The freedom of
-                normal people depends on &quot;herd immunity&quot; from tools
-                built for and by unreasonable people.
-                </span>
-                <div class="fr jb ac">
-                    <div class="fr pd g2">
-                        <img src="./external/bubble.svg" />
-                        <div class="fs3 cg">15</div>
-                    </div>
-                    <div class="fr pd g2">
-                        <img src="./external/repost.svg" />
-                        <div class="fs3 cg">7</div>
-                    </div>
-                    <div class="fr pd g2">
-                        <img src="./external/heart.svg" />
-                        <div class="fs3 cg">26</div>
-                    </div>
-                    <div class="fr pd g2">
-                        <img src="./external/group.svg" />
+            <div class="fc g30 br2 bd1 pad">
+                <div class="fr g2">
+                    <img src="./external/sigil.svg" style="width: 19px"/>
+                    <span class="fs3">~hanfel-dovned</span>
+                    <span class="fs3 cg">3h</span>
+                </div>
+                <div class="fc g30">
+                    <span class="fs3">
+                    The reasonable man accommodates himself to the world; the
+                    unreasonable man makes the world accommodate him. Therefore, all
+                    progress depends on the unreasonable man. The freedom of
+                    normal people depends on &quot;herd immunity&quot; from tools
+                    built for and by unreasonable people.
+                    </span>
+                    <div class="fr jb ac">
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/bubble.svg" width="15px"/>
+                            <div class="fs3 cg">15</div>
+                        </div>
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/repost.svg" width="22px"/>
+                            <div class="fs3 cg">7</div>
+                        </div>
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/heart.svg" width="16.5px"/>
+                            <div class="fs3 cg">26</div>
+                        </div>
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/group.svg" width="37px"/>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="fc g30 br2 bd1 pad">
-            <div class="fr g2">
-                <img src="./external/sigil.svg" />
-                <span class="fs3">~hanfel-dovned</span>
-                <span class="fs3 cg">3h</span>
-            </div>
-            <div class="fc g30">
-                <span class="fs3">
-                The reasonable man accommodates himself to the world; the
-                unreasonable man makes the world accommodate him. Therefore, all
-                progress depends on the unreasonable man. The freedom of
-                normal people depends on &quot;herd immunity&quot; from tools
-                built for and by unreasonable people.
-                </span>
-                <div class="fr jb ac">
-                    <div class="fr pd g2">
-                        <img src="./external/bubble.svg" />
-                        <div class="fs3 cg">15</div>
-                    </div>
-                    <div class="fr pd g2">
-                        <img src="./external/repost.svg" />
-                        <div class="fs3 cg">7</div>
-                    </div>
-                    <div class="fr pd g2">
-                        <img src="./external/heart.svg" />
-                        <div class="fs3 cg">26</div>
-                    </div>
-                    <div class="fr pd g2">
-                        <img src="./external/group.svg" />
+            <div class="fc g30 br2 bd1 pad">
+                <div class="fr g2">
+                    <img src="./external/sigil.svg" style="width: 19px"/>
+                    <span class="fs3">~hanfel-dovned</span>
+                    <span class="fs3 cg">3h</span>
+                </div>
+                <div class="fc g30">
+                    <span class="fs3">
+                    The reasonable man accommodates himself to the world; the
+                    unreasonable man makes the world accommodate him. Therefore, all
+                    progress depends on the unreasonable man. The freedom of
+                    normal people depends on &quot;herd immunity&quot; from tools
+                    built for and by unreasonable people.
+                    </span>
+                    <div class="fr jb ac">
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/bubble.svg" width="15px"/>
+                            <div class="fs3 cg">15</div>
+                        </div>
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/repost.svg" width="22px"/>
+                            <div class="fs3 cg">7</div>
+                        </div>
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/heart.svg" width="16.5px"/>
+                            <div class="fs3 cg">26</div>
+                        </div>
+                        <div class="fr pd g2">
+                            <img src="./external/post-icons/group.svg" width="37px"/>
+                        </div>
                     </div>
                 </div>
             </div>
