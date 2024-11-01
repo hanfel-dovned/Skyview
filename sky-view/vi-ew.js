@@ -13,23 +13,31 @@ customElements.define(
         shadow.adoptedStyleSheets = [...shadow.adoptedStyleSheets, ...sheets]
       })
       shadow.innerHTML = `
-      <div id="tray" class="fc js af p2 br1"           
-      style="background: white; gap: 28px;">
-        <button
-          id="sky-open"
-          style="background: white"
-          class="br1 p2 b0 hover fc js ac ass"
-          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('sky-open', {bubbles:true, composed: true}))"
-          >
-          <span id="sig-menu">~</span>
-        </button>
-        <div class="fc" style="gap: 19px;">
+      <div id="tray" class="fc jb af br1 wf"           
+      style="background: white;">
+      <div 
+      class="fc js af p2 br1 wf"
+      style="background: white; gap: 7px;">
+        <div class="wf"> 
+          <button
+            id="sky-open"
+            style="background: white; width: 100%; height: 39px; filter: none !important;"
+            class="br1 fc js ac ass"
+            onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('sky-open', {bubbles:true, composed: true}))"
+            >
+            <span class="icon-light" id="sig-menu">~</span>
+          </button>
+          <div 
+          class="wf"
+          style="border-bottom: solid 1px #CFCFCF; position: absolute; left: 0; 
+          "></div>
+        </div>
         <button
           id="sky-open"
           style="background: white"
           class="br1 p2 b0 fc js ac ass"
           onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('sky-open', {bubbles:true, composed: true}))">
-          <img class="icon-light" src="icons/sigil.svg" alt="sigil" height="18"/>
+          <img class="icon-light" src="icons/sigil1.svg" alt="sigil" height="18"/>
         </button>
         <button
           id="sky-open"
@@ -63,36 +71,79 @@ customElements.define(
           id="sky-open"
           style="background: white"
           class="br1 p2 b0 fc js ac ass"
-          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-messenger'))">
-          <img class="icon-light" src="icons/text-bubble.svg" alt="messenger" height="18"/>
+          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-files'))">
+          <img class="icon-light" src="icons/folder.svg" alt="files" height="18"/>
         </button>
         <button
           id="sky-open"
           style="background: white"
           class="br1 p2 b0 fc js ac ass"
-          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-files'))">
-          <img class="icon-light" src="icons/folder.svg" alt="files" height="18"/>
+          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('open-messenger'))">
+          <img class="icon-light" src="icons/Bubble2.svg" alt="messenger" height="19"/>
         </button>
+      </div>
+        <div class="fc">
+          <button
+          onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-out'))"
+          class="br1 bd0 p2 grow fr g2 ac"
+          style="align-self:center"
+          >
+            <img class="icon-light" src="./icons/LogOut.svg"/>
+          </button>
+        </div>
       </div>
       </div>
       <nav id="nav" class="fc br1" style="background: white;">
-        <div id="tab-controller" class=" br3 fc g3 grow p2">
-          <button
-            id="sky-open"
-            class="hover fc jc as hideable"
-            onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('sky-open', {bubbles:true, composed: true}))"
-            style="line-height: 1; height:47px;"
-            >
-            <span id="sig-menu">~</span>
-          </button>
-          <div style="border-bottom: solid 1px #CFCFCF;"></div>
-          <div class="p2">
-            <img class="p2 br1" style="box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25); background: #C3CDC3" src="./icons/UrbitCard.svg"/>
+        <div id="tab-controller" class=" br3 fc grow p2">
+          <div>
+            <button
+              id="sky-open"
+              class="fc as hideable"
+              onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('sky-open', {bubbles:true, composed: true}))"
+              style="line-height: 1; height: 39px;""
+              >
+              <span class="icon-light" id="sig-menu">~</span>
+            </button>
+            <div 
+            class="wf"
+            style="border-bottom: solid 1px #CFCFCF; position: absolute; left: 0; 
+            "></div>
           </div>
-          <div style="border-bottom: solid 1px #CFCFCF;"></div>
+          <div>
+            <div
+            style="padding:14px 4px;">
+              <img class="p2 br1" style="box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25); background: #E3E8E3" src="./icons/UrbitCard.svg"/>
+            </div>
+            <div 
+            class="wf"
+            style="border-bottom: solid 1px #CFCFCF; position: absolute; left: 0; 
+            "></div>
+          </div>
           <div class="fc g3 grow scroll-y">
-            <div id="tabs" class="fc g2 p2"></div>
-            <div id="bb" style="border-bottom: solid 1px #CFCFCF;"></div>
+            <div>
+              <div id="tabs" class="fc p2"></div>
+              <div 
+              class="wf"
+              style="border-bottom: solid 1px #CFCFCF; position: absolute; left: 0; 
+              "></div>
+            </div>
+            <div>
+              <div>
+                <div class="fr g1 ac">
+                  <button
+                  class="hover"
+                  onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('new-workspace'))">
+                    <img src="icons/lus-btn.svg">
+                  </button>
+                </div>
+                <div id="workspaces" class="fc g1 p2">
+                </div>
+              </div>
+              <div 
+              class="wf"
+              style="border-bottom: solid 1px #CFCFCF; position: absolute; left: 0; 
+              "></div>
+            </div>
             <div class="grow"></div>
           </div>
           <footer class="fc g2 p2" style="padding-bottom:0;">
@@ -115,20 +166,23 @@ customElements.define(
         <slot name="s-login" id="s-login">
           <div class="wf hf br1 fc ac jc g2">
             <span id="pattern-err" class="hidden f3">Please match requested format.</span>
-            <div class="p2 fc g2" style="width:260px;">
-              <span style="font-size: 40pt;" class="tc">Urbit</span>
-              <form id="login-form" class="fc g2"> 
+            <div class="p2 fc ac" style="width: 260px; padding: 0;">
+              <div class="grow">
+                <img src="icons/LoginLogo.svg" alt="~Urbit" width="169px"/>
+              </div>
+              <form id="login-form" 
+              class="fc g2 grow wf"> 
                 <input 
                 id="ship-input" 
                 class="br3 bd4 p2 in-st"
-                type="text"
                 placeholder="~sampel-palnet" 
                 pattern="^~((([a-z]{6}){1,2}-{0,2})+|[a-z]{3})$" 
                 autocomplete="off"
+                type="password"
                 required
                 />
                 <div
-                class="br3 bd4 p2 fr g1 ac jb in-st">
+                class="br3 bd4 p2 fr g1 ac jb in-st hidden">
                   <input 
                   id="code-input" 
                   style="border: none;"
@@ -136,7 +190,6 @@ customElements.define(
                   type="password"
                   placeholder="~sampel-ticlyt-migfun-falmel"
                   pattern="^~(([a-z]{6}-){3}[a-z]{6})$" 
-                  required
                   />
                   <button 
                   type="button" 
@@ -150,10 +203,15 @@ customElements.define(
                 type="button" 
                 onclick="this.getRootNode().host.dispatchEvent(new CustomEvent('log-in'))" 
                 class="br3 p2 b4 hover btn-st fr ac jc">
-                  <span>Log in</span>
+                  <span
+                  style="font-size: 20px;"
+                  >Log in</span>
                 </button>
               </form>
-              <div class="fr jc g1">
+              <div class="fr jc g1 p2"
+              style="font-size: 16px;
+              font-weight: 700px;"
+              >
                 <span class="f2">
                 Don’t have an Urbit ID? 
                 </span>
@@ -221,6 +279,14 @@ customElements.define(
       let noslots = $(this).children('wi-nd:not([slot])').get()
       return [...slots, ...noslots]
     }
+    get workspacesObj() {
+      return JSON.parse(localStorage.getItem('workspaces'))
+    }
+    get currentWSObj() {
+      let currentWS = localStorage.getItem('currentWorkspace')
+      let ws = this.workspacesObj.workspaces.find((ws) => ws.name === currentWS)
+      return ws
+    }
     qs(sel) {
       return this.shadowRoot.querySelector(sel)
     }
@@ -281,6 +347,63 @@ customElements.define(
         this.fixSlots()
         this.renderTabs()
       })
+      $(this).on('new-workspace', (e) => {
+        //  get existing workspaces append new workspace
+        let obj = this.workspacesObj
+        let wsName = `Workspace ${obj.workspaces.length + 1}`
+        let emptyLayout = {
+          open: true,
+          windowsOpen: 0,
+          windows: []
+        }
+        obj.workspaces.push({
+          name: wsName,
+          layout: emptyLayout
+        })
+        console.log('obj', obj)
+
+        localStorage.setItem('workspaces', JSON.stringify(obj))
+        localStorage.setItem('currentWorkspace', wsName)
+        //  open new workspace
+        localStorage.setItem('layout', emptyLayout)
+        this.settingLayout()
+        this.renderWorkspaces()
+      })
+      $(this).on('change-workspace', (e) => {
+        const workspace = e.workspace
+        localStorage.setItem('currentWorkspace', workspace)
+        this.settingLayout()
+        this.renderWorkspaces()
+      })
+      $(this).on('close-workspace', (e) => {
+        //remove from localState
+        let workspace = e.workspace
+        let obj = this.workspacesObj
+
+        const index = obj.workspaces.findIndex(
+          (item) => item.name === workspace
+        )
+        console.log('index', index)
+        console.log(obj.workspaces)
+        obj.workspaces.splice(index, 1)
+        localStorage.setItem('workspaces', JSON.stringify(obj))
+
+        let currentWorkspace = localStorage.getItem('currentWorkspace')
+        if (workspace === currentWorkspace) {
+          if (index >= obj.workspaces.length) {
+            console.log('set to ', obj.workspaces[index - 1].name)
+            localStorage.setItem(
+              'currentWorkspace',
+              obj.workspaces[index - 1].name
+            )
+          } else {
+            console.log('set to ', obj.workspaces[index].name)
+            localStorage.setItem('currentWorkspace', obj.workspaces[index].name)
+          }
+        }
+        // render Workspaces
+        this.renderWorkspaces()
+      })
       $(this).on('zoom-window', (e) => {
         let wind = $(e.target)
         let windSlot = wind.attr('slot')
@@ -323,6 +446,10 @@ customElements.define(
       })
       $(this.gid('s3')).off()
       $(this.gid('s3')).on('slotchange', () => {
+        this.renderTabs()
+      })
+      $(this.gid('s4')).off()
+      $(this.gid('s4')).on('slotchange', () => {
         this.renderTabs()
       })
       $(this.gid('default')).off()
@@ -409,6 +536,7 @@ customElements.define(
         : `open-${this.windowsOpen}`
       this.restoreLayout()
       this.zoomListener()
+      // this.clockStyle()
     }
     attributeChangedCallback(name, oldValue, newValue) {
       //
@@ -447,6 +575,26 @@ customElements.define(
         }
       })
     }
+    // clockStyle() {
+    //   document.addEventListener('DOMContentLoaded', () => {
+    //     const slots = this.qsa('slot')
+    //     console.log('slots', slots)
+
+    //     slots.forEach((slot) => {
+    //       console.log('slot', slot)
+    //       const assignedNodes = slot.assignedNodes()
+
+    //       console.log('assigned Nodes', assignedNodes)
+    //       const windClock = Array.from(assignedNodes).find(
+    //         (node) =>
+    //           node.nodeType === Node.ELEMENT_NODE && node.matches('wi-nd#clock')
+    //       )
+    //       if (windClock) {
+    //         slot.style.filter = 'none' // Remove the filter if the condition is met
+    //       }
+    //     })
+    //   })
+    // }
     getUrl() {
       let our = $(this.gid('ship-input'))[0].value
       localStorage.setItem('our', our)
@@ -540,6 +688,19 @@ customElements.define(
     }
     renderTabs() {
       let tabs = $(this.gid('tabs'))
+      const allTabs = Array.from(tabs.children())
+      console.log('allTabs', allTabs)
+      allTabs.forEach((tab) => {
+        tab.classList.add('op1')
+        tab.addEventListener(
+          'transitionend',
+          () => {
+            tab.parentNode.removeChild(tab)
+          },
+          { once: true }
+        )
+      })
+
       tabs.children().remove()
       let windowsOpen = this.windowsOpen
       let that = this
@@ -547,9 +708,9 @@ customElements.define(
       $(this.windows).each(function (i) {
         let wind = this
         let tab = document.createElement('div')
-        $(tab).addClass('br1 fr af js bw s17')
+        $(tab).addClass('tab br1 fr af js bw s17')
         if (i < windowsOpen) {
-          $(tab).addClass('toggled')
+          //$(tab).addClass('toggled')
         }
         let mux = document.createElement('button')
         mux.className = 'hover br1 bd0 p2 grow tl fr g2 ac js bw s17'
@@ -559,7 +720,7 @@ customElements.define(
           ? `
         <img src="${wind.getAttribute(
           'favicon'
-        )}" style="width: 20px; height: 20px;" />
+        )}" style="width: 18px; height: 18px;" />
         `
           : ``
         console.log('title', $(wind).attr('tab-title'))
@@ -618,6 +779,61 @@ customElements.define(
 
       this.saveLayout()
     }
+    renderWorkspaces() {
+      console.log('rendering workspaces')
+      let workspaces = $(this.gid('workspaces'))
+      workspaces.children().remove()
+      let currentWorkspace = localStorage.getItem('currentWorkspace')
+      let obj = localStorage.getItem('workspaces')
+      let workspacesObj = JSON.parse(obj)
+
+      workspacesObj.workspaces.forEach((ws) => {
+        console.log('rendering', ws)
+        let div = document.createElement('div')
+        $(div).addClass('fr af g2 ac br2 pointer')
+
+        let dataWrapper = document.createElement('div')
+        $(dataWrapper).attr('id', ws.name)
+        $(dataWrapper).addClass('p2 br2 fr g1 grow')
+
+        let data = `
+          <span>${ws.name}</span>
+          <span>${ws.layout.windows.length} Tiles</span>`
+
+        if (ws.name === currentWorkspace) {
+          $(div).addClass('b1')
+          $(div).attr('style', 'color: white')
+        } else {
+          $(dataWrapper).addClass('hover')
+          $(dataWrapper).attr('style', 'background: white')
+          $(div).attr('style', 'background: white')
+
+          $(dataWrapper).on('click', (e) => {
+            const event = $.Event('change-workspace', { workspace: ws.name })
+            $(this).trigger(event)
+          })
+        }
+
+        let close = document.createElement('button')
+        $(close).append(this.renderIcon('./icons/close.svg'))
+        $(close).addClass('br1 bd0 p1 s17')
+        $(close).on('click', () => {
+          const event = $.Event('close-workspace', { workspace: ws.name })
+          $(this).trigger(event)
+        })
+
+        $(dataWrapper).append(data)
+        $(div).append(dataWrapper)
+        $(div).append(close)
+        workspaces.append(div)
+      })
+    }
+    // changeWorkspace(e) {
+    //   console.log('changing workspace', e.target.id)
+    //   localStorage.setItem('currentWorkspace', e.target.id)
+    //   this.settingLayout()
+    //   this.renderWorkspaces()
+    // }
     fixSlots() {
       let slotted = $(this.windows).filter('[slot]').get().slice(0, 5)
       $(this.windows).removeAttr('slot')
@@ -665,6 +881,7 @@ customElements.define(
       $(this).attr('windows-open', Math.max(0, this.windowsOpen - 1))
     }
     saveLayout() {
+      console.log('saving layout')
       let layout = {
         open: this.hasAttribute('open'),
         windowsOpen: parseInt(this.getAttribute('windows-open')),
@@ -678,7 +895,16 @@ customElements.define(
             }
           })
       }
+
       localStorage.setItem('sky-layout', JSON.stringify(layout))
+
+      let currentWS = localStorage.getItem('currentWorkspace')
+      let obj = JSON.parse(localStorage.getItem('workspaces'))
+      let ws = obj.workspaces.find((ws) => ws.name === currentWS)
+      ws.layout = layout
+      console.log('new obj', obj)
+      localStorage.setItem('workspaces', JSON.stringify(obj))
+      this.renderWorkspaces()
     }
     restoreLayout() {
       let layoutString = localStorage.getItem('sky-layout')
@@ -686,7 +912,7 @@ customElements.define(
       let showBridge = localStorage.getItem('show-bridge')
       if (!authenticated) {
         if (showBridge) {
-          this.settingLayout(layoutString)
+          this.settingLayout()
         } else {
           //  opening login setup
           this.qs('main').className = `open-login`
@@ -710,8 +936,9 @@ customElements.define(
         $(this.gid('sky-open')).addClass('hover')
         $(this.gid('sky-open')).prop('disabled', false)
         //  seting up windows layout
-        this.settingLayout(layoutString)
+        this.settingLayout()
         console.log('LAYOUT', layoutString)
+        this.renderWorkspaces()
       }
     }
     initialLayout(url) {
@@ -732,57 +959,65 @@ customElements.define(
             here: `${window.location.origin}/wallet`,
             slot: 's2'
           }
-          // {
-          //   here: `${window.location.origin}/file-app`,
-          //   slot: 's3'
-          // },
-          // {
-          //   here: `${window.location.origin}/watch`,
-          //   slot: 's4'
-          // }
         ]
       }
       localStorage.setItem('sky-layout', JSON.stringify(layout))
+
+      let initialWorkspace = {
+        workspaces: [{ name: 'Workspace 1', layout: layout }]
+      }
+      localStorage.setItem('workspaces', JSON.stringify(initialWorkspace))
+      localStorage.setItem('currentWorkspace', 'Workspace 1')
       this.restoreLayout()
     }
-    settingLayout(layoutString) {
-      let layout = JSON.parse(layoutString)
+    //  get layout corresponding to current workspace
+    settingLayout() {
+      let layout = this.currentWSObj.layout
+      console.log(layout)
+
       $(this).attr('open', layout.open ? '' : null)
       $(this).attr('windows-open', `${layout.windowsOpen}`)
       $(this).children('wi-nd').remove()
+      console.log(layout)
+      if (layout.windows.length === 0) {
+        console.log('no windows open')
+      } else {
+        layout.windows.forEach((w) => {
+          let wind = document.createElement('wi-nd')
 
-      layout.windows.forEach((w) => {
-        let wind = document.createElement('wi-nd')
+          const setAttributes = (attributes) => {
+            $(wind).attr(
+              'favicon',
+              attributes ? attributes.iconUrl : './icons/Landscape.svg'
+            )
+            $(wind).attr(
+              'tab-title',
+              attributes ? attributes.title : 'Landscape'
+            )
+            $(wind).attr('here', w.here)
+            $(wind).attr('slot', w.slot || null)
 
-        const setAttributes = (attributes) => {
-          $(wind).attr(
-            'favicon',
-            attributes ? attributes.iconUrl : './icons/Landscape.svg'
-          )
-          $(wind).attr('tab-title', attributes ? attributes.title : 'Landscape')
-          $(wind).attr('here', w.here)
-          $(wind).attr('slot', w.slot || null)
+            console.log('have ', w.here)
+            console.log('looking ', `${window.location.origin}/watch`)
 
-          if (
-            w.here === 'https://bridge.urbit.org/' ||
-            w.here === 'https://bridge.urbit.org'
-          ) {
-            $(wind).attr('style', 'background: white;')
+            if (w.here === `${window.location.origin}/watch`) {
+              $(wind).attr('id', 'clock')
+            }
+
+            $(this).append(wind)
           }
 
-          $(this).append(wind)
-        }
-
-        this.getIconUrl(w.here)
-          .then((attributes) => {
-            console.log('new-title', attributes)
-            setAttributes(attributes)
-          })
-          .catch((error) => {
-            setAttributes(null)
-            console.error('Failed to get icon:', error)
-          })
-      })
+          this.getIconUrl(w.here)
+            .then((attributes) => {
+              console.log('new-title', attributes)
+              setAttributes(attributes)
+            })
+            .catch((error) => {
+              setAttributes(null)
+              console.error('Failed to get icon:', error)
+            })
+        })
+      }
     }
     getIconUrl(here) {
       return new Promise((resolve, reject) => {

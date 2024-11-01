@@ -103,8 +103,8 @@ i {
 
 :root {
   --sky-opacity: 1;
-  --sky-outer-gap: 8px;
-  --sky-inner-gap: 8px;
+  --sky-outer-gap: 10px;
+  --sky-inner-gap: 10px;
   --sky-window-border: 2px;
 
   --font: 'Arial';
@@ -161,8 +161,8 @@ i {
 
   --br0: 0px;
   --br1: 3px;
-  --br2: 6px;
-  --br3: 12px;
+  --br2: 7px;
+  --br3: 9px;
 
   --light-b-3: #dd5522;
   --light-b-2: #ddaa33;
@@ -170,7 +170,7 @@ i {
   /* --light-b0: #dddded; */
   /* --light-b0: #f3f5f3; */
   --light-b0: rgb(227, 232, 227);
-  --light-b1: #ccccdc;
+  --light-b1: #C9C9C9;
   --light-b2: #878787;
   /* --light-b2: #bbbbcb; */
   --light-b3: #aaaaba;
